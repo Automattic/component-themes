@@ -43,5 +43,13 @@
       "wpcalypso/jsx-classname-namespace": 0,
       "max-len": 0
     }
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Automattic/stranger-themes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Automattic/stranger-themes/issues"
+  },
+  "homepage": "https://github.com/Automattic/stranger-themes#readme"
 }
