@@ -1,0 +1,46 @@
+{
+  "name": "stranger-themes",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Component-based themes for WordPress",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "NODE_ENV=development babel --out-dir build src",
+    "distclean": "rm -rf build"
+  },
+  "keywords": [
+    "wordpress",
+    "themes",
+    "react"
+  ],
+  "author": "Automattic",
+  "license": "GPL-2.0+",
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-react-app": "^1.0.0",
+    "babel-root-import": "^4.1.4",
+    "classnames": "^2.2.5",
+    "css": "^2.2.1",
+    "eslint": "^3.10.2",
+    "eslint-config-wpcalypso": "^0.6.0",
+    "eslint-plugin-wpcalypso": "^3.0.2",
+    "react": "^15.3.2",
+    "shortid": "^2.2.6",
+    "traverse": "^0.6.6"
+  },
+  "babel": {
+    "plugins": [
+      "babel-root-import"
+    ],
+    "presets": [
+      "react-app"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "wpcalypso/react",
+    "rules": {
+      "wpcalypso/jsx-classname-namespace": 0
+    }
+  }
+}
