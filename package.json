@@ -40,7 +40,8 @@
   "eslintConfig": {
     "extends": "wpcalypso/react",
     "rules": {
-      "wpcalypso/jsx-classname-namespace": 0
+      "wpcalypso/jsx-classname-namespace": 0,
+      "max-len": 0
     }
   }
 }
