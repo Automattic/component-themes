@@ -10,7 +10,7 @@ import Styles from '~/src/components/Styles';
 import { buildStylesFromTheme } from '~/src/lib/styles';
 import { buildComponentsFromTheme } from '~/src/lib/component-builder';
 
-class ThemePreview extends Component {
+class StrangerThemePage extends Component {
 	render() {
 		const children = buildComponentsFromTheme(
 			this.props.theme,
@@ -26,9 +26,9 @@ class ThemePreview extends Component {
 	}
 }
 
-ThemePreview.propTypes = {
+StrangerThemePage.propTypes = {
 	theme: PropTypes.object.isRequired,
 	content: PropTypes.object,
 };
 
-export default ThemePreview;
+export default StrangerThemePage;

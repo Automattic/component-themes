@@ -26,10 +26,10 @@ There are two pieces to this project. This library will provide a WordPress plug
 
 You can read all about the pieces of a theme config in the [theme directory](./src/themes/README.md).
 
-To render a theme config as a React component, use the `ThemePreview` component:
+To render a theme config as a React component, use the `StrangerThemePage` component:
 
 ```javascript
-import { ThemePreview } from 'stranger-themes';
+import { StrangerThemePage } from 'stranger-themes';
 
 const themeConfig = {
 	"name": "MyTheme",
@@ -43,7 +43,7 @@ const themeConfig = {
 
 const App = () => (
 	<div>
-		<ThemePreview theme={ themeConfig } >
+		<StrangerThemePage theme={ themeConfig } >
 	</div>
 );
 ```
