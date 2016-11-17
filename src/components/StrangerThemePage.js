@@ -14,6 +14,7 @@ class StrangerThemePage extends Component {
 	render() {
 		const children = buildComponentsFromTheme(
 			this.props.theme,
+			this.props.page,
 			this.props.content || {}
 		);
 		const styles = buildStylesFromTheme( this.props.theme, this.props.content );
@@ -28,6 +29,7 @@ class StrangerThemePage extends Component {
 
 StrangerThemePage.propTypes = {
 	theme: PropTypes.object.isRequired,
+	page: PropTypes.object.isRequired,
 	content: PropTypes.object,
 };
 

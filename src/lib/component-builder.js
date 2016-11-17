@@ -81,9 +81,6 @@ function expandConfigTemplates( componentConfig, templates ) {
 	return componentConfig;
 }
 
-export function buildComponentsFromTheme( themeConfig, content ) {
-	if ( ! themeConfig.pages || ! themeConfig.pages.home ) {
-		return <p>themeConfig must contain a `pages.home` component!</p>;
-	}
-	return buildComponentFromConfig( expandConfigPartials( expandConfigTemplates( themeConfig.pages.home, themeConfig.templates || {} ), themeConfig.partials || {} ), content );
+export function buildComponentsFromTheme( themeConfig, pageConfig, content = {} ) {
+	return buildComponentFromConfig( expandConfigPartials( expandConfigTemplates( pageConfig, themeConfig.templates || {} ), themeConfig.partials || {} ), content );
 }

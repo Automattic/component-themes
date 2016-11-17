@@ -19,7 +19,7 @@ require( __DIR__ . '/../src/themes/components/HeaderText/index.php' );
 require( __DIR__ . '/../src/themes/components/PageLayout/index.php' );
 
 class StrangerThemes {
-	public function renderTheme( $theme, $content = [] ) {
+	public function renderPage( $theme, $page, $content = [] ) {
 		$output = '<div class="StrangerThemes">';
 		$builder = new \Prometheus\Builder();
 		$style = new \Prometheus\Styles();
@@ -27,7 +27,7 @@ class StrangerThemes {
 		$component_styles = $style->getComponentStyles( $builder->getComponents() );
 		$output .= "<style class='component-styles'>$component_styles</style>";
 		$output .= "<style class='theme-styles'>$css</style>";
-		$output .= $builder->render( $theme, $content );
+		$output .= $builder->render( $theme, $page, $content );
 		$output .= '</div>';
 		return $output;
 	}

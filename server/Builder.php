@@ -147,16 +147,13 @@ class Builder {
 		return $componentConfig;
 	}
 
-	private function buildComponentsFromTheme( $themeConfig, $componentData ) {
-		if ( ! isset( $themeConfig['pages']['home'] ) ) {
-			throw new \Exception( "themeConfig must contain a `pages.home` component!" );
-		}
+	private function buildComponentsFromTheme( $themeConfig, $pageConfig, $componentData ) {
 		$partials = isset( $themeConfig['partials'] ) ? $themeConfig['partials'] : [];
 		$templates = isset( $themeConfig['templates'] ) ? $themeConfig['templates'] : [];
-		return $this->buildComponentFromConfig( $this->expandConfigPartials( $this->expandConfigTemplates( $themeConfig['pages']['home'], $templates ), $partials ), $componentData );
+		return $this->buildComponentFromConfig( $this->expandConfigPartials( $this->expandConfigTemplates( $pageConfig, $templates ), $partials ), $componentData );
 	}
 
-	public function render( $themeConfig, $componentData = [] ) {
-		return $this->renderElement( $this->buildComponentsFromTheme( $themeConfig, $componentData ) );
+	public function render( $themeConfig, $pageConfig, $componentData = [] ) {
+		return $this->renderElement( $this->buildComponentsFromTheme( $themeConfig, $pageConfig, $componentData ) );
 	}
 }
