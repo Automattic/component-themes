@@ -43,7 +43,7 @@ const themeConfig = {
 
 const App = () => (
 	<div>
-		<ThemePreview themeConfig={ themeConfig } >
+		<ThemePreview theme={ themeConfig } >
 	</div>
 );
 ```

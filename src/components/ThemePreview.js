@@ -13,10 +13,10 @@ import { buildComponentsFromTheme } from '~/src/lib/component-builder';
 class ThemePreview extends Component {
 	render() {
 		const children = buildComponentsFromTheme(
-			this.props.themeConfig,
-			this.props.componentData || {}
+			this.props.theme,
+			this.props.content || {}
 		);
-		const styles = buildStylesFromTheme( this.props.themeConfig, this.props.componentData );
+		const styles = buildStylesFromTheme( this.props.theme, this.props.content );
 		return (
 			<div className="PrometheusBuilder">
 				<Styles styles={ styles } />
@@ -27,8 +27,8 @@ class ThemePreview extends Component {
 }
 
 ThemePreview.propTypes = {
-	themeConfig: PropTypes.object.isRequired,
-	componentData: PropTypes.object,
+	theme: PropTypes.object.isRequired,
+	content: PropTypes.object,
 };
 
 export default ThemePreview;
