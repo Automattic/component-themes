@@ -8,13 +8,14 @@ import React, { Component, PropTypes } from 'react';
  */
 import Styles from '~/src/components/Styles';
 import { buildStylesFromTheme } from '~/src/lib/styles';
-import { buildComponentsFromTheme } from '~/src/lib/component-builder';
+import { buildComponentsFromTheme, getTemplateForSlug } from '~/src/lib/component-builder';
 
 class StrangerThemePage extends Component {
 	render() {
+		const page = this.props.page || getTemplateForSlug( this.props.theme, this.props.slug );
 		const children = buildComponentsFromTheme(
 			this.props.theme,
-			this.props.page,
+			page,
 			this.props.content || {}
 		);
 		const styles = buildStylesFromTheme( this.props.theme, this.props.content );
@@ -29,7 +30,8 @@ class StrangerThemePage extends Component {
 
 StrangerThemePage.propTypes = {
 	theme: PropTypes.object.isRequired,
-	page: PropTypes.object.isRequired,
+	page: PropTypes.object,
+	slug: PropTypes.string.isRequired,
 	content: PropTypes.object,
 };
 

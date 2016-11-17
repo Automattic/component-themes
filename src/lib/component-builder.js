@@ -84,3 +84,15 @@ function expandConfigTemplates( componentConfig, templates ) {
 export function buildComponentsFromTheme( themeConfig, pageConfig, content = {} ) {
 	return buildComponentFromConfig( expandConfigPartials( expandConfigTemplates( pageConfig, themeConfig.templates || {} ), themeConfig.partials || {} ), content );
 }
+
+export function getTemplateForSlug( themeConfig, slug ) {
+	const error = { componentType: 'ErrorComponent', props: { message: `No template found matching '${ slug }'` } };
+	if ( ! themeConfig.templates || ! themeConfig.templates[ slug ] ) {
+		return error;
+	}
+	const template = themeConfig.templates[ slug ];
+	if ( template.template ) {
+		return getTemplateForSlug( themeConfig, template.template );
+	}
+	return template;
+}

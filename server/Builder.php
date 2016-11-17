@@ -142,9 +142,20 @@ class Builder {
 			if ( isset( $templates[ $layout_key ] ) ) {
 				return $templates[ $layout_key ];
 			}
-			throw new \Exception( "No layout found matching " . $layout_key );
+			throw new \Exception( "No template found matching " . $layout_key );
 		}
 		return $componentConfig;
+	}
+
+	public function getTemplateForSlug( $themeConfig, $slug ) {
+		if ( ! isset( $themeConfig['templates'] ) || ! isset( $themeConfig['templates'][ $slug ] ) ) {
+			throw new \Exception( "No template found matching " . $slug );
+		}
+		$template = $themeConfig['templates'][ $slug ];
+		if ( isset( $template['template'] ) ) {
+			return $this->getTemplateForSlug( $themeConfig, $template['template'] );
+		}
+		return $template;
 	}
 
 	private function buildComponentsFromTheme( $themeConfig, $pageConfig, $componentData ) {

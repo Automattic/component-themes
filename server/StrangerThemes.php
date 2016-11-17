@@ -29,4 +29,9 @@ class StrangerThemes {
 		$output .= '</div>';
 		return $output;
 	}
+
+	public function getTemplateForSlug( $theme, $slug ) {
+		$builder = new \Prometheus\Builder();
+		return $builder->getTemplateForSlug( $theme, $slug );
+	}
 }
