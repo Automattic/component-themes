@@ -14,7 +14,7 @@ class ThemePreview extends Component {
 	render() {
 		const children = buildComponentsFromTheme(
 			this.props.themeConfig,
-			this.props.componentData
+			this.props.componentData || {}
 		);
 		const styles = buildStylesFromTheme( this.props.themeConfig, this.props.componentData );
 		return (
@@ -28,7 +28,7 @@ class ThemePreview extends Component {
 
 ThemePreview.propTypes = {
 	themeConfig: PropTypes.object.isRequired,
-	componentData: PropTypes.object.isRequired,
+	componentData: PropTypes.object,
 };
 
 export default ThemePreview;
