@@ -28,22 +28,39 @@ You can read all about the pieces of a theme config in the [theme directory](./s
 
 To render a theme config as a React component, use the `StrangerThemePage` component:
 
-```javascript
+```js
 import { StrangerThemePage } from 'stranger-themes';
 
 const themeConfig = {
 	"name": "MyTheme",
-	"slug": "mytheme",
-	"pages": {
-		"home": { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
-			{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
-		] }
-	}
+	"slug": "mytheme"
 };
+const pageConfig = { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
+	{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
+] };
 
 const App = () => (
 	<div>
-		<StrangerThemePage theme={ themeConfig } >
+		<StrangerThemePage theme={ themeConfig } page={ pageConfig } >
 	</div>
 );
+```
+
+To render a page using PHP, use the `StrangerThemes->renderPage()` method:
+
+```php
+<?php
+require( './node_modules/stranger-themes/server/StrangerThemes.php' );
+
+$themeConfig = json_decode( '{
+	"name": "MyTheme",
+	"slug": "mytheme"
+}' );
+$pageConfig = json_decode( '{ "id": "siteLayout", "componentType": "ColumnComponent", "children": [
+	{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
+] }' );
+
+$renderer = new StrangerThemes();
+$rendered_output = $renderer->renderPage( $themeConfig, $pageConfig );
+echo $rendered_output;
 ```
