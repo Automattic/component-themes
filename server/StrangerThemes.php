@@ -1,6 +1,4 @@
 <?php
-namespace Prometheus;
-
 require( __DIR__ . '/Component.php' );
 require( __DIR__ . '/Builder.php' );
 require( __DIR__ . '/Styles.php' );
