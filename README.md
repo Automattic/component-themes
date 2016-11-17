@@ -20,8 +20,30 @@ That which we call a theme by any other name would look as sweet.
 
 Let's redefine what makes up a theme by allowing each page to have its own layout and content, building it up from a library of components and templates. These pages would still benefit from the WordPress template hierarchy, but would also allow creating a website in a more natural and customizable manner, right down to the layout of a blog post.
 
-## How?
+## Usage
 
 There are two pieces to this project. This library will provide a WordPress plugin that will allow rendering a site using a Stranger Theme. The other piece is a site builder app, which will edit the theme.
 
-You can read all about the pieces of a theme in the [theme directory](./src/themes/README.md).
+You can read all about the pieces of a theme config in the [theme directory](./src/themes/README.md).
+
+To render a theme config as a React component, use the `ThemePreview` component:
+
+```javascript
+import { ThemePreview } from 'stranger-themes';
+
+const themeConfig = {
+	"name": "MyTheme",
+	"slug": "mytheme",
+	"pages": {
+		"home": { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
+			{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
+		] }
+	}
+};
+
+const App = () => (
+	<div>
+		<ThemePreview themeConfig={ themeConfig } >
+	</div>
+);
+```
