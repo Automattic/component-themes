@@ -38,10 +38,11 @@ const themeConfig = {
 const pageConfig = { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
 	{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
 ] };
+const pageSlug = 'home';
 
 const App = () => (
 	<div>
-		<StrangerThemePage theme={ themeConfig } page={ pageConfig } >
+		<StrangerThemePage theme={ themeConfig } page={ pageConfig } slug={ pageSlug } />
 	</div>
 );
 ```
@@ -59,8 +60,10 @@ $themeConfig = json_decode( '{
 $pageConfig = json_decode( '{ "id": "siteLayout", "componentType": "ColumnComponent", "children": [
 	{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
 ] }' );
+$pageSlug = 'home';
 
 $renderer = new StrangerThemes();
+$pageConfig = ( ! empty( $pageConfig ) ) ? $pageConfig : $renderer->getTemplateForSlug( $themeConfig, $pageSlug );
 $rendered_output = $renderer->renderPage( $themeConfig, $pageConfig );
 echo $rendered_output;
 ```
