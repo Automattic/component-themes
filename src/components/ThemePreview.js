@@ -18,7 +18,7 @@ class ThemePreview extends Component {
 		);
 		const styles = buildStylesFromTheme( this.props.theme, this.props.content );
 		return (
-			<div className="PrometheusBuilder">
+			<div className="StrangerThemes">
 				<Styles styles={ styles } />
 				{ children }
 			</div>

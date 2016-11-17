@@ -13,7 +13,7 @@ function getStyleStringFromStyleData( style ) {
 }
 
 function buildStyleBlock( key, style ) {
-	return `.PrometheusBuilder ${ key }{${ getStyleStringFromStyleData( style ) }}`;
+	return `.StrangerThemes ${ key }{${ getStyleStringFromStyleData( style ) }}`;
 }
 
 function prependNamespaceToStyleString( namespace, styles ) {
@@ -27,7 +27,7 @@ function prependNamespaceToStyleString( namespace, styles ) {
 export function buildStylesFromTheme( themeConfig ) {
 	const stylesByComponent = themeConfig.styles || {};
 	if ( typeof stylesByComponent === 'string' ) {
-		return prependNamespaceToStyleString( '.PrometheusBuilder', stylesByComponent );
+		return prependNamespaceToStyleString( '.StrangerThemes', stylesByComponent );
 	}
 	return Object.keys( stylesByComponent )
 		.map( key => buildStyleBlock( key, stylesByComponent[ key ] ) )
