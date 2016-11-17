@@ -1,32 +1,36 @@
-# Themes
+# Themes and Pages
 
-A theme file is a JSON file that contains everything that makes up that site. It includes placeholder content which can be overridden by the user in the form of content and settings.
+Pages are built of components, which are self-contained content blocks that have their own settings. Some components can also have child components which will be displayed within that component. This allows creating page layout by composing components (a technique familiar to anyone who has used [React](https://facebook.github.io/react/) or similar libraries).
 
-When a user customizes the layout of their site, they will actually be editing a copy of their theme file; in a very real sense, they will be making a new theme.
+Each page of a site is a JSON object that refers to a single component (typically of type `PageLayout`) with child components that represent the layout of the page. The components used can be either *core components* (those included in Stranger Themes) or *theme components* (components built of other components and included in the theme). It's also possible for the site owner to create their own theme components by adding them to the theme with an editor.
 
-**That said, the JSON file is not intended to be edited directly!** It is intended to be read and modified by tools. The owner of a site or a entry-level theme developer might have a drag-and-drop interface for layout and settings. An advanced theme developer might use command-line tools to build the styles and components into the theme.
+A theme also includes **templates**, which are fully pre-constructed pages that can be copied to create new pages.
 
-Advanced theme developers might also build their own components, which require their own React (and optionally PHP) files. Many themes should be able to be built without editing components, however, by just customizing the props for those components and composing shared sets of components ("partials") in the theme itself.
+There are a few default page templates that are included with all sites unless overridden by the theme: `home`, `post`, and `post-list`. These templates will be used by default for the home page, the single post page, and all post list pages respectively.
 
-## Overview
+Styles for the components in a site are also included in the theme.
 
-Themes describe layouts of components for the pages of a site along with a set of styles for those components.
+Some page content and settings are included directly in the page JSON, but that data can also be overridden by content provided by the site itself (eg: a list of blog posts).
 
-Typically those components are aligned in rows (via the `RowComponent` container) but at this point that is purely a convention to make customization easier.
+As with React, content and settings are provided to a component in the form of "props".
 
-While the theme is separate from its content and settings (which are created and stored separately), it can include default content and settings for its components. As with React, content and settings are provided to a component in the form of "props".
+A site editor for will modify page JSON and possibly a copy of the site's theme JSON, essentially turning it into a custom theme for that site.
 
-A page editor for a site will modify a copy of the site's theme, essentially turning it into a custom theme for that site.
+## Theme
 
-Each theme is a JSON file that contains one object. The only requirement for the theme is that the object has the key `pages.home`, with the value of a component config. That is the component that will be rendered as the home page for the site. It must also have the keys `name` and `slug` which identify the theme.
+Each theme is a JSON file that contains one object. The only requirement for the theme is that the object has the keys `name` and `slug` which identify the theme.
 
-Here is a very basic example theme that simply has a `TextWidget` displaying the default text of "hello world".
+**That said, the JSON file is not intended to be edited directly!** It is intended to be read and modified by tools. The owner of a site or a theme developer might have an app to customize styles, layout, and settings. An advanced theme developer might use command-line tools to build the styles and components into the theme with their own editor.
+
+Advanced theme developers might also build their own core components, which require their own React (and optionally PHP) files. Many themes should be able to be built without editing components, however, by just customizing the props for those components and composing shared sets of theme components ("partials") in the theme itself.
+
+Here is a very basic example theme with a custom home page template that simply has a `TextWidget` displaying the default text of "hello world".
 
 ```json
 {
 	"name": "MyTheme",
 	"slug": "mytheme",
-	"pages": {
+	"templates": {
 		"home": { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
 			{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
 		] }
@@ -40,7 +44,7 @@ Here is a slightly more realistic example of a theme for a blog (still without a
 {
 	"name": "MyTheme",
 	"slug": "mytheme",
-	"pages": {
+	"templates": {
 		"home": { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
 			{ "id": "pageLayout", "componentType": "ColumnComponent", "children": [
 				{ "id": "headerLayout", "componentType": "RowComponent", "children": [
@@ -58,11 +62,11 @@ Here is a slightly more realistic example of a theme for a blog (still without a
 }
 ```
 
-## Components
+## Core Components
 
 There are two main categories of components: **container** components and **content** components. Container components generally have few or no visual elements but serve to lay out other components. Content components display some content. Both are designed to be customized by providing props (content and settings).
 
-Each component in a theme is an object that has at least two properties: `id` and `componentType`.
+Each component in a page is an object that has at least two properties: `id` and `componentType`.
 
 `componentType` is a string that refers to an existing component.
 
@@ -93,13 +97,18 @@ Using container components requires putting components into other components as 
 
 `RowComponent` should be the most common container component as it makes it easy to create responsive layouts that collapse to a single column at small widths.
 
-## Partials (Shared Composed Components)
+## Theme Components ('Partials')
 
 A theme can also contain components which are actually composed of other components (rather than writing the code for them directly).
 
 These components can be created by a user, saved in the theme, and even shared between pages. Such components are called "partials" and are defined in a separate object within the theme called `partials`.
 
-To include a partial within a page, create an object with the key `partial` and the value set to the key of the partial. That object will be replaced with the component from the partials object.
+To include a partial within a page, there are two options:
+
+1. Copy the partial directly into the page.
+2. Refer to the partial within the page, which will share that partial between all pages.
+
+To use a shared partial, create an object with the key `partial` and the value set to the key of the partial. That object will be replaced with the component from the partials object.
 
 For example, here is a `header` partial used in a page:
 
@@ -112,7 +121,7 @@ For example, here is a `header` partial used in a page:
 			{ "id": "headerText", "componentType": "HeaderText" }
 		] },
 	},
-	"pages": {
+	"templates": {
 		"home": { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
 			{ "id": "pageLayout", "componentType": "ColumnComponent", "children": [
 				{ "partial": "header" },
@@ -125,15 +134,18 @@ For example, here is a `header` partial used in a page:
 }
 ```
 
-Sometimes it will be desirable to customize a partial to be used in a particular location. In this case the partial object should be copied into the location previously occupied by the partial reference.
+## Templates
 
-## Page Templates
+A whole page can be saved as a template within the theme. These are defined in an object within the theme called `templates` and are identical to the definition of pages (they may also contain partials).
 
-A whole page can be saved as a shared component called a "layout". These are defined in an object within the theme called `templates` and are identical to the definition of pages (they may also contain partials), but they must be referenced in a page to see them.
+Just as with theme components, there are two ways to use a template:
 
-To use a page layout in place of defining a page directly, just replace the page definition object with one that contains the key `layout` where the value is set to the key of the layout.
+1. Copy the template into a new page.
+2. Refer to the template in the page, which will use the theme's version of the page.
 
-For example, here is a `blog` layout used as a home page:
+To use a page template in place of defining a page directly, just replace the page definition object with one that contains the key `template` where the value is set to the key of the template.
+
+For example, here is a `blog` template used as a home page:
 
 ```json
 {
@@ -148,15 +160,11 @@ For example, here is a `blog` layout used as a home page:
 					{ "id": "myPosts", "componentType": "PostList" }
 				] }
 			] }
-		] }
-	},
-	"pages": {
+		] },
 		"home": { "template": "blog" }
 	}
 }
 ```
-
-Just as with partials, if one wants to customize a layout for a particular page, the layout object should be copied into the place of the page and customized directly.
 
 ## Components as props
 
