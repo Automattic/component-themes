@@ -18,7 +18,9 @@ A site editor for will modify page JSON and possibly a copy of the site's theme 
 
 ## Theme
 
-Each theme is a JSON file that contains one object. The only requirement for the theme is that the object has the keys `name` and `slug` which identify the theme.
+A "Stranger Theme" is in a directory, just the same as a regular WordPress theme, except that the contents of the directory differs. The directory includes a special `index.php` file and a `theme.json` file.
+
+Each theme's `theme.json` is a JSON file that contains one object. The only requirement for the theme is that the object has the keys `name` and `slug` which identify the theme.
 
 **That said, the JSON file is not intended to be edited directly!** It is intended to be read and modified by tools. The owner of a site or a theme developer might have an app to customize styles, layout, and settings. An advanced theme developer might use command-line tools to build the styles and components into the theme with their own editor.
 
@@ -97,6 +99,74 @@ Using container components requires putting components into other components as 
 
 `RowComponent` should be the most common container component as it makes it easy to create responsive layouts that collapse to a single column at small widths.
 
+### Custom Core Components
+
+If neither the core components nor the theme components provide the markup a page requires, it's possible to write custom components using Javascript and React.
+
+To write a Custom Component, create a new directory inside the theme directory called `components`, and then create a new directory inside that with the name of the component itself. The new component is then written as `index.js` within that directory and exported as an ES2015 module (you may use JSX).
+
+The component should also include a `description` and an `editableProps` object for each setting that the component accepts. No settings are required, so be sure your component can handle undefined values.
+
+For example, to create a new component called `MyLogo` in the theme `MyTheme`, we can create `MyTheme/components/MyLogo/index.js` as follows:
+
+```js
+import React from 'react';
+
+const MyLogo = ( { url, className } ) => {
+	return (
+		<div className={ className }>
+			<img src="{ url || '' }" />
+		</div>
+	);
+};
+
+MyLogo.description = 'A logo.';
+MyLogo.editableProps = {
+	url: {
+		type: 'string',
+		label: 'The url of the image to display.'
+	}
+};
+
+export default MyLogo;
+```
+
+The theme config then refers to the component by adding a line in the `custom-components` object (the `"MyLogo": "MyLogo"` is a "Component Name": "Component Directory" map):
+
+```json
+{
+	"name": "MyTheme",
+	"slug": "mytheme",
+	"custom-components": {
+		"MyLogo": "MyLogo"
+	}
+	"templates": {
+		"home": { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
+			{ "id": "logo", "componentType": "MyLogo", "props": { "url": "..." } }
+		] }
+	}
+}
+```
+
+Once the component is defined, it can be used in the theme or in pages just as any other Core Component.
+
+It's also possible to define Custom Components inside a separate WordPress plugin. In that case, specify the plugin URL instead of the directory name:
+
+```json
+{
+	"name": "MyTheme",
+	"slug": "mytheme",
+	"custom-components": {
+		"MyLogo": "https://wordpress.org/plugins/my-logo/"
+	}
+	"templates": {
+		"home": { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
+			{ "id": "logo", "componentType": "MyLogo", "props": { "url": "..." } }
+		] }
+	}
+}
+```
+
 ## Theme Components ('Partials')
 
 A theme can also contain components which are actually composed of other components (rather than writing the code for them directly).
@@ -143,7 +213,7 @@ Just as with theme components, there are two ways to use a template:
 1. Copy the template into a new page.
 2. Refer to the template in the page, which will use the theme's version of the page.
 
-To use a page template in place of defining a page directly, just replace the page definition object with one that contains the key `template` where the value is set to the key of the template.
+To use a page template in place of defining a page directly, just replace the page definition object with one that contains the key `template` where the value is set to the key of the template. You can even do this in other templates.
 
 For example, here is a `blog` template used as a home page:
 
@@ -151,7 +221,11 @@ For example, here is a `blog` template used as a home page:
 {
 	"name": "MyTheme",
 	"slug": "mytheme",
-	"partials": "...",
+	"partials": {
+		"header": { "id": "headerLayout", "componentType": "RowComponent", "children": [
+			{ "id": "headerText", "componentType": "HeaderText" }
+		] },
+	},
 	"templates": {
 		"blog": { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
 			{ "id": "pageLayout", "componentType": "ColumnComponent", "children": [
