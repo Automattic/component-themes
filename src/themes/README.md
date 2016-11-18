@@ -227,39 +227,15 @@ That will generate markup something like this:
 <div class="TextWidget helloWorld"></div>
 ```
 
-The theme can contain a key called "styles" which holds CSS rules for the theme.
+The theme can contain a key called "styles" which holds CSS rules for the theme as a single string.
 
-The rules can be in three formats currently, although this may change in the
-future.
-
-1. A single string.
-2. An object of style rule strings, keyed by the selector.
-3. An object of style rules arrays, keyed by the selector. Each member of the array is a style string.
-
-For example, here is a theme config with styles. All of these styles are valid:
+For example, here is a theme config with styles.
 
 ```json
 {
-	"styles": {
-		".contentLayout": [
-			"font-family: 'Lucida Grande',Verdana,Arial,Sans-Serif;",
-			"padding: 0 0 20px 45px;"
-		],
-		".siteLayout": [
-			"background-color: #e7e7e7;height: 100%;"
-		],
-		".myPosts": "width: 450px;"
-	},
-	"pages": {}
-}
-```
-
-That could also be:
-
-```json
-{
+	"name": "MyTheme",
+	"slug": "mytheme",
 	"styles": ".contentLayout { font-family: 'Lucida Grande',Verdana,Arial,Sans-Serif; padding: 0 0 20px 45px; } .siteLayout { background-color: #e7e7e7;height: 100%; } .myPosts { width: 450px; }",
-	"pages": {}
 }
 ```
 
@@ -278,7 +254,7 @@ Some components have styles built-in. You cannot change these, but you can overr
 If you need to change something globally across a theme, use a global selector in the theme, like this:
 
 ```json
-"a": "text-decoration: none;"
+"a { text-decoration: none; }"
 ```
 
 **Try to use global styles as little as possible!**
@@ -288,19 +264,13 @@ If you need to change something globally across a theme, use a global selector i
 Each component, as mentioned above, gets the component type as a className, so you can target that with a selector to affect all instances of that component.
 
 ```json
-".BlogPost": "margin: 30px 0 0;"
+".PostBody { margin: 30px 0 0; }"
 ```
 
 To target specific parts of a component, use the modified BEM syntax, where two underscores identifies a component element:
 
 ```json
-".BlogPost__title": [
-	"color: #333;",
-	"font-family: 'Trebuchet MS','Lucida Grande',Verdana,Arial,Sans-Serif;",
-	"font-size: 1.2em;",
-	"font-weight: bold;",
-	"text-decoration: none;"
-],
+".PostTitle_link { color: #333; font-family: 'Trebuchet MS','Lucida Grande',Verdana,Arial,Sans-Serif; font-size: 1.2em; font-weight: bold; text-decoration: none; }"
 ```
 
 **Use this type of style the most!**
@@ -310,7 +280,7 @@ To target specific parts of a component, use the modified BEM syntax, where two 
 Each component instance within a theme layout also has a unique key which is the `id` specified in the component object. That key is added as a className also so you can target that specific instance of a component with a selector.
 
 ```json
-".myWidget": "background-color: #e7e7e7;"
+".myWidget { background-color: #e7e7e7; }"
 ```
 
 **Use this type of style to override the previous styles for a specific component!**
