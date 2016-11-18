@@ -7,11 +7,11 @@ class Styles {
 	public function buildStylesFromTheme( $themeConfig ) {
 		$styles = isset( $themeConfig['styles'] ) ? $themeConfig['styles'] : [];
 		if ( is_string( $styles ) ) {
-			return $this->prependNamespaceToStyleString( '.StrangerThemes', $styles );
+			return $this->prependNamespaceToStyleString( '.StrangerThemes', $this->expandStyleVariants( $styles, $themeConfig ) );
 		}
-		return implode( '', array_map( function( $key ) use ( &$styles ) {
+		return $this->expandStyleVariants( implode( '', array_map( function( $key ) use ( &$styles ) {
 			return $this->buildStyleBlock( $key, $styles[ $key ] );
-		}, array_keys( $styles ) ) );
+		}, array_keys( $styles ) ) ), $themeConfig );
 	}
 
 	public function getComponentStyles( $components ) {
@@ -25,6 +25,22 @@ class Styles {
 			}
 			return $styles;
 		}, [] ) );
+	}
+
+	private function expandStyleVariants( $styles, $themeConfig ) {
+		if ( ! isset( $themeConfig[ 'variant-styles' ] ) || ! isset( $themeConfig[ 'active-variant-styles' ] ) ) {
+			return $styles;
+		}
+		$variants = $themeConfig[ 'variant-styles' ];
+		$activeVariants = isset( $themeConfig[ 'active-variant-styles' ] ) ? $themeConfig[ 'active-variant-styles' ] : [];
+		$defaults = isset( $variants[ 'defaults' ] ) ? $variants[ 'defaults' ] : [];
+		$finalVariants = array_reduce( $activeVariants, function( $prev, $variantKey ) use ( &$variants ) {
+			$variant = isset( $variants[ $variantKey ] ) ? $variants[ $variantKey ] : [];
+			return array_merge( $prev, $variant );
+		}, $defaults );
+		return array_reduce( array_keys( $finalVariants ), function( $prev, $varName ) use ( &$finalVariants ) {
+			return str_replace( '$' . $varName, $finalVariants[ $varName ], $prev );
+		}, $styles );
 	}
 
 	private function buildStyleBlock( $key, $style ) {
