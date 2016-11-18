@@ -227,7 +227,7 @@ That will generate markup something like this:
 <div class="TextWidget helloWorld"></div>
 ```
 
-The theme can contain a key called "styles" which holds CSS rules for the theme as a single string.
+The theme can contain a key called `styles` which holds CSS rules for the theme as a single string.
 
 For example, here is a theme config with styles.
 
@@ -284,3 +284,76 @@ Each component instance within a theme layout also has a unique key which is the
 ```
 
 **Use this type of style to override the previous styles for a specific component!**
+
+## Variant Styles (Option 1)
+
+Each theme can have any number of style variations included. This is done by including additional style rules in the theme key `variant-styles`:
+
+```json
+{
+	"name": "MyTheme",
+	"slug": "mytheme",
+	"styles": "h1 { color: black; }",
+	"variant-styles": {
+		"Blue Headers": "h1 { color: skyblue; }"
+	}
+}
+```
+
+Site editors should expose these variants to the user as theme options. Any number of variants can be active at once. Active variant styles are added to the `active-variant-styles` array:
+
+```json
+{
+	"name": "MyTheme",
+	"slug": "mytheme",
+	"styles": "h1 { color: black; }",
+	"variant-styles": {
+		"Blue Headers": "h1 { color: skyblue; }"
+	},
+	"active-variant-styles": [
+		"Blue Headers"
+	]
+}
+```
+
+## Variant Styles (Option 2)
+
+Each theme can have any number of style variations included. This is done by using variables in the style rules and then setting those variables in the theme key `variant-styles`. The value of `variant-styles` is an object that contains the keys and values for each variable. All variables must have a default value set in the `default` key:
+
+```json
+{
+	"name": "MyTheme",
+	"slug": "mytheme",
+	"styles": "h1 { color: $header-color; }",
+	"variant-styles": {
+		"default": {
+			"header-color": "black"
+		},
+		"Blue Headers": {
+			"header-color": "skyblue"
+		}
+	}
+}
+```
+
+Site editors should expose these variants to the user as theme options. Any number of variants can be active at once (although the last activated variable definition will override any values in previous variants). Active variant style keys are added to the `active-variant-styles` array:
+
+```json
+{
+	"name": "MyTheme",
+	"slug": "mytheme",
+	"styles": "h1 { color: $header-color; }",
+	"variant-styles": {
+		"default": {
+			"header-color": "black"
+		},
+		"Blue Headers": {
+			"header-color": "skyblue"
+		}
+	},
+	"active-variant-styles": [
+		"Blue Headers"
+	]
+}
+```
+
