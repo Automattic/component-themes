@@ -24,12 +24,25 @@ function prependNamespaceToStyleString( namespace, styles ) {
 	return css.stringify( updatedObj );
 }
 
+function expandStyleVariants( styles, themeConfig ) {
+	if ( ! themeConfig[ 'variant-styles' ] || ! themeConfig[ 'active-variant-styles' ] ) {
+		return styles;
+	}
+	const variants = themeConfig[ 'variant-styles' ];
+	const activeVariants = themeConfig[ 'active-variant-styles' ] || [];
+	const defaults = variants.defaults || {};
+	const finalVariants = activeVariants.reduce( ( prev, variantKey ) => {
+		return Object.assign( {}, prev, variants[ variantKey ] || {} );
+	}, defaults );
+	return Object.keys( finalVariants ).reduce( ( prev, varName ) => prev.replace( `$${ varName }`, finalVariants[ varName ] ), styles );
+}
+
 export function buildStylesFromTheme( themeConfig ) {
 	const stylesByComponent = themeConfig.styles || {};
 	if ( typeof stylesByComponent === 'string' ) {
-		return prependNamespaceToStyleString( '.StrangerThemes', stylesByComponent );
+		return prependNamespaceToStyleString( '.StrangerThemes', expandStyleVariants( stylesByComponent, themeConfig ) );
 	}
-	return Object.keys( stylesByComponent )
+	return expandStyleVariants( Object.keys( stylesByComponent )
 		.map( key => buildStyleBlock( key, stylesByComponent[ key ] ) )
-		.join( '' );
+		.join( '' ), themeConfig );
 }
