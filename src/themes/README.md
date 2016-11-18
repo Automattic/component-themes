@@ -287,7 +287,7 @@ Each component instance within a theme layout also has a unique key which is the
 
 ## Variant Styles
 
-Each theme can have any number of style variations included. This is done by using variables in the style rules and then setting those variables in the theme key `variant-styles`. The value of `variant-styles` is an object that contains the keys and values for each variable. All variables must have a default value set in the `default` key:
+Each theme can have any number of style variations included. This is done by using variables in the style rules and then setting those variables in the theme key `variant-styles`. The value of `variant-styles` is an object that contains the keys and values for each variable. All variables must have a default value set in the `defaults` key:
 
 ```json
 {
@@ -295,7 +295,7 @@ Each theme can have any number of style variations included. This is done by usi
 	"slug": "mytheme",
 	"styles": "h1 { color: $header-color; }",
 	"variant-styles": {
-		"default": {
+		"defaults": {
 			"header-color": "black"
 		},
 		"Blue Headers": {
@@ -313,7 +313,7 @@ Site editors should expose these variants to the user as theme options. Any numb
 	"slug": "mytheme",
 	"styles": "h1 { color: $header-color; }",
 	"variant-styles": {
-		"default": {
+		"defaults": {
 			"header-color": "black"
 		},
 		"Blue Headers": {
