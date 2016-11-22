@@ -13,7 +13,7 @@ function getStyleStringFromStyleData( style ) {
 }
 
 function buildStyleBlock( key, style ) {
-	return `.StrangerThemes ${ key }{${ getStyleStringFromStyleData( style ) }}`;
+	return `.ComponentThemes ${ key }{${ getStyleStringFromStyleData( style ) }}`;
 }
 
 function prependNamespaceToStyleString( namespace, styles ) {
@@ -40,7 +40,7 @@ function expandStyleVariants( styles, themeConfig ) {
 export function buildStylesFromTheme( themeConfig ) {
 	const stylesByComponent = themeConfig.styles || {};
 	if ( typeof stylesByComponent === 'string' ) {
-		return prependNamespaceToStyleString( '.StrangerThemes', expandStyleVariants( stylesByComponent, themeConfig ) );
+		return prependNamespaceToStyleString( '.ComponentThemes', expandStyleVariants( stylesByComponent, themeConfig ) );
 	}
 	return expandStyleVariants( Object.keys( stylesByComponent )
 		.map( key => buildStyleBlock( key, stylesByComponent[ key ] ) )

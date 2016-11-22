@@ -16,9 +16,9 @@ require( __DIR__ . '/../src/themes/components/FooterText/index.php' );
 require( __DIR__ . '/../src/themes/components/HeaderText/index.php' );
 require( __DIR__ . '/../src/themes/components/PageLayout/index.php' );
 
-class StrangerThemes {
+class ComponentThemes {
 	public function renderPage( $theme, $page, $content = [] ) {
-		$output = '<div class="StrangerThemes">';
+		$output = '<div class="ComponentThemes">';
 		$builder = new \Prometheus\Builder();
 		$style = new \Prometheus\Styles();
 		$css = $style->buildStylesFromTheme( $theme );

@@ -1,4 +1,4 @@
-export { default as StrangerThemePage } from '~/src/components/StrangerThemePage';
+export { default as ComponentThemePage } from '~/src/components/ComponentThemePage';
 export { getNonStylesFromTheme, buildTheme, getStylesFromTheme } from '~/src/lib/theme';
 export {
 	getComponentTypes,

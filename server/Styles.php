@@ -7,7 +7,7 @@ class Styles {
 	public function buildStylesFromTheme( $themeConfig ) {
 		$styles = isset( $themeConfig['styles'] ) ? $themeConfig['styles'] : [];
 		if ( is_string( $styles ) ) {
-			return $this->prependNamespaceToStyleString( '.StrangerThemes', $this->expandStyleVariants( $styles, $themeConfig ) );
+			return $this->prependNamespaceToStyleString( '.ComponentThemes', $this->expandStyleVariants( $styles, $themeConfig ) );
 		}
 		return $this->expandStyleVariants( implode( '', array_map( function( $key ) use ( &$styles ) {
 			return $this->buildStyleBlock( $key, $styles[ $key ] );
@@ -44,7 +44,7 @@ class Styles {
 	}
 
 	private function buildStyleBlock( $key, $style ) {
-		return ".StrangerThemes $key{" . $this->getStyleStringFromStyleData( $style ) . "}";
+		return ".ComponentThemes $key{" . $this->getStyleStringFromStyleData( $style ) . "}";
 	}
 
 	private function getStyleStringFromStyleData( $style ) {

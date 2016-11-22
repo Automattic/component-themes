@@ -1,5 +1,5 @@
 {
-  "name": "stranger-themes",
+  "name": "component-themes",
   "version": "0.1.0",
   "private": true,
   "description": "Component-based themes for WordPress",
@@ -46,10 +46,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Automattic/stranger-themes.git"
+    "url": "git+https://github.com/Automattic/component-themes.git"
   },
   "bugs": {
-    "url": "https://github.com/Automattic/stranger-themes/issues"
+    "url": "https://github.com/Automattic/component-themes/issues"
   },
-  "homepage": "https://github.com/Automattic/stranger-themes#readme"
+  "homepage": "https://github.com/Automattic/component-themes#readme"
 }

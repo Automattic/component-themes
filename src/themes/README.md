@@ -2,7 +2,7 @@
 
 Pages are built of components, which are self-contained content blocks that have their own settings. Some components can also have child components which will be displayed within that component. This allows creating page layout by composing components (a technique familiar to anyone who has used [React](https://facebook.github.io/react/) or similar libraries).
 
-Each page of a site is a JSON object that refers to a single component (typically of type `PageLayout`) with child components that represent the layout of the page. The components used can be either *core components* (those included in Stranger Themes) or *theme components* (components built of other components and included in the theme). It's also possible for the site owner to create their own theme components by adding them to the theme with an editor.
+Each page of a site is a JSON object that refers to a single component (typically of type `PageLayout`) with child components that represent the layout of the page. The components used can be either *core components* (those included in Component Themes) or *theme components* (components built of other components and included in the theme). It's also possible for the site owner to create their own theme components by adding them to the theme with an editor.
 
 A theme also includes **templates**, which are fully pre-constructed pages that can be copied to create new pages.
 

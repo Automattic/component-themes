@@ -10,7 +10,7 @@ import Styles from '~/src/components/Styles';
 import { buildStylesFromTheme } from '~/src/lib/styles';
 import { buildComponentsFromTheme, getTemplateForSlug } from '~/src/lib/component-builder';
 
-class StrangerThemePage extends Component {
+class ComponentThemePage extends Component {
 	render() {
 		const page = this.props.page || getTemplateForSlug( this.props.theme, this.props.slug );
 		const children = buildComponentsFromTheme(
@@ -20,7 +20,7 @@ class StrangerThemePage extends Component {
 		);
 		const styles = buildStylesFromTheme( this.props.theme, this.props.content );
 		return (
-			<div className="StrangerThemes">
+			<div className="ComponentThemes">
 				<Styles styles={ styles } />
 				{ children }
 			</div>
@@ -28,11 +28,11 @@ class StrangerThemePage extends Component {
 	}
 }
 
-StrangerThemePage.propTypes = {
+ComponentThemePage.propTypes = {
 	theme: PropTypes.object.isRequired,
 	page: PropTypes.object,
 	slug: PropTypes.string.isRequired,
 	content: PropTypes.object,
 };
 
-export default StrangerThemePage;
+export default ComponentThemePage;
