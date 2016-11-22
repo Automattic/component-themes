@@ -1,8 +1,8 @@
-# Stranger Themes
+# Component Themes
 
 The theming system in WordPress dates [back to 2005](https://wordpress.org/news/2005/02/strayhorn/). A lot has changed on the web, and in WordPress, since then.
 
-What would we build for WordPress theming and customizing today? Stranger Themes is our answer.
+What would we build for WordPress theming and customizing today? Component Themes is our answer.
 
 <img src="stranger-themes.png">
 
@@ -22,14 +22,14 @@ Let's redefine what makes up a theme by allowing each page to have its own layou
 
 ## Usage
 
-There are two pieces to this project. This library will provide a WordPress plugin that will allow rendering a site using a Stranger Theme. The other piece is a site builder app, which will edit the theme.
+There are two pieces to this project. This library will provide a WordPress plugin that will allow rendering a site using a Component Theme. The other piece is a site builder app, which will edit the theme.
 
 You can read all about the pieces of a theme config in the [theme directory](./src/themes/README.md).
 
-To render a theme config as a React component, use the `StrangerThemePage` component:
+To render a theme config as a React component, use the `ComponentThemePage` component:
 
 ```js
-import { StrangerThemePage } from 'stranger-themes';
+import { ComponentThemePage } from 'component-themes';
 
 const themeConfig = {
 	"name": "MyTheme",
@@ -42,16 +42,16 @@ const pageSlug = 'home';
 
 const App = () => (
 	<div>
-		<StrangerThemePage theme={ themeConfig } page={ pageConfig } slug={ pageSlug } />
+		<ComponentThemePage theme={ themeConfig } page={ pageConfig } slug={ pageSlug } />
 	</div>
 );
 ```
 
-To render a page using PHP, use the `StrangerThemes->renderPage()` method:
+To render a page using PHP, use the `ComponentThemes->renderPage()` method:
 
 ```php
 <?php
-require( './node_modules/stranger-themes/server/StrangerThemes.php' );
+require( './node_modules/component-themes/server/ComponentThemes.php' );
 
 $themeConfig = json_decode( '{
 	"name": "MyTheme",
@@ -62,7 +62,7 @@ $pageConfig = json_decode( '{ "id": "siteLayout", "componentType": "ColumnCompon
 ] }' );
 $pageSlug = 'home';
 
-$renderer = new StrangerThemes();
+$renderer = new ComponentThemes();
 $pageConfig = ( ! empty( $pageConfig ) ) ? $pageConfig : $renderer->getTemplateForSlug( $themeConfig, $pageSlug );
 $rendered_output = $renderer->renderPage( $themeConfig, $pageConfig );
 echo $rendered_output;
@@ -89,7 +89,7 @@ This data can then be passed to the rendering engine as an additional parameter.
 Here's how to send it in Javascript:
 
 ```js
-import { StrangerThemePage } from 'stranger-themes';
+import { ComponentThemePage } from 'component-themes';
 
 const themeConfig = {
 	"name": "MyTheme",
@@ -103,7 +103,7 @@ const content = {"myPosts":{"posts":[{"postId":1,"title":"My First Post","date":
 
 const App = () => (
 	<div>
-		<StrangerThemePage theme={ themeConfig } page={ pageConfig } slug={ pageSlug } content={ content } />
+		<ComponentThemePage theme={ themeConfig } page={ pageConfig } slug={ pageSlug } content={ content } />
 	</div>
 );
 ```
@@ -112,7 +112,7 @@ And here's how to send the data in PHP:
 
 ```php
 <?php
-require( './node_modules/stranger-themes/server/StrangerThemes.php' );
+require( './node_modules/component-themes/server/ComponentThemes.php' );
 
 $themeConfig = json_decode( '{
 	"name": "MyTheme",
@@ -124,7 +124,7 @@ $pageConfig = json_decode( '{ "id": "siteLayout", "componentType": "ColumnCompon
 $pageSlug = 'home';
 $content = json_decode( '{"myPosts":{"posts":[{"postId":1,"title":"My First Post","date":"February 22, 2013","author":"The Human","link":"http://localhost:3000","content":"This is my very first blog post."}]}}' );
 
-$renderer = new StrangerThemes();
+$renderer = new ComponentThemes();
 $pageConfig = ( ! empty( $pageConfig ) ) ? $pageConfig : $renderer->getTemplateForSlug( $themeConfig, $pageSlug );
 $rendered_output = $renderer->renderPage( $themeConfig, $pageConfig, $content );
 echo $rendered_output;
