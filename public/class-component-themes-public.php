@@ -102,26 +102,36 @@ class Component_Themes_Public {
 
 	public function render_page() {
 		// TODO: include wp_head except for stylesheets
+		// TODO: get slug from page slug
+		// TODO: get page config from WP page
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
-    <head>
-        <meta charset="<?php bloginfo( 'charset' ); ?>" />
-        <title><?php wp_title(); ?></title>
-        <link rel="profile" href="http://gmpg.org/xfn/11" />
-        <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
+		<head>
+				<meta charset="<?php bloginfo( 'charset' ); ?>" />
+				<title><?php wp_title(); ?></title>
+				<link rel="profile" href="http://gmpg.org/xfn/11" />
+				<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
+				<script src="/wp-content/plugins/component-themes/build/app.js"></script>
     </head>
 		<body>
+			<div id="root">
 <?php
 require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'server/ComponentThemes.php' );
 $themeConfig = json_decode( file_get_contents( plugin_dir_url( dirname( __FILE__ ) ) . 'themes/kubrick/theme.json' ), true );
-$pageConfig = [];
+$pageConfig = null;
 $pageSlug = 'home';
 
 $renderer = new ComponentThemes();
 $rendered_output = $renderer->renderPage( $themeConfig, $pageSlug, $pageConfig );
 echo $rendered_output;
 ?>
+	<script type="text/javascript">
+const themeConfig = <?php echo json_encode( $themeConfig ); ?>;
+const pageConfig = <?php echo json_encode( $pageConfig ); ?>;
+const pageSlug = '<?php echo $pageSlug ?>';
+ComponentThemes.renderPage( themeConfig, pageSlug, pageConfig, window.document.getElementById( 'root' ) );
+	</script>
 	</body>
 </html>
 <?php

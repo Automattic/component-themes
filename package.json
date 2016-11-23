@@ -6,7 +6,9 @@
   "main": "build/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "NODE_ENV=development babel --out-dir build src && npm run copy",
+    "build:lib": "NODE_ENV=development babel --out-dir build src",
+    "build:app": "NODE_ENV=development webpack",
+    "build": "npm run build:lib && npm run build:app && npm run copy",
     "distclean": "rm -rf build",
     "watch": "onchange '**/*.php' '**/*.js' -e 'build/**/*.js' -e 'build/**/*.php' -- npm run build",
     "copy": "copytotheplace --loud ."
@@ -29,9 +31,11 @@
     "eslint-config-wpcalypso": "^0.6.0",
     "eslint-plugin-wpcalypso": "^3.0.2",
     "onchange": "^3.0.2",
-    "react": "^15.3.2",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
     "shortid": "^2.2.6",
-    "traverse": "^0.6.6"
+    "traverse": "^0.6.6",
+    "webpack": "^1.13.3"
   },
   "babel": {
     "plugins": [

@@ -47,6 +47,20 @@ const App = () => (
 );
 ```
 
+But you don't need React just to render the page. Just load the Javascript file `component-themes/build/app.js` and use the globally exported `ComponentThemes.renderPage()` function.
+
+```js
+const themeConfig = {
+	"name": "MyTheme",
+	"slug": "mytheme"
+};
+const pageConfig = { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
+	{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
+] };
+const pageSlug = 'home';
+ComponentThemes.renderPage( themeConfig, pageSlug, pageConfig, document.getElementById( 'root' ) );
+```
+
 To render a page using PHP, use the `ComponentThemes->renderPage()` method:
 
 ```php
