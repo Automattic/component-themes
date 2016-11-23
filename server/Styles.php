@@ -1,7 +1,7 @@
 <?php
 namespace Prometheus;
 
-require( '../vendor/CSS-Parser/parser.php' );
+require( dirname( __DIR__ ) . '/vendor/CSS-Parser/parser.php' );
 
 class Styles {
 	public function buildStylesFromTheme( $themeConfig ) {
