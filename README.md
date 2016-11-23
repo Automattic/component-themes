@@ -20,11 +20,19 @@ That which we call a theme by any other name would look as sweet.
 
 Let's redefine what makes up a theme by allowing each page to have its own layout and content, building it up from a library of components and templates. These pages would still benefit from the WordPress template hierarchy, but would also allow creating a website in a more natural and customizable manner, right down to the layout of a blog post.
 
-## Usage
+## Parts
 
-There are two pieces to this project. This library will provide a WordPress plugin that will allow rendering a site using a Component Theme. The other piece is a site builder app, which will edit the theme.
+There are three pieces to this project.
 
-You can read all about the pieces of a theme config in the [theme directory](./src/themes/README.md).
+1. Library: this project provides a pure Javascript, a React Component, and a PHP means of rendering a page using a Component Theme.
+2. WordPress Plugin: this project is also a WordPress plugin that will add the Component Theme system to a site.
+3. Site Builder: a separate project is a site builder app which will allow editing the theme and pages.
+
+In the future, the Library and Plugin may become separate repositories.
+
+You can read all about the pieces of a theme and a page in the [theme directory](./src/themes/README.md).
+
+## Usage as a Library
 
 To render a theme config as a React component, use the `ComponentThemePage` component:
 
@@ -142,3 +150,11 @@ $pageConfig = ( ! empty( $pageConfig ) ) ? $pageConfig : $renderer->getTemplateF
 $rendered_output = $renderer->renderPage( $themeConfig, $pageConfig, $content );
 echo $rendered_output;
 ```
+
+## Usage as a WordPress Plugin
+
+Download and move this repository into your `wp-content/plugins` directory.
+
+For now, you'll need to build the plugin by entering into the repository directory and typing `npm install && npm run build`. In the future that step will not be necessary.
+
+Then activate the plugin in your WordPress admin interface and visit any front-end page to see it operate.
