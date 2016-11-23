@@ -1,13 +1,11 @@
 <?php
-namespace Prometheus;
-
-class NotFoundComponent extends Component {
+class ComponentThemes_NotFoundComponent extends ComponentThemes_Component {
 	public function render() {
 		return "Could not find component '" . $this->getProp( 'componentId' ) . "'";
 	}
 }
 
-class HtmlComponent extends Component {
+class ComponentThemes_HtmlComponent extends ComponentThemes_Component {
 	public function __construct( $tag = 'div', $props = [], $children = [] ) {
 		$this->tag = $tag;
 		$this->props = $props;
@@ -26,7 +24,7 @@ class HtmlComponent extends Component {
 	}
 }
 
-class StatelessComponent extends Component {
+class ComponentThemes_StatelessComponent extends ComponentThemes_Component {
 	public function __construct( $function_name, $props = [], $children = [] ) {
 		$this->function_name = $function_name;
 		$this->props = $props;
@@ -40,7 +38,7 @@ class StatelessComponent extends Component {
 
 class React {
 	public static function createElement( $componentType, $props = [], $children = [] ) {
-		$builder = new Builder();
+		$builder = new ComponentThemes_Builder();
 		$out = $builder->createElement( $componentType, $props, $children );
 		if ( is_string( $out ) ) {
 			return $out;
@@ -49,17 +47,17 @@ class React {
 	}
 }
 
-class Builder {
+class ComponentThemes_Builder {
 	public function renderElement( $component ) {
 		return $component->render();
 	}
 
 	public function createElement( $componentType, $props = [], $children = [] ) {
 		if ( ! ctype_upper( $componentType[ 0 ] ) ) {
-			return new HtmlComponent( $componentType, $props, $children );
+			return new ComponentThemes_HtmlComponent( $componentType, $props, $children );
 		}
 		if ( function_exists( $componentType ) ) {
-			return new StatelessComponent( $componentType, $props, $children );
+			return new ComponentThemes_StatelessComponent( $componentType, $props, $children );
 		}
 		return new $componentType( $props, $children );
 	}
@@ -67,7 +65,7 @@ class Builder {
 	public function makeComponentWith( $componentConfig, $childProps = [] ) {
 		if ( ! isset( $componentConfig['componentType'] ) ) {
 			$name = isset( $componentConfig['id'] ) ? $componentConfig['id'] : json_encode( $componentConfig );
-			return $this->createElement( 'Prometheus\\NotFoundComponent', [ 'componentId' => $name ] );
+			return $this->createElement( 'ComponentThemes_NotFoundComponent', [ 'componentId' => $name ] );
 		}
 		$foundComponent = $this->getComponentByType( $componentConfig['componentType'] );
 		$childComponents = isset( $componentConfig['children'] ) ? array_map( function( $child ) use ( &$childProps ) {
@@ -80,7 +78,7 @@ class Builder {
 	}
 
 	private function getComponentByType( $id ) {
-		return in_array( $id, $this->getComponents() ) ? 'Prometheus\\' . $id : 'Prometheus\\NotFoundComponent';
+		return in_array( $id, $this->getComponents() ) ? 'ComponentThemes_' . $id : 'ComponentThemes_NotFoundComponent';
 	}
 
 	public function getComponents() {
@@ -104,7 +102,7 @@ class Builder {
 	private function buildComponentFromConfig( $componentConfig, $componentData ) {
 		if ( ! isset( $componentConfig['componentType'] ) ) {
 			$name = isset( $componentConfig['id'] ) ? $componentConfig['id'] : json_encode( $componentConfig );
-			return $this->createElement( 'Prometheus\\NotFoundComponent', [ 'componentId' => $name ] );
+			return $this->createElement( 'ComponentThemes_NotFoundComponent', [ 'componentId' => $name ] );
 		}
 		$foundComponent = $this->getComponentByType( $componentConfig['componentType'] );
 		$childComponents = isset( $componentConfig['children'] ) ? array_map( function( $child ) use ( &$componentData ) {
@@ -136,20 +134,28 @@ class Builder {
 		return $componentConfig;
 	}
 
-	private function expandConfigTemplates( $componentConfig, $templates ) {
+	private function expandConfigTemplates( $componentConfig, $themeConfig ) {
 		if ( isset( $componentConfig['template'] ) ) {
-			$layout_key = $componentConfig['template'];
-			if ( isset( $templates[ $layout_key ] ) ) {
-				return $templates[ $layout_key ];
-			}
-			throw new \Exception( "No template found matching " . $layout_key );
+			$key = $componentConfig['template'];
+			return $this->getTemplateForSlug( $themeConfig, $key );
 		}
 		return $componentConfig;
 	}
 
 	public function getTemplateForSlug( $themeConfig, $slug ) {
-		if ( ! isset( $themeConfig['templates'] ) || ! isset( $themeConfig['templates'][ $slug ] ) ) {
-			throw new \Exception( "No template found matching " . $slug );
+		$originalSlug = $slug;
+		if ( ! isset( $themeConfig['templates'] ) ) {
+			throw new \Exception( "No template found matching " . $slug . " and no templates were defined in the theme" );
+		}
+		// Try a '404' template, then 'home'
+		if ( ! isset( $themeConfig['templates'][ $slug ] ) ) {
+			$slug = '404';
+		}
+		if ( ! isset( $themeConfig['templates'][ $slug ] ) ) {
+			$slug = 'home';
+		}
+		if ( ! isset( $themeConfig['templates'][ $slug ] ) ) {
+			throw new \Exception( "No template found matching " . $originalSlug . " and no 404 or home templates were defined in the theme" );
 		}
 		$template = $themeConfig['templates'][ $slug ];
 		if ( isset( $template['template'] ) ) {
@@ -160,8 +166,7 @@ class Builder {
 
 	private function buildComponentsFromTheme( $themeConfig, $pageConfig, $componentData ) {
 		$partials = isset( $themeConfig['partials'] ) ? $themeConfig['partials'] : [];
-		$templates = isset( $themeConfig['templates'] ) ? $themeConfig['templates'] : [];
-		return $this->buildComponentFromConfig( $this->expandConfigPartials( $this->expandConfigTemplates( $pageConfig, $templates ), $partials ), $componentData );
+		return $this->buildComponentFromConfig( $this->expandConfigPartials( $this->expandConfigTemplates( $pageConfig, $themeConfig ), $partials ), $componentData );
 	}
 
 	public function render( $themeConfig, $pageConfig, $componentData = [] ) {

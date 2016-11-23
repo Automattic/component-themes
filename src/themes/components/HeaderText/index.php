@@ -1,6 +1,5 @@
 <?php
-namespace Prometheus;
-class HeaderText extends Component {
+class ComponentThemes_HeaderText extends ComponentThemes_Component {
 	public function render() {
 		$site_title = $this->getProp( 'siteTitle', 'My Website' );
 		$site_tagline = $this->getProp( 'siteTagline', 'My home on the web' );

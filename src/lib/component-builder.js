@@ -71,24 +71,31 @@ function expandConfigPartials( componentConfig, partials ) {
 	return componentConfig;
 }
 
-function expandConfigTemplates( componentConfig, templates ) {
+function expandConfigTemplates( componentConfig, themeConfig ) {
 	if ( componentConfig.template ) {
-		if ( templates[ componentConfig.template ] ) {
-			return templates[ componentConfig.template ];
-		}
-		return { componentType: 'ErrorComponent', props: { message: `No template found matching '${ componentConfig.template }'` } };
+		return getTemplateForSlug( themeConfig, componentConfig.template );
 	}
 	return componentConfig;
 }
 
 export function buildComponentsFromTheme( themeConfig, pageConfig, content = {} ) {
-	return buildComponentFromConfig( expandConfigPartials( expandConfigTemplates( pageConfig, themeConfig.templates || {} ), themeConfig.partials || {} ), content );
+	return buildComponentFromConfig( expandConfigPartials( expandConfigTemplates( pageConfig, themeConfig ), themeConfig.partials || {} ), content );
 }
 
 export function getTemplateForSlug( themeConfig, slug ) {
-	const error = { componentType: 'ErrorComponent', props: { message: `No template found matching '${ slug }'` } };
-	if ( ! themeConfig.templates || ! themeConfig.templates[ slug ] ) {
-		return error;
+	const originalSlug = slug;
+	if ( ! themeConfig.templates ) {
+		return { componentType: 'ErrorComponent', props: { message: `No template found matching '${ slug }' and no templates were defined in the theme` } };
+	}
+	// Try a '404' template, then 'home'
+	if ( ! themeConfig.templates[ slug ] ) {
+		slug = '404';
+	}
+	if ( ! themeConfig.templates[ slug ] ) {
+		slug = 'home';
+	}
+	if ( ! themeConfig.templates[ slug ] ) {
+		return { componentType: 'ErrorComponent', props: { message: `No template found matching '${ originalSlug }' and no 404 or home templates were defined in the theme` } };
 	}
 	const template = themeConfig.templates[ slug ];
 	if ( template.template ) {

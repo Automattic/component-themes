@@ -1,7 +1,5 @@
 <?php
-namespace Prometheus;
-
-abstract class Component {
+abstract class ComponentThemes_Component {
 	public function __construct( $props = [], $children = [] ) {
 		$this->props = $props;
 		$this->children = $children;

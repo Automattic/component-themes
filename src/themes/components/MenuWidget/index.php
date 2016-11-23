@@ -1,7 +1,5 @@
 <?php
-namespace Prometheus;
-
-class MenuWidget extends Component {
+class ComponentThemes_MenuWidget extends ComponentThemes_Component {
 	public function render() {
 		$title = $this->getProp( 'title' );
 		$title_area = isset( $title ) ? "<h2 class='MenuWidget__title'>$title</h2>" : '';

@@ -1,6 +1,5 @@
 <?php
-namespace Prometheus;
-class PostTitle extends Component {
+class ComponentThemes_PostTitle extends ComponentThemes_Component {
 	public function render() {
 		$link = $this->getPropFromParent( 'link' );
 		$link_text = $this->getPropFromParent( 'title', 'No title' );

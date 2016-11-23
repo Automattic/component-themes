@@ -1,9 +1,7 @@
 <?php
-namespace Prometheus;
+require( dirname( __DIR__ ) . '/vendor/CSS-Parser/parser.php' );
 
-require( '../vendor/CSS-Parser/parser.php' );
-
-class Styles {
+class ComponentThemes_Styles {
 	public function buildStylesFromTheme( $themeConfig ) {
 		$styles = isset( $themeConfig['styles'] ) ? $themeConfig['styles'] : [];
 		if ( is_string( $styles ) ) {
@@ -16,10 +14,10 @@ class Styles {
 
 	public function getComponentStyles( $components ) {
 		return implode( '', array_reduce( $components, function( $styles, $component ) {
-			if ( ! class_exists( __NAMESPACE__ . '\\' . $component ) ) {
+			if ( ! class_exists( 'ComponentThemes_' . $component ) ) {
 				return $styles;
 			}
-			$css = call_user_func( array( __NAMESPACE__ . '\\' . $component, 'getStyles' ) );
+			$css = call_user_func( array( 'ComponentThemes_' . $component, 'getStyles' ) );
 			if ( $css ) {
 				return array_merge( $styles, [ $css ] );
 			}
