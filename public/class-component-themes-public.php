@@ -102,8 +102,6 @@ class Component_Themes_Public {
 
 	public function render_page() {
 		// TODO: include wp_head except for stylesheets
-		// TODO: get slug from page slug
-		// TODO: get page config from WP page
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -120,7 +118,7 @@ class Component_Themes_Public {
 require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'server/ComponentThemes.php' );
 $themeConfig = json_decode( file_get_contents( plugin_dir_url( dirname( __FILE__ ) ) . 'themes/kubrick/theme.json' ), true );
 $pageConfig = null;
-$pageSlug = 'home';
+$pageSlug = get_post_field( 'post_name', get_post() );
 
 $renderer = new ComponentThemes();
 $rendered_output = $renderer->renderPage( $themeConfig, $pageSlug, $pageConfig );
