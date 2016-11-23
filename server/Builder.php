@@ -136,13 +136,10 @@ class Builder {
 		return $componentConfig;
 	}
 
-	private function expandConfigTemplates( $componentConfig, $templates ) {
+	private function expandConfigTemplates( $componentConfig, $themeConfig ) {
 		if ( isset( $componentConfig['template'] ) ) {
-			$layout_key = $componentConfig['template'];
-			if ( isset( $templates[ $layout_key ] ) ) {
-				return $templates[ $layout_key ];
-			}
-			throw new \Exception( "No template found matching " . $layout_key );
+			$key = $componentConfig['template'];
+			return $this->getTemplateForSlug( $themeConfig, $key );
 		}
 		return $componentConfig;
 	}
@@ -160,8 +157,7 @@ class Builder {
 
 	private function buildComponentsFromTheme( $themeConfig, $pageConfig, $componentData ) {
 		$partials = isset( $themeConfig['partials'] ) ? $themeConfig['partials'] : [];
-		$templates = isset( $themeConfig['templates'] ) ? $themeConfig['templates'] : [];
-		return $this->buildComponentFromConfig( $this->expandConfigPartials( $this->expandConfigTemplates( $pageConfig, $templates ), $partials ), $componentData );
+		return $this->buildComponentFromConfig( $this->expandConfigPartials( $this->expandConfigTemplates( $pageConfig, $themeConfig ), $partials ), $componentData );
 	}
 
 	public function render( $themeConfig, $pageConfig, $componentData = [] ) {

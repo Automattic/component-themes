@@ -63,8 +63,7 @@ $pageConfig = json_decode( '{ "id": "siteLayout", "componentType": "ColumnCompon
 $pageSlug = 'home';
 
 $renderer = new ComponentThemes();
-$pageConfig = ( ! empty( $pageConfig ) ) ? $pageConfig : $renderer->getTemplateForSlug( $themeConfig, $pageSlug );
-$rendered_output = $renderer->renderPage( $themeConfig, $pageConfig );
+$rendered_output = $renderer->renderPage( $themeConfig, $pageSlug, $pageConfig );
 echo $rendered_output;
 ```
 

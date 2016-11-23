@@ -117,11 +117,9 @@ require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'server/ComponentThemes.p
 $themeConfig = json_decode( file_get_contents( plugin_dir_url( dirname( __FILE__ ) ) . 'themes/kubrick/theme.json' ), true );
 $pageConfig = [];
 $pageSlug = 'home';
-$content = json_decode( '{"myPosts":{"posts":[{"postId":1,"title":"My First Post","date":"February 22, 2013","author":"The Human","link":"http://localhost:3000","content":"This is my very first blog post."}]}}', true );
 
 $renderer = new ComponentThemes();
-$pageConfig = ( ! empty( $pageConfig ) ) ? $pageConfig : $renderer->getTemplateForSlug( $themeConfig, $pageSlug );
-$rendered_output = $renderer->renderPage( $themeConfig, $pageConfig, $content );
+$rendered_output = $renderer->renderPage( $themeConfig, $pageSlug, $pageConfig );
 echo $rendered_output;
 ?>
 	</body>

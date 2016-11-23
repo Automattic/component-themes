@@ -17,7 +17,8 @@ require( __DIR__ . '/../src/themes/components/HeaderText/index.php' );
 require( __DIR__ . '/../src/themes/components/PageLayout/index.php' );
 
 class ComponentThemes {
-	public function renderPage( $theme, $page, $content = [] ) {
+	public function renderPage( $theme, $slug, $page = [], $content = [] ) {
+		$page = ( ! empty( $page ) ) ? $page : $this->getTemplateForSlug( $theme, $slug );
 		$output = '<div class="ComponentThemes">';
 		$builder = new \Prometheus\Builder();
 		$style = new \Prometheus\Styles();
