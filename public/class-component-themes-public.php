@@ -100,4 +100,33 @@ class Component_Themes_Public {
 
 	}
 
+	public function render_page() {
+		// TODO: include wp_head except for stylesheets
+?>
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+    <head>
+        <meta charset="<?php bloginfo( 'charset' ); ?>" />
+        <title><?php wp_title(); ?></title>
+        <link rel="profile" href="http://gmpg.org/xfn/11" />
+        <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
+    </head>
+		<body>
+<?php
+require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'server/ComponentThemes.php' );
+$themeConfig = json_decode( file_get_contents( plugin_dir_url( dirname( __FILE__ ) ) . 'themes/kubrick/theme.json' ), true );
+$pageConfig = [];
+$pageSlug = 'home';
+$content = json_decode( '{"myPosts":{"posts":[{"postId":1,"title":"My First Post","date":"February 22, 2013","author":"The Human","link":"http://localhost:3000","content":"This is my very first blog post."}]}}', true );
+
+$renderer = new ComponentThemes();
+$pageConfig = ( ! empty( $pageConfig ) ) ? $pageConfig : $renderer->getTemplateForSlug( $themeConfig, $pageSlug );
+$rendered_output = $renderer->renderPage( $themeConfig, $pageConfig, $content );
+echo $rendered_output;
+?>
+	</body>
+</html>
+<?php
+		exit;
+	}
 }
