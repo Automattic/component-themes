@@ -56,10 +56,10 @@ require( './node_modules/component-themes/server/ComponentThemes.php' );
 $themeConfig = json_decode( '{
 	"name": "MyTheme",
 	"slug": "mytheme"
-}' );
+}', true);
 $pageConfig = json_decode( '{ "id": "siteLayout", "componentType": "ColumnComponent", "children": [
 	{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
-] }' );
+] }', true );
 $pageSlug = 'home';
 
 $renderer = new ComponentThemes();
@@ -117,12 +117,12 @@ require( './node_modules/component-themes/server/ComponentThemes.php' );
 $themeConfig = json_decode( '{
 	"name": "MyTheme",
 	"slug": "mytheme"
-}' );
+}', true );
 $pageConfig = json_decode( '{ "id": "siteLayout", "componentType": "ColumnComponent", "children": [
 	{ "id": "myPosts", "componentType": "PostList" }
-] }' );
+] }', true );
 $pageSlug = 'home';
-$content = json_decode( '{"myPosts":{"posts":[{"postId":1,"title":"My First Post","date":"February 22, 2013","author":"The Human","link":"http://localhost:3000","content":"This is my very first blog post."}]}}' );
+$content = json_decode( '{"myPosts":{"posts":[{"postId":1,"title":"My First Post","date":"February 22, 2013","author":"The Human","link":"http://localhost:3000","content":"This is my very first blog post."}]}}', true );
 
 $renderer = new ComponentThemes();
 $pageConfig = ( ! empty( $pageConfig ) ) ? $pageConfig : $renderer->getTemplateForSlug( $themeConfig, $pageSlug );
