@@ -6,9 +6,10 @@
   "main": "build/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "NODE_ENV=development babel --out-dir build src",
+    "build": "NODE_ENV=development babel --out-dir build src && npm run copy",
     "distclean": "rm -rf build",
-    "deploy": "npm run build && copytotheplace ."
+    "watch": "onchange '**/*.php' '**/*.js' -e 'build/**/*.js' -e 'build/**/*.php' -- npm run build",
+    "copy": "copytotheplace --loud ."
   },
   "keywords": [
     "wordpress",
@@ -27,6 +28,7 @@
     "eslint": "^3.10.2",
     "eslint-config-wpcalypso": "^0.6.0",
     "eslint-plugin-wpcalypso": "^3.0.2",
+    "onchange": "^3.0.2",
     "react": "^15.3.2",
     "shortid": "^2.2.6",
     "traverse": "^0.6.6"
