@@ -1,6 +1,5 @@
 <?php
-namespace Prometheus;
-class PostList extends Component {
+class ComponentThemes_PostList extends ComponentThemes_Component {
 	public function render() {
 		$posts = $this->getProp( 'posts', [] );
 		if ( count( $posts ) < 1 ) {

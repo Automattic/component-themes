@@ -1,6 +1,5 @@
 <?php
-namespace Prometheus;
-class PostContent extends Component {
+class ComponentThemes_PostContent extends ComponentThemes_Component {
 	public function render() {
 		$convertNewlines = function( $content ) {
 			return preg_replace( '/\n/', '<br/>', $content );
