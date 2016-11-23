@@ -14,10 +14,10 @@ class ComponentThemes_Styles {
 
 	public function getComponentStyles( $components ) {
 		return implode( '', array_reduce( $components, function( $styles, $component ) {
-			if ( ! class_exists( $component ) ) {
+			if ( ! class_exists( 'ComponentThemes_' . $component ) ) {
 				return $styles;
 			}
-			$css = call_user_func( array( $component, 'getStyles' ) );
+			$css = call_user_func( array( 'ComponentThemes_' . $component, 'getStyles' ) );
 			if ( $css ) {
 				return array_merge( $styles, [ $css ] );
 			}
