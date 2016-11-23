@@ -145,8 +145,19 @@ class Builder {
 	}
 
 	public function getTemplateForSlug( $themeConfig, $slug ) {
-		if ( ! isset( $themeConfig['templates'] ) || ! isset( $themeConfig['templates'][ $slug ] ) ) {
-			throw new \Exception( "No template found matching " . $slug );
+		$originalSlug = $slug;
+		if ( ! isset( $themeConfig['templates'] ) ) {
+			throw new \Exception( "No template found matching " . $slug . " and no templates were defined in the theme" );
+		}
+		// Try a '404' template, then 'home'
+		if ( ! isset( $themeConfig['templates'][ $slug ] ) ) {
+			$slug = '404';
+		}
+		if ( ! isset( $themeConfig['templates'][ $slug ] ) ) {
+			$slug = 'home';
+		}
+		if ( ! isset( $themeConfig['templates'][ $slug ] ) ) {
+			throw new \Exception( "No template found matching " . $originalSlug . " and no 404 or home templates were defined in the theme" );
 		}
 		$template = $themeConfig['templates'][ $slug ];
 		if ( isset( $template['template'] ) ) {
