@@ -7,7 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "NODE_ENV=development babel --out-dir build src",
-    "distclean": "rm -rf build"
+    "distclean": "rm -rf build",
+    "deploy": "npm run build && copytotheplace ."
   },
   "keywords": [
     "wordpress",
@@ -21,6 +22,7 @@
     "babel-preset-react-app": "^1.0.0",
     "babel-root-import": "^4.1.4",
     "classnames": "^2.2.5",
+    "copytotheplace": "^0.1.1",
     "css": "^2.2.1",
     "eslint": "^3.10.2",
     "eslint-config-wpcalypso": "^0.6.0",
