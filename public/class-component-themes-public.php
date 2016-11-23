@@ -111,6 +111,7 @@ class Component_Themes_Public {
 				<link rel="profile" href="http://gmpg.org/xfn/11" />
 				<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 				<script src="/wp-content/plugins/component-themes/build/app.js"></script>
+				<style> body { padding: 0; margin: 0; font-family: Sans-Serif; } </style>
     </head>
 		<body>
 			<div id="root">
