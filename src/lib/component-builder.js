@@ -28,6 +28,18 @@ function buildComponentTreeFromConfig( componentConfig, childProps = {} ) {
 	return { Component, componentId, componentProps, childComponents, componentType };
 }
 
+function fetchRequiredApiEndpoint( endpoint ) {}
+
+//TODO: move this to its own module
+function fetchRequiredApiData( componentType, requirements ) {
+	if ( window.ComponentThemesApiData && window.ComponentThemesApiData[ componentType ] ) {
+		return window.ComponentThemesApiData[ componentType ];
+	}
+	return Object.keys( requirements ).reduce( ( fetched, key ) => {
+		return Object.assign( {}, fetched, { [ key ]: fetchRequiredApiEndpoint( requirements[ key ] ) } );
+	}, {} );
+}
+
 export function getPropsFromParent( mapPropsToProps ) {
 	return function( Child ) {
 		const ParentProps = ( props ) => {
@@ -45,7 +57,8 @@ function getContentById( content, componentId, componentType ) {
 function buildComponentFromTree( tree, content = {} ) {
 	const { Component, componentProps, childComponents, componentId, componentType } = tree;
 	const children = childComponents ? childComponents.map( child => buildComponentFromTree( child, content ) ) : null;
-	const props = Object.assign( {}, componentProps, getContentById( content, componentId, componentType ) );
+	const apiProps = Component.requiredApiData ? fetchRequiredApiData( componentType, Component.requiredApiData ) : {};
+	const props = Object.assign( {}, componentProps, getContentById( content, componentId, componentType ), apiProps );
 	return buildComponent( Component, props, children );
 }
 

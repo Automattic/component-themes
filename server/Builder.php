@@ -48,6 +48,8 @@ class React {
 }
 
 class ComponentThemes_Builder {
+	private $componentApiData = [];
+
 	public function renderElement( $component ) {
 		return $component->render();
 	}
@@ -60,7 +62,9 @@ class ComponentThemes_Builder {
 			return new ComponentThemes_StatelessComponent( $componentType, $props, $children );
 		}
 		if ( ! empty( $componentType::$requiredApiData ) ) {
-			$props = array_merge( $props, $this->fetchRequiredApiData( $componentType::$requiredApiData ) );
+			$pureType = $this->stripNamespaceFromComponentType( $componentType );
+			$this->componentApiData[ $pureType ] = $this->fetchRequiredApiData( $componentType::$requiredApiData );
+			$props = array_merge( $props, $this->componentApiData[ $pureType ] );
 		}
 		return new $componentType( $props, $children );
 	}
@@ -77,6 +81,10 @@ class ComponentThemes_Builder {
 		$props = isset( $componentConfig['props'] ) ? $componentConfig['props'] : [];
 		$componentProps = array_merge( $props, [ 'childProps' => $childProps, 'className' => $this->buildClassNameForComponent( $componentConfig ) ] );
 		return $this->createElement( $foundComponent, $componentProps, $childComponents );
+	}
+
+	private function stripNamespaceFromComponentType( $type ) {
+		return str_replace( 'ComponentThemes_', '', $type );
 	}
 
 	private function fetchRequiredApiData( $data ) {
@@ -183,5 +191,9 @@ class ComponentThemes_Builder {
 
 	public function render( $themeConfig, $pageConfig, $componentData = [] ) {
 		return $this->renderElement( $this->buildComponentsFromTheme( $themeConfig, $pageConfig, $componentData ) );
+	}
+
+	public function getComponentApiData() {
+		return $this->componentApiData;
 	}
 }

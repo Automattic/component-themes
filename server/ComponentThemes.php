@@ -25,6 +25,7 @@ class ComponentThemes {
 		$css = $style->buildStylesFromTheme( $theme );
 		$output .= "<style class='theme-styles'>$css</style>";
 		$output .= $builder->render( $theme, $page, $content );
+		$output .= "<script>window.ComponentThemesApiData=" . json_encode( $builder->getComponentApiData() ) . "</script>";
 		$output .= '</div>';
 		return $output;
 	}
