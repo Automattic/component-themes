@@ -72,8 +72,7 @@ class ComponentThemes_Builder {
 			return $this->makeComponentWith( $child, $childProps );
 		}, $componentConfig['children'] ) : [];
 		$props = isset( $componentConfig['props'] ) ? $componentConfig['props'] : [];
-		$className = implode( ' ', [ $componentConfig['componentType'] ] );
-		$componentProps = array_merge( $props, [ 'childProps' => $childProps, 'className' => $className ] );
+		$componentProps = array_merge( $props, [ 'childProps' => $childProps, 'className' => $this->buildClassNameForComponent( $componentConfig ) ] );
 		return $this->createElement( $foundComponent, $componentProps, $childComponents );
 	}
 
@@ -110,9 +109,14 @@ class ComponentThemes_Builder {
 		}, $componentConfig['children'] ) : [];
 		$props = isset( $componentConfig['props'] ) ? $componentConfig['props'] : [];
 		$data = isset( $componentData[ $componentConfig['id'] ] ) ? $componentData[ $componentConfig['id'] ] : [];
-		$className = implode( ' ', [ $componentConfig['componentType'], $componentConfig['id'] ] );
-		$componentProps = array_merge( $props, $data, [ 'componentId' => $componentConfig['id'], 'className' => $className ] );
+		$componentProps = array_merge( $props, $data, [ 'componentId' => $componentConfig['id'], 'className' => $this->buildClassNameForComponent( $componentConfig ) ] );
 		return $this->createElement( $foundComponent, $componentProps, $childComponents );
+	}
+
+	private function buildClassNameForComponent( $componentConfig ) {
+		$type = empty( $componentConfig['componentType'] ) ? '' : $componentConfig['componentType'];
+		$id = empty( $componentConfig['id'] ) ? '' : $componentConfig['id'];
+		return implode( ' ', [ $type, $id ] );
 	}
 
 	private function expandConfigPartials( $componentConfig, $partials ) {
