@@ -59,6 +59,9 @@ class ComponentThemes_Builder {
 		if ( function_exists( $componentType ) ) {
 			return new ComponentThemes_StatelessComponent( $componentType, $props, $children );
 		}
+		if ( ! empty( $componentType::$requiredApiData ) ) {
+			$props = array_merge( $props, $this->fetchRequiredApiData( $componentType::$requiredApiData ) );
+		}
 		return new $componentType( $props, $children );
 	}
 
@@ -74,6 +77,25 @@ class ComponentThemes_Builder {
 		$props = isset( $componentConfig['props'] ) ? $componentConfig['props'] : [];
 		$componentProps = array_merge( $props, [ 'childProps' => $childProps, 'className' => $this->buildClassNameForComponent( $componentConfig ) ] );
 		return $this->createElement( $foundComponent, $componentProps, $childComponents );
+	}
+
+	private function fetchRequiredApiData( $data ) {
+		$dataForComponent = [];
+		foreach( $data as $key => $endpoint ) {
+			$dataForComponent[ $key ] = $this->fetchRequiredApiEndpoint( $endpoint );
+		}
+		return $dataForComponent;
+	}
+
+	private function fetchRequiredApiEndpoint( $key ) {
+		switch( $key ) {
+		case '/':
+			return [
+				'name' => get_bloginfo( 'name', 'display' ),
+				'description' => get_bloginfo( 'description', 'display' ),
+			];
+		}
+		return null;
 	}
 
 	private function getComponentByType( $type ) {
