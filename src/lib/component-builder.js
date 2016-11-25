@@ -9,6 +9,7 @@ import shortid from 'shortid';
  * Internal dependencies
  */
 import { getComponentByType } from '~/src/lib/components';
+import { fetchRequiredApiData } from '~/src/lib/api';
 
 function buildComponent( Component, props = {}, children = [] ) {
 	return <Component key={ props.key } { ...props }>{ children }</Component>;
@@ -26,18 +27,6 @@ function buildComponentTreeFromConfig( componentConfig, childProps = {} ) {
 		{ className: classNames( componentType, componentId ), key: componentId }
 	);
 	return { Component, componentId, componentProps, childComponents, componentType };
-}
-
-function fetchRequiredApiEndpoint( endpoint ) {}
-
-//TODO: move this to its own module
-function fetchRequiredApiData( componentType, requirements ) {
-	if ( window.ComponentThemesApiData && window.ComponentThemesApiData[ componentType ] ) {
-		return window.ComponentThemesApiData[ componentType ];
-	}
-	return Object.keys( requirements ).reduce( ( fetched, key ) => {
-		return Object.assign( {}, fetched, { [ key ]: fetchRequiredApiEndpoint( requirements[ key ] ) } );
-	}, {} );
 }
 
 export function getPropsFromParent( mapPropsToProps ) {
