@@ -9,7 +9,9 @@ class ComponentThemes_MenuWidget extends ComponentThemes_Component {
 			$text = $link['text'];
 			return "<li class='MenuWidget__link'><a href=$url>$text</a></li>";
 		}, $links ) );
+		$styles = "<style>" . $this->getStyles() . "</style>";
 		return "<div class='" . $this->getProp( 'className' ) . "'>
+		$styles
 		$title_area
 		<ul>
 			$links_area
@@ -17,7 +19,7 @@ class ComponentThemes_MenuWidget extends ComponentThemes_Component {
 		</div>";
 	}
 
-	public static function getStyles() {
+	private function getStyles() {
 		return "
 .MenuWidget .MenuWidget__title {
   font-size: 0.8em;

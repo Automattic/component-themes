@@ -36,8 +36,4 @@ abstract class ComponentThemes_Component {
 	public function render() {
 		return '';
 	}
-
-	public static function getStyles() {
-		return null;
-	}
 }

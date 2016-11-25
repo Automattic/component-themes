@@ -76,26 +76,12 @@ class ComponentThemes_Builder {
 		return $this->createElement( $foundComponent, $componentProps, $childComponents );
 	}
 
-	private function getComponentByType( $id ) {
-		return in_array( $id, $this->getComponents() ) ? 'ComponentThemes_' . $id : 'ComponentThemes_NotFoundComponent';
-	}
-
-	public function getComponents() {
-		return [
-			'TextWidget',
-			'MenuWidget',
-			'SearchWidget',
-			'FooterText',
-			'HeaderText',
-			'ColumnComponent',
-			'PageLayout',
-			'RowComponent',
-			'PostList',
-			'PostBody',
-			'PostTitle',
-			'PostDateAndAuthor',
-			'PostContent',
-		];
+	private function getComponentByType( $type ) {
+		$namespacedType = 'ComponentThemes_' . $type;
+		if ( function_exists( $namespacedType ) || class_exists( $namespacedType ) ) {
+			return $namespacedType;
+		}
+		return 'ComponentThemes_NotFoundComponent';
 	}
 
 	private function buildComponentFromConfig( $componentConfig, $componentData ) {

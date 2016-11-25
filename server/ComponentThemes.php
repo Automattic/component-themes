@@ -23,8 +23,6 @@ class ComponentThemes {
 		$builder = new ComponentThemes_Builder();
 		$style = new ComponentThemes_Styles();
 		$css = $style->buildStylesFromTheme( $theme );
-		$component_styles = $style->getComponentStyles( $builder->getComponents() );
-		$output .= "<style class='component-styles'>$component_styles</style>";
 		$output .= "<style class='theme-styles'>$css</style>";
 		$output .= $builder->render( $theme, $page, $content );
 		$output .= '</div>';
