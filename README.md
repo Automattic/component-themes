@@ -4,8 +4,6 @@ The theming system in WordPress dates [back to 2005](https://wordpress.org/news/
 
 What would we build for WordPress theming and customizing today? Component Themes is our answer.
 
-<img src="stranger-themes.png">
-
 ## Why?
 
 WordPress is frustrating for many users who just want to make their website look the way they want.
