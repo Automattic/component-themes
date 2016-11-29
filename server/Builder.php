@@ -38,7 +38,7 @@ class ComponentThemes_StatelessComponent extends ComponentThemes_Component {
 
 class React {
 	public static function createElement( $componentType, $props = [], $children = [] ) {
-		$builder = new ComponentThemes_Builder();
+		$builder = ComponentThemes_Builder::getBuilder();
 		$out = $builder->createElement( $componentType, $props, $children );
 		if ( is_string( $out ) ) {
 			return $out;
@@ -49,6 +49,17 @@ class React {
 
 class ComponentThemes_Builder {
 	private $componentApiData = [];
+	private $api;
+
+	public function __construct( $options ) {
+		$this->api = isset( $options[ 'api' ] ) ? $options[ 'api' ] : null;
+	}
+
+	public static function getBuilder() {
+		return new ComponentThemes_Builder( [
+			'api' => new ComponentThemes_Api(),
+		] );
+	}
 
 	public function renderElement( $component ) {
 		return $component->render();
@@ -63,7 +74,7 @@ class ComponentThemes_Builder {
 		}
 		if ( ! empty( $componentType::$requiredApiData ) ) {
 			$pureType = $this->stripNamespaceFromComponentType( $componentType );
-			$this->componentApiData[ $pureType ] = $this->fetchRequiredApiData( $componentType::$requiredApiData );
+			$this->componentApiData[ $pureType ] = $this->api->fetchRequiredApiData( $componentType::$requiredApiData );
 			$props = array_merge( $props, $this->componentApiData[ $pureType ] );
 		}
 		return new $componentType( $props, $children );
@@ -85,25 +96,6 @@ class ComponentThemes_Builder {
 
 	private function stripNamespaceFromComponentType( $type ) {
 		return str_replace( 'ComponentThemes_', '', $type );
-	}
-
-	private function fetchRequiredApiData( $data ) {
-		$dataForComponent = [];
-		foreach( $data as $key => $endpoint ) {
-			$dataForComponent[ $key ] = $this->fetchRequiredApiEndpoint( $endpoint );
-		}
-		return $dataForComponent;
-	}
-
-	private function fetchRequiredApiEndpoint( $key ) {
-		switch( $key ) {
-		case '/':
-			return [
-				'name' => get_bloginfo( 'name', 'display' ),
-				'description' => get_bloginfo( 'description', 'display' ),
-			];
-		}
-		return null;
 	}
 
 	private function getComponentByType( $type ) {
