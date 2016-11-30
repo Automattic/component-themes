@@ -13,7 +13,8 @@ import HeaderText from '~/src/themes/components/HeaderText';
 import FooterText from '~/src/themes/components/FooterText';
 import PostBody from '~/src/themes/components/PostBody';
 import PostTitle from '~/src/themes/components/PostTitle';
-import PostDateAndAuthor from '~/src/themes/components/PostDateAndAuthor';
+import PostDate from '~/src/themes/components/PostDate';
+import PostAuthor from '~/src/themes/components/PostAuthor';
 import PostContent from '~/src/themes/components/PostContent';
 import PostList from '~/src/themes/components/PostList';
 import ColumnComponent from '~/src/themes/components/ColumnComponent';
@@ -21,6 +22,7 @@ import PageLayout from '~/src/themes/components/PageLayout';
 import RowComponent from '~/src/themes/components/RowComponent';
 const ErrorComponent = ( { message } ) => <p>{message}</p>;
 
+// TODO: register these automatically
 const componentMap = {
 	TextWidget: TextWidget,
 	MenuWidget: MenuWidget,
@@ -29,7 +31,8 @@ const componentMap = {
 	FooterText: FooterText,
 	PostBody: PostBody,
 	PostTitle: PostTitle,
-	PostDateAndAuthor: PostDateAndAuthor,
+	PostDate: PostDate,
+	PostAuthor: PostAuthor,
 	PostContent: PostContent,
 	PostList: PostList,
 	ColumnComponent: ColumnComponent,

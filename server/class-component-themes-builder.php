@@ -7,9 +7,8 @@ class Component_Themes_Not_Found_Component extends Component_Themes_Component {
 
 class Component_Themes_Html_Component extends Component_Themes_Component {
 	public function __construct( $tag = 'div', $props = [], $children = [] ) {
+		parent::__construct( $props, $children );
 		$this->tag = $tag;
-		$this->props = $props;
-		$this->children = $children;
 	}
 
 	protected function render_props_as_html() {
@@ -26,13 +25,12 @@ class Component_Themes_Html_Component extends Component_Themes_Component {
 
 class Component_Themes_Stateless_Component extends Component_Themes_Component {
 	public function __construct( $function_name, $props = [], $children = [] ) {
+		parent::__construct( $props, $children );
 		$this->function_name = $function_name;
-		$this->props = $props;
-		$this->children = $children;
 	}
 
 	public function render() {
-		return call_user_func( $this->function_name, (object) $this->props );
+		return call_user_func( $this->function_name, (object) $this->props, $this );
 	}
 }
 

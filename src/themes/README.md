@@ -183,7 +183,8 @@ Specifying these components in the theme is just like regular components except 
 	"post": { "componentType": "PostBody", "children": [
 		{ "componentType": "PostTitle" },
 		{ "componentType": "PostContent" },
-		{ "componentType": "PostDateAndAuthor" }
+		{ "componentType": "PostDate" },
+		{ "componentType": "PostAuthor" },
 	] }
 } }
 ```

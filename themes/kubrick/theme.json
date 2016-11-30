@@ -67,7 +67,11 @@
 		".PostTitle a:hover": [
 			"color: #06c;"
 		],
-		".PostDateAndAuthor": [
+		".PostDate": [
+			"font-size: 0.68em;",
+			"color: #777"
+		],
+		".PostAuthor": [
 			"font-size: 0.68em;",
 			"color: #777"
 		],

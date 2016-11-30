@@ -4,7 +4,8 @@ import { makeComponentWith } from '~/src/lib/component-builder';
 const PostList = ( { posts, post, className } ) => {
 	const defaultPostConfig = { componentType: 'PostBody', children: [
 		{ componentType: 'PostTitle' },
-		{ componentType: 'PostDateAndAuthor' },
+		{ componentType: 'PostDate' },
+		{ componentType: 'PostAuthor' },
 		{ componentType: 'PostContent' }
 	] };
 	return (
