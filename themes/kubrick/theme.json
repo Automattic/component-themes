@@ -122,6 +122,10 @@
 		"home": { "template": "blog" }
 	},
 	"partials": {
+		"PostDateAndAuthor": { "id": "postDateAndAuthor", "componentType": "RowComponent", "children": [
+			{ "id": "postDate", "componentType": "PostDate" },
+			{ "id": "postAuthor", "componentType": "PostAuthor" }
+		] },
 		"header": { "id": "headerLayout", "componentType": "RowComponent", "children": [
 			{ "id": "headerText", "componentType": "HeaderText", "props": { "siteTitle": "Kubrick", "siteTagline": "A classic WordPress.com theme" } }
 		] },

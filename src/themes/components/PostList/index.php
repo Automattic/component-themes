@@ -9,8 +9,7 @@ class Component_Themes_PostList extends Component_Themes_Component {
 			'componentType' => 'PostBody',
 			'children' => [
 				[ 'componentType' => 'PostTitle' ],
-				[ 'componentType' => 'PostDate' ],
-				[ 'componentType' => 'PostAuthor' ],
+				[ 'partial' => 'PostDateAndAuthor' ],
 				[ 'componentType' => 'PostContent' ],
 			],
 		];
