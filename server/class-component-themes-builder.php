@@ -142,6 +142,7 @@ class Component_Themes_Builder {
 	}
 
 	public function get_template_for_slug( $theme_config, $slug ) {
+		$theme_config = $this->merge_themes( $this->get_default_theme(), $theme_config );
 		$original_slug = $slug;
 		if ( ! isset( $theme_config['templates'] ) ) {
 			throw new Exception( 'No template found matching ' . $slug . ' and no templates were defined in the theme' );
@@ -163,7 +164,33 @@ class Component_Themes_Builder {
 		return $template;
 	}
 
+	private function get_default_theme() {
+		if ( ! isset( $this->default_theme ) ) {
+			$this->default_theme = json_decode( file_get_contents( dirname( dirname( __FILE__ ) ) . '/src/themes/default.json' ), true );
+		}
+		return $this->default_theme;
+	}
+
+	private function merge_theme_property( $property, $theme1, $theme2 ) {
+		$theme1[ $property ] = isset( $theme1[ $property ] ) ? $theme1[ $property ] : [];
+		$theme2[ $property ] = isset( $theme2[ $property ] ) ? $theme2[ $property ] : [];
+		if ( ! is_array( $theme1[ $property ] ) || ! is_array( $theme2[ $property ] ) ) {
+			return $theme2[ $property ];
+		}
+		return array_merge( $theme1[ $property ], $theme2[ $property ] );
+	}
+
+	private function merge_themes( $theme1, $theme2 ) {
+		$theme = [];
+		$properties = array_unique( array_keys( $theme1 ) + array_keys( $theme2 ) );
+		foreach ( $properties as $property ) {
+			$theme[ $property ] = $this->merge_theme_property( $property, $theme1, $theme2 );
+		}
+		return $theme;
+	}
+
 	private function build_components_from_theme( $theme_config, $page_config, $component_data ) {
+		$theme_config = $this->merge_themes( $this->get_default_theme(), $theme_config );
 		$partials = isset( $theme_config['partials'] ) ? $theme_config['partials'] : [];
 		return $this->build_component_from_config( $this->expand_config_partials( $this->expand_config_templates( $page_config, $theme_config ), $partials ), $component_data );
 	}

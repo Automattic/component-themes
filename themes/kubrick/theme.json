@@ -111,32 +111,24 @@
 		]
 	},
 	"templates": {
-		"blog": { "id": "pageLayout", "componentType": "PageLayout", "children": [
-			{ "partial": "header" },
+		"home": { "id": "pageLayout", "componentType": "PageLayout", "children": [
+			{ "partial": "PageHeader" },
 			{ "id": "contentLayout", "componentType": "RowComponent", "children": [
 				{ "id": "myPosts", "componentType": "PostList" },
-				{ "partial": "sidebar" }
+				{ "partial": "PageSidebar" }
 			] },
-			{ "partial": "footer" }
-		] },
-		"home": { "template": "blog" }
+			{ "partial": "PageFooter" }
+		] }
 	},
 	"partials": {
-		"PostDateAndAuthor": { "id": "postDateAndAuthor", "componentType": "RowComponent", "children": [
-			{ "id": "postDate", "componentType": "PostDate" },
-			{ "id": "postAuthor", "componentType": "PostAuthor" }
-		] },
-		"header": { "id": "headerLayout", "componentType": "RowComponent", "children": [
+		"PageHeader": { "id": "headerLayout", "componentType": "RowComponent", "children": [
 			{ "id": "headerText", "componentType": "HeaderText", "props": { "siteTitle": "Kubrick", "siteTagline": "A classic WordPress.com theme" } }
 		] },
-		"sidebar": { "id": "sidebarLayout", "componentType": "ColumnComponent", "children": [
+		"PageSidebar": { "id": "sidebarLayout", "componentType": "ColumnComponent", "children": [
 			{ "id": "sidebarSearch", "componentType": "SearchWidget" },
 			{ "id": "sidebarMenu", "componentType": "MenuWidget", "props": { "title": "Pages", "links": [
 				{ "text": "About", "url" : "/" }
 			] } }
-		] },
-		"footer": { "id": "footerLayout", "componentType": "RowComponent", "children": [
-			{ "id": "footerText", "componentType": "FooterText" }
 		] }
 	}
 }

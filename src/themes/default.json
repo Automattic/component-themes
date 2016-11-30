@@ -1,0 +1,26 @@
+{
+	"name": "WordPress",
+	"slug": "wordpress-default",
+	"templates": {
+		"home": { "id": "pageLayout", "componentType": "PageLayout", "children": [
+			{ "partial": "PageHeader" },
+			{ "id": "contentLayout", "componentType": "RowComponent", "children": [
+				{ "id": "myPosts", "componentType": "PostList" }
+			] },
+			{ "partial": "PageFooter" }
+		] }
+	},
+	"partials": {
+		"PostDateAndAuthor": { "id": "postDateAndAuthor", "componentType": "RowComponent", "children": [
+			{ "id": "postDate", "componentType": "PostDate" },
+			{ "id": "postAuthor", "componentType": "PostAuthor" }
+		] },
+		"PageHeader": { "id": "headerLayout", "componentType": "RowComponent", "children": [
+			{ "id": "headerText", "componentType": "HeaderText", "props": { "siteTitle": "My WordPress Site", "siteTagline": "My home on the web" } }
+		] },
+		"PageFooter": { "id": "footerLayout", "componentType": "RowComponent", "children": [
+			{ "id": "footerText", "componentType": "FooterText" }
+		] }
+	}
+}
+
