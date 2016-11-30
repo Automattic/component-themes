@@ -1,5 +1,5 @@
 <?php
-class ComponentThemes_Api {
+class Component_Themes_Api {
 	public function fetchRequiredApiData( $data ) {
 		$dataForComponent = [];
 		foreach ( $data as $key => $endpoint ) {

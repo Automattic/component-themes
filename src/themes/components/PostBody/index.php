@@ -1,7 +1,7 @@
 <?php
-class ComponentThemes_PostBody extends ComponentThemes_Component {
+class Component_Themes_PostBody extends Component_Themes_Component {
 	public function render() {
-		return "<div class='" . $this->getProp( 'className' ) . "'>" . $this->renderChildren() . "</div>";
+		return "<div class='" . $this->get_prop( 'className' ) . "'>" . $this->render_children() . '</div>';
 	}
 }
 

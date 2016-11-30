@@ -69,11 +69,11 @@ const pageSlug = 'home';
 ComponentThemes.renderPage( themeConfig, pageSlug, pageConfig, document.getElementById( 'root' ) );
 ```
 
-To render a page using PHP, use the `ComponentThemes->renderPage()` method:
+To render a page using PHP, use the `Component_Themes->render_page()` method:
 
 ```php
 <?php
-require( './node_modules/component-themes/server/ComponentThemes.php' );
+require( './node_modules/component-themes/server/class-component-themes.php' );
 
 $themeConfig = json_decode( '{
 	"name": "MyTheme",
@@ -84,8 +84,8 @@ $pageConfig = json_decode( '{ "id": "siteLayout", "componentType": "ColumnCompon
 ] }', true );
 $pageSlug = 'home';
 
-$renderer = new ComponentThemes();
-$rendered_output = $renderer->renderPage( $themeConfig, $pageSlug, $pageConfig );
+$renderer = new Component_Themes();
+$rendered_output = $renderer->render_page( $themeConfig, $pageSlug, $pageConfig );
 echo $rendered_output;
 ```
 
@@ -133,7 +133,7 @@ And here's how to send the data in PHP:
 
 ```php
 <?php
-require( './node_modules/component-themes/server/ComponentThemes.php' );
+require( './node_modules/component-themes/server/class-component-themes.php' );
 
 $themeConfig = json_decode( '{
 	"name": "MyTheme",
@@ -145,9 +145,8 @@ $pageConfig = json_decode( '{ "id": "siteLayout", "componentType": "ColumnCompon
 $pageSlug = 'home';
 $content = json_decode( '{"myPosts":{"posts":[{"postId":1,"title":"My First Post","date":"February 22, 2013","author":"The Human","link":"http://localhost:3000","content":"This is my very first blog post."}]}}', true );
 
-$renderer = new ComponentThemes();
-$pageConfig = ( ! empty( $pageConfig ) ) ? $pageConfig : $renderer->getTemplateForSlug( $themeConfig, $pageSlug );
-$rendered_output = $renderer->renderPage( $themeConfig, $pageConfig, $content );
+$renderer = new Component_Themes();
+$rendered_output = $renderer->render_page( $themeConfig, $pageSlug, $pageConfig, $content );
 echo $rendered_output;
 ```
 

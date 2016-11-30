@@ -1,16 +1,16 @@
 <?php
-class ComponentThemes_RowComponent extends ComponentThemes_Component {
+class Component_Themes_RowComponent extends Component_Themes_Component {
 	public function render() {
-		$styles = "<style>" . $this->getStyles() . "</style>";
-		return "<div class='" . $this->getProp( 'className' ) . "'>$styles" . $this->renderChildren() . "</div>";
+		$styles = '<style>' . $this->getStyles() . '</style>';
+		return "<div class='" . $this->get_prop( 'className' ) . "'>$styles" . $this->render_children() . '</div>';
 	}
 
 	private function getStyles() {
-		return "
+		return '
 .RowComponent {
   display: flex;
   justify-content: space-between;
 }
-";
+';
 	}
 }

@@ -1,22 +1,24 @@
 <?php
-class ComponentThemes_PostList extends ComponentThemes_Component {
+class Component_Themes_PostList extends Component_Themes_Component {
 	public function render() {
-		$posts = $this->getProp( 'posts', [] );
+		$posts = $this->get_prop( 'posts', [] );
 		if ( count( $posts ) < 1 ) {
-			return "<p>No posts</p>";
+			return '<p>No posts</p>';
 		}
-		$defaultPostConfig = [ "componentType" => "PostBody", "children" => [
-			[ "componentType" => "PostTitle" ],
-			[ "componentType" => "PostDateAndAuthor" ],
-			[ "componentType" => "PostContent" ]
-		] ];
-		$post_config = null !== $this->getProp( 'post' ) ? $this->getProp( 'post' ) : $defaultPostConfig;
-		$builder = new Builder();
-		$render_blog_post = function( $post ) use ( &$post_config, &$builder ) {
-			$component = $builder->makeComponentWith( $post_config, $post );
+		$default_post_config = [
+			'componentType' => 'PostBody',
+			'children' => [
+				[ 'componentType' => 'PostTitle' ],
+				[ 'componentType' => 'PostDateAndAuthor' ],
+				[ 'componentType' => 'PostContent' ],
+			],
+		];
+		$post_config = null !== $this->get_prop( 'post' ) ? $this->get_prop( 'post' ) : $default_post_config;
+		$render_blog_post = function( $post ) use ( &$post_config ) {
+			$component = $this->make_component_with( $post_config, $post );
 			return $component->render();
 		};
-		return "<div class='" . $this->getProp( 'className' ) . "'>" . implode( '', array_map( $render_blog_post, $posts ) ) . "</div>";
+		return "<div class='" . $this->get_prop( 'className' ) . "'>" . implode( '', array_map( $render_blog_post, $posts ) ) . '</div>';
 	}
 }
 

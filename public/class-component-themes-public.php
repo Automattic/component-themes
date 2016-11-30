@@ -112,23 +112,23 @@ class Component_Themes_Public {
 				<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 				<script src="/wp-content/plugins/component-themes/build/app.js"></script>
 				<style> body { padding: 0; margin: 0; font-family: Sans-Serif; } </style>
-    </head>
+		</head>
 		<body>
 			<div id="root">
 <?php
-require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'server/ComponentThemes.php' );
-$themeConfig = json_decode( file_get_contents( plugin_dir_url( dirname( __FILE__ ) ) . 'themes/kubrick/theme.json' ), true );
-$pageConfig = null;
-$pageSlug = ( is_home() || is_front_page() ) ? 'home' : get_post_field( 'post_name', get_post() );
+require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'server/class-component-themes.php' );
+$theme_config = json_decode( file_get_contents( plugin_dir_url( dirname( __FILE__ ) ) . 'themes/kubrick/theme.json' ), true );
+$page_config = null;
+$page_slug = ( is_home() || is_front_page() ) ? 'home' : get_post_field( 'post_name', get_post() );
 
-$renderer = new ComponentThemes();
-$rendered_output = $renderer->renderPage( $themeConfig, $pageSlug, $pageConfig );
+$renderer = new Component_Themes();
+$rendered_output = $renderer->render_page( $theme_config, $page_slug, $page_config );
 echo $rendered_output;
 ?>
 	<script type="text/javascript">
-const themeConfig = <?php echo json_encode( $themeConfig ); ?>;
-const pageConfig = <?php echo json_encode( $pageConfig ); ?>;
-const pageSlug = '<?php echo $pageSlug ?>';
+const themeConfig = <?php echo json_encode( $theme_config ); ?>;
+const pageConfig = <?php echo json_encode( $page_config ); ?>;
+const pageSlug = '<?php echo $page_slug ?>';
 ComponentThemes.renderPage( themeConfig, pageSlug, pageConfig, window.document.getElementById( 'root' ) );
 	</script>
 	</body>
