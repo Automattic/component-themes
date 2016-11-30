@@ -47,7 +47,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-component-themes.php';
  */
 function run_component_themes() {
 
-	$plugin = new Component_Themes();
+	$plugin = new Component_Themes_Plugin();
 	$plugin->run();
 
 }

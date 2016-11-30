@@ -27,7 +27,7 @@
  * @subpackage Component_Themes/includes
  * @author     Automattic <payton@a8c.com>
  */
-class Component_Themes {
+class Component_Themes_Plugin {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power

@@ -1,5 +1,5 @@
 <?php
-class ComponentThemes_HeaderText extends ComponentThemes_Component {
+class Component_Themes_HeaderText extends Component_Themes_Component {
 	public static $requiredApiData = [ 'siteInfo' => '/' ];
 	public function render() {
 		$props = $this->props;

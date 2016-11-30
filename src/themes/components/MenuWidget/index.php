@@ -1,16 +1,16 @@
 <?php
-class ComponentThemes_MenuWidget extends ComponentThemes_Component {
+class Component_Themes_MenuWidget extends Component_Themes_Component {
 	public function render() {
-		$title = $this->getProp( 'title' );
+		$title = $this->get_prop( 'title' );
 		$title_area = isset( $title ) ? "<h2 class='MenuWidget__title'>$title</h2>" : '';
-		$links = $this->getProp( 'links', [] );
+		$links = $this->get_prop( 'links', [] );
 		$links_area = implode( '', array_map( function( $link ) {
 			$url = $link['url'];
 			$text = $link['text'];
 			return "<li class='MenuWidget__link'><a href=$url>$text</a></li>";
 		}, $links ) );
-		$styles = "<style>" . $this->getStyles() . "</style>";
-		return "<div class='" . $this->getProp( 'className' ) . "'>
+		$styles = '<style>' . $this->getStyles() . '</style>';
+		return "<div class='" . $this->get_prop( 'className' ) . "'>
 		$styles
 		$title_area
 		<ul>
@@ -20,7 +20,7 @@ class ComponentThemes_MenuWidget extends ComponentThemes_Component {
 	}
 
 	private function getStyles() {
-		return "
+		return '
 .MenuWidget .MenuWidget__title {
   font-size: 0.8em;
   margin: 5px 0 0;
@@ -39,6 +39,6 @@ class ComponentThemes_MenuWidget extends ComponentThemes_Component {
   list-style-type: none;
   list-style-image: none;
 }
-";
+';
 	}
 }

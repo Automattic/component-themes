@@ -1,8 +1,8 @@
 <?php
-class ComponentThemes_FooterText extends ComponentThemes_Component {
+class Component_Themes_FooterText extends Component_Themes_Component {
 	public function render() {
-		$text = $this->getProp( 'text', '<a href="/">Create a free website or blog at WordPress.com.</a>' );
-		return "<div class='" . $this->getProp( 'className' ) . "'>{$text}</div>";
+		$text = $this->get_prop( 'text', '<a href="/">Create a free website or blog at WordPress.com.</a>' );
+		return "<div class='" . $this->get_prop( 'className' ) . "'>{$text}</div>";
 	}
 }
 

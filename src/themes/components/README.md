@@ -39,7 +39,7 @@ The PHP version of the component can be slightly simpler because it does not req
 
 ```php
 <?php
-function ComponentThemes_TextWidget( $props ) {
+function Component_Themes_TextWidget( $props ) {
 	$text = isset( $props->text ) ? $props->text : 'This is a text widget with no data!';
 	$className = isset( $props->className ) ? $props->className : '';
 	return React::createElement('div',['className' => $className],$text);
@@ -82,7 +82,7 @@ export default HeaderText;
 
 ```php
 <?php
-class ComponentThemes_HeaderText extends ComponentThemes_Component {
+class Component_Themes_HeaderText extends Component_Themes_Component {
 	public static $requiredApiData = [ 'siteInfo' => '/' ];
 	public function render() {
 		$props = $this->props;

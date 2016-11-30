@@ -1,8 +1,8 @@
 <?php
-class ComponentThemes_PostDateAndAuthor extends ComponentThemes_Component {
+class Component_Themes_PostDateAndAuthor extends Component_Themes_Component {
 	public function render() {
-		$date = $this->getPropFromParent( 'date', 'No date' );
-		$author = $this->getPropFromParent( 'author', 'No author' );
+		$date = $this->get_prop_from_parent( 'date', 'No date' );
+		$author = $this->get_prop_from_parent( 'author', 'No author' );
 		return "<div class='PostDateAndAuthor'>$date by $author</div>";
 	}
 }
