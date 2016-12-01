@@ -1,5 +1,8 @@
 <?php
-class Component_Themes_PostContent extends Component_Themes_Component {
+
+namespace Component_Themes;
+
+class PostContent extends Component {
 	public function render() {
 		$convert_newlines = function( $content ) {
 			return preg_replace( '/\n/', '<br/>', $content );

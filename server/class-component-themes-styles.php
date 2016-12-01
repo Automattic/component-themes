@@ -1,7 +1,10 @@
 <?php
+
+namespace Component_Themes;
+
 require( dirname( __DIR__ ) . '/vendor/CSS-Parser/parser.php' );
 
-class Component_Themes_Styles {
+class Styles {
 	public function build_styles_from_theme( $theme_config ) {
 		$styles = isset( $theme_config['styles'] ) ? $theme_config['styles'] : [];
 		if ( is_string( $styles ) ) {

@@ -1,5 +1,8 @@
 <?php
-class Component_Themes_HeaderText extends Component_Themes_Component {
+
+namespace Component_Themes;
+
+class HeaderText extends Component {
 	public static $requiredApiData = [ 'siteInfo' => '/' ];
 	public function render() {
 		$props = $this->props;
@@ -12,4 +15,3 @@ class Component_Themes_HeaderText extends Component_Themes_Component {
 </div>";
 	}
 }
-

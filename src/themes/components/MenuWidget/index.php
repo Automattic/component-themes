@@ -1,5 +1,8 @@
 <?php
-class Component_Themes_MenuWidget extends Component_Themes_Component {
+
+namespace Component_Themes;
+
+class MenuWidget extends Component {
 	public function render() {
 		$title = $this->get_prop( 'title' );
 		$title_area = isset( $title ) ? "<h2 class='MenuWidget__title'>$title</h2>" : '';

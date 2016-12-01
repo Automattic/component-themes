@@ -1,5 +1,9 @@
 <?php
 
+namespace Component_Themes;
+
+define( 'PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+
 /**
  * The plugin bootstrap file
  *
@@ -26,7 +30,7 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if ( ! defined( '\WPINC' ) ) {
 	die;
 }
 
@@ -34,7 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-component-themes.php';
+require PLUGIN_DIR . 'includes/class-component-themes.php';
 
 /**
  * Begins execution of the plugin.
@@ -47,7 +51,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-component-themes.php';
  */
 function run_component_themes() {
 
-	$plugin = new Component_Themes_Plugin();
+	$plugin = new Plugin();
 	$plugin->run();
 
 }

@@ -1,11 +1,14 @@
 <?php
-abstract class Component_Themes_Component {
+
+namespace Component_Themes;
+
+abstract class Component {
 	protected $builder;
 
 	public function __construct( $props = [], $children = [] ) {
 		$this->props = $props;
 		$this->children = $children;
-		$this->builder = Component_Themes_Builder::get_builder();
+		$this->builder = Builder::get_builder();
 	}
 
 	protected function get_prop( $key, $default = null ) {
