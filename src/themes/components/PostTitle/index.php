@@ -1,5 +1,8 @@
 <?php
-class Component_Themes_PostTitle extends Component_Themes_Component {
+
+namespace Component_Themes;
+
+class PostTitle extends Component {
 	public function render() {
 		$link = $this->get_prop_from_parent( 'link' );
 		$link_text = $this->get_prop_from_parent( 'title', 'No title' );

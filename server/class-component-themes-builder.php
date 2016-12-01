@@ -1,11 +1,14 @@
 <?php
-class Component_Themes_Not_Found_Component extends Component_Themes_Component {
+
+namespace Component_Themes;
+
+class Not_Found_Component extends Component {
 	public function render() {
 		return "Could not find component '" . $this->get_prop( 'componentId' ) . "'";
 	}
 }
 
-class Component_Themes_Html_Component extends Component_Themes_Component {
+class Html_Component extends Component {
 	public function __construct( $tag = 'div', $props = [], $children = [] ) {
 		parent::__construct( $props, $children );
 		$this->tag = $tag;
@@ -23,7 +26,7 @@ class Component_Themes_Html_Component extends Component_Themes_Component {
 	}
 }
 
-class Component_Themes_Stateless_Component extends Component_Themes_Component {
+class Stateless_Component extends Component {
 	public function __construct( $function_name, $props = [], $children = [] ) {
 		parent::__construct( $props, $children );
 		$this->function_name = $function_name;
@@ -34,7 +37,7 @@ class Component_Themes_Stateless_Component extends Component_Themes_Component {
 	}
 }
 
-class Component_Themes_Builder {
+class Builder {
 	private $component_api_data = [];
 	private $api;
 
@@ -43,8 +46,8 @@ class Component_Themes_Builder {
 	}
 
 	public static function get_builder() {
-		return new Component_Themes_Builder( [
-			'api' => new Component_Themes_Api(),
+		return new Builder( [
+			'api' => new Api(),
 		] );
 	}
 
@@ -53,24 +56,24 @@ class Component_Themes_Builder {
 	}
 
 	public function create_element( $component_type, $props = [], $children = [] ) {
+		$namespaced_type = __NAMESPACE__ . '\\' . $component_type;
 		if ( ! ctype_upper( $component_type[0] ) ) {
-			return new Component_Themes_Html_Component( $component_type, $props, $children );
+			return new Html_Component( $component_type, $props, $children );
 		}
-		if ( function_exists( $component_type ) ) {
-			return new Component_Themes_Stateless_Component( $component_type, $props, $children );
+		if ( function_exists( $namespaced_type ) ) {
+			return new Stateless_Component( $component_type, $props, $children );
 		}
-		if ( ! empty( $component_type::$requiredApiData ) ) {
-			$pure_type = $this->strip_namespace_from_component_type( $component_type );
-			$this->component_api_data[ $pure_type ] = $this->api->fetchRequiredApiData( $component_type::$requiredApiData );
-			$props = array_merge( $props, $this->component_api_data[ $pure_type ] );
+		if ( ! empty( $namespaced_type::$requiredApiData ) ) {
+			$this->component_api_data[ $component_type ] = $this->api->fetchRequiredApiData( $namespaced_type::$requiredApiData );
+			$props = array_merge( $props, $this->component_api_data[ $component_type ] );
 		}
-		return new $component_type( $props, $children );
+		return new $namespaced_type( $props, $children );
 	}
 
 	public function make_component_with( $component_config, $child_props = [] ) {
 		if ( ! isset( $component_config['componentType'] ) ) {
 			$name = isset( $component_config['id'] ) ? $component_config['id'] : json_encode( $component_config );
-			return $this->create_element( 'Component_Themes_Not_Found_Component', [ 'componentId' => $name ] );
+			return $this->create_element( 'Not_Found_Component', [ 'componentId' => $name ] );
 		}
 		$found_component = $this->get_component_by_type( $component_config['componentType'] );
 		$child_components = isset( $component_config['children'] ) ? array_map( function( $child ) use ( &$child_props ) {
@@ -81,30 +84,30 @@ class Component_Themes_Builder {
 		return $this->create_element( $found_component, $component_props, $child_components );
 	}
 
-	private function strip_namespace_from_component_type( $type ) {
-		return str_replace( 'Component_Themes_', '', $type );
-	}
-
 	private function get_component_by_type( $type ) {
-		$namespaced_type = 'Component_Themes_' . $type;
+		$namespaced_type = __NAMESPACE__ . '\\' . $type;
 		if ( function_exists( $namespaced_type ) || class_exists( $namespaced_type ) ) {
-			return $namespaced_type;
+			return $type;
 		}
-		return 'Component_Themes_Not_Found_Component';
+		return 'Not_Found_Component';
 	}
 
 	private function build_component_from_config( $component_config, $component_data ) {
-		if ( ! isset( $component_config['componentType'] ) ) {
-			$name = isset( $component_config['id'] ) ? $component_config['id'] : json_encode( $component_config );
-			return $this->create_element( 'Component_Themes_Not_Found_Component', [ 'componentId' => $name ] );
+		$componentId   = isset( $component_config['id'] ) ? $compnent_config['id'] : null;
+		$componentType = isset( $component_config['componentType'] ) ? $component_config['componentType'] : null;
+
+		if ( ! $componentType ) {
+			$name = $componentId ? $componentId : json_encode( $component_config );
+			return $this->create_element( 'Not_Found_Component', [ 'componentId' => $name ] );
 		}
-		$found_component = $this->get_component_by_type( $component_config['componentType'] );
+		$found_component = $this->get_component_by_type( $componentType );
 		$child_components = isset( $component_config['children'] ) ? array_map( function( $child ) use ( &$component_data ) {
 			return $this->build_component_from_config( $child, $component_data );
 		}, $component_config['children'] ) : [];
 		$props = isset( $component_config['props'] ) ? $component_config['props'] : [];
-		$data = isset( $component_data[ $component_config['id'] ] ) ? $component_data[ $component_config['id'] ] : [];
-		$component_props = array_merge( $props, $data, [ 'componentId' => $component_config['id'], 'className' => $this->build_classname_for_component( $component_config ) ] );
+		$data = isset( $component_data[ $componentId ] ) ? $component_data[ $componentId ] : [];
+		$component_props = array_merge( $props, $data, [ 'componentId' => $componentId, 'className' => $this->build_classname_for_component( $component_config ) ] );
+
 		return $this->create_element( $found_component, $component_props, $child_components );
 	}
 
@@ -120,6 +123,8 @@ class Component_Themes_Builder {
 			if ( isset( $partials[ $partial_key ] ) ) {
 				return $partials[ $partial_key ];
 			}
+			print_r( $partials );
+			echo  '['.$partial_key .']<br>';
 			throw new Exception( 'No partial found matching ' . $partial_key );
 		}
 		if ( isset( $component_config['children'] ) ) {

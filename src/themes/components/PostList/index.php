@@ -1,5 +1,8 @@
 <?php
-class Component_Themes_PostList extends Component_Themes_Component {
+
+namespace Component_Themes;
+
+class PostList extends Component {
 	public function render() {
 		$posts = $this->get_prop( 'posts', [] );
 		if ( count( $posts ) < 1 ) {

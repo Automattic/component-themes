@@ -1,5 +1,8 @@
 <?php
-class Component_Themes_PostBody extends Component_Themes_Component {
+
+namespace Component_Themes;
+
+class PostBody extends Component {
 	public function render() {
 		return "<div class='" . $this->get_prop( 'className' ) . "'>" . $this->render_children() . '</div>';
 	}
