@@ -32,11 +32,13 @@
     "eslint-plugin-wpcalypso": "^3.0.2",
     "json-loader": "^0.5.4",
     "onchange": "^3.0.2",
+    "promise-polyfill": "6.0.2",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "shortid": "^2.2.6",
     "traverse": "^0.6.6",
-    "webpack": "^1.13.3"
+    "webpack": "^1.13.3",
+    "whatwg-fetch": "^2.0.1"
   },
   "babel": {
     "plugins": [

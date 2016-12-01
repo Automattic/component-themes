@@ -9,7 +9,7 @@ import shortid from 'shortid';
  * Internal dependencies
  */
 import { getComponentByType } from '~/src/lib/components';
-import { fetchRequiredApiData } from '~/src/lib/api';
+import { getBootstrappedRequiredApiData, fetchRequiredApiData } from '~/src/lib/api';
 import defaultTheme from 'json-loader!../themes/default.json';
 
 function buildComponent( Component, props = {}, children = [] ) {
@@ -47,7 +47,11 @@ function getContentById( content, componentId, componentType ) {
 function buildComponentFromTree( tree, content = {} ) {
 	const { Component, componentProps, childComponents, componentId, componentType } = tree;
 	const children = childComponents ? childComponents.map( child => buildComponentFromTree( child, content ) ) : null;
-	const apiProps = Component.requiredApiData ? fetchRequiredApiData( componentType, Component.requiredApiData ) : {};
+	const apiProps = Component.requiredApiData ? getBootstrappedRequiredApiData( componentType ) : {};
+	if ( Component.requiredApiData && apiProps === {} ) {
+		// TODO: this returns a promise; somehow update the component when the data has fetched
+		fetchRequiredApiData( componentType, Component.requiredApiData );
+	}
 	const props = Object.assign( {}, componentProps, getContentById( content, componentId, componentType ), apiProps );
 	return buildComponent( Component, props, children );
 }
