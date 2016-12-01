@@ -31,7 +31,14 @@ class Component_Themes {
 	 */
 	private function register_autoload() {
 		spl_autoload_register( function( $class ) {
-			$pure_class = str_replace( __NAMESPACE__ . '\\', '', $class );
+			$class_parts = explode( '\\', $class );
+
+			// Handle only the same namespace
+			if ( 1 === count( $class_parts ) || __NAMESPACE__ !== $class_parts[0]  ) {
+				return;
+			}
+
+			$pure_class = array_pop( $class_parts );
 			$class_file_path = PLUGIN_DIR . '/src/themes/components/' . $pure_class . '/index.php';
 			if ( file_exists( $class_file_path ) ) {
 				require_once $class_file_path;
