@@ -61,7 +61,7 @@ class Component_Themes_Builder {
 		}
 		if ( ! empty( $component_type::$requiredApiData ) ) {
 			$pure_type = $this->strip_namespace_from_component_type( $component_type );
-			$this->component_api_data[ $pure_type ] = $this->api->fetchRequiredApiData( $component_type::$requiredApiData );
+			$this->component_api_data[ $pure_type ] = $this->api->fetch_required_api_data( $component_type::$requiredApiData );
 			$props = array_merge( $props, $this->component_api_data[ $pure_type ] );
 		}
 		return new $component_type( $props, $children );

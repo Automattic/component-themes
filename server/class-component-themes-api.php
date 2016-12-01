@@ -1,23 +1,24 @@
 <?php
 class Component_Themes_Api {
-	public function fetchRequiredApiData( $data ) {
-		$dataForComponent = [];
-		foreach ( $data as $key => $endpoint ) {
-			$dataForComponent[ $key ] = $this->fetchRequiredApiEndpoint( $endpoint );
+	private $server;
+
+	public function fetch_required_api_data( $data ) {
+		if ( ! isset( $this->server ) ) {
+			$this->server = rest_get_server();
 		}
-		return $dataForComponent;
+		$data_for_component = [];
+		foreach ( $data as $key => $endpoint ) {
+			$data_for_component[ $key ] = $this->fetch_required_api_endpoint( $endpoint );
+		}
+		return $data_for_component;
 	}
 
-	private function fetchRequiredApiEndpoint( $key ) {
-		switch( $key ) {
-		case '/':
-			return [
-				'name' => get_bloginfo( 'name', 'display' ),
-				'description' => get_bloginfo( 'description', 'display' ),
-			];
-		case '/posts':
+	private function fetch_required_api_endpoint( $endpoint ) {
+		$request = new WP_REST_Request( 'GET', $endpoint );
+		$response = $this->server->dispatch( $request );
+		if ( 200 !== $response->get_status() ) {
 			return [];
 		}
-		return null;
+		return $response->get_data();
 	}
 }
