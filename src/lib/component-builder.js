@@ -10,6 +10,7 @@ import shortid from 'shortid';
  */
 import { getComponentByType } from '~/src/lib/components';
 import { fetchRequiredApiData } from '~/src/lib/api';
+import defaultTheme from 'json-loader!../themes/default.json';
 
 function buildComponent( Component, props = {}, children = [] ) {
 	return <Component key={ props.key } { ...props }>{ children }</Component>;
@@ -73,15 +74,34 @@ function expandConfigPartials( componentConfig, partials ) {
 	return componentConfig;
 }
 
+function mergeThemeProperty( property, theme1, theme2 ) {
+	const prop1 = theme1[ property ] || {};
+	const prop2 = theme2[ property ] || {};
+	if ( typeof prop1 === 'string' || typeof prop2 === 'string' ) {
+		return prop2;
+	}
+	return Object.assign( {}, prop1, prop2 );
+}
+
+function mergeThemes( theme1, theme2 ) {
+	const properties = Object.keys( theme1 ).concat( Object.keys( theme2 ) ).filter( ( val, index, keys ) => keys.indexOf( val ) === index );
+	return properties.reduce( ( theme, prop ) => {
+		theme[ prop ] = mergeThemeProperty( prop, theme1, theme2 );
+		return theme;
+	}, {} );
+}
+
 function expandConfigTemplates( componentConfig, themeConfig ) {
+	const mergedThemeConfig = mergeThemes( defaultTheme, themeConfig );
 	if ( componentConfig.template ) {
-		return getTemplateForSlug( themeConfig, componentConfig.template );
+		return getTemplateForSlug( mergedThemeConfig, componentConfig.template );
 	}
 	return componentConfig;
 }
 
 export function buildComponentsFromTheme( themeConfig, pageConfig, content = {} ) {
-	return buildComponentFromConfig( expandConfigPartials( expandConfigTemplates( pageConfig, themeConfig ), themeConfig.partials || {} ), content );
+	const mergedThemeConfig = mergeThemes( defaultTheme, themeConfig );
+	return buildComponentFromConfig( expandConfigPartials( expandConfigTemplates( pageConfig, mergedThemeConfig ), mergedThemeConfig.partials || {} ), content );
 }
 
 export function getTemplateForSlug( themeConfig, slug ) {
