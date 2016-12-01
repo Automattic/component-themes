@@ -11,7 +11,7 @@
     "build": "npm run build:lib && npm run build:app && npm run copy",
     "distclean": "rm -rf build",
     "watch": "onchange '**/*.php' '**/*.js' -e 'build/**/*.js' -e 'build/**/*.php' -- npm run build",
-    "copy": "copytotheplace --loud ."
+    "copy": "copytotheplace *.php admin build src includes languages public server themes vendor"
   },
   "keywords": [
     "wordpress",
