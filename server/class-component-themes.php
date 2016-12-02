@@ -1,4 +1,5 @@
 <?php
+require( __DIR__ . '/class-component-themes-helpers.php' );
 require( __DIR__ . '/class-component-themes-component.php' );
 require( __DIR__ . '/class-component-themes-api.php' );
 require( __DIR__ . '/class-component-themes-builder.php' );
