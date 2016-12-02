@@ -13,6 +13,9 @@ class Component_Themes_Html_Component extends Component_Themes_Component {
 
 	protected function render_props_as_html() {
 		return implode( ' ', array_map( function( $key, $prop ) {
+			if ( ! is_string( $prop ) ) {
+				return '';
+			}
 			// TODO: look out for quotes
 			return "$key='$prop'";
 		}, array_keys( $this->props ), $this->props ) );
@@ -53,16 +56,16 @@ class Component_Themes_Builder {
 	}
 
 	public function create_element( $component_type, $props = [], $children = [] ) {
+		$context = ct_get_value( $props, 'context', [] );
+		$props = array_merge( $props, [ 'context' => $context ] );
 		if ( ! ctype_upper( $component_type[0] ) ) {
 			return new Component_Themes_Html_Component( $component_type, $props, $children );
 		}
 		if ( function_exists( $component_type ) ) {
 			return new Component_Themes_Stateless_Component( $component_type, $props, $children );
 		}
-		if ( ! empty( $component_type::$requiredApiData ) ) {
-			$pure_type = $this->strip_namespace_from_component_type( $component_type );
-			$this->component_api_data[ $pure_type ] = $this->api->fetch_required_api_data( $component_type::$requiredApiData );
-			$props = array_merge( $props, $this->component_api_data[ $pure_type ] );
+		if ( isset( $component_type::$required_api_endpoints ) ) {
+			$props = $this->api->api_data_wrapper( $props, $context, $component_type::$required_api_endpoints, $component_type );
 		}
 		return new $component_type( $props, $children );
 	}
@@ -79,10 +82,6 @@ class Component_Themes_Builder {
 		$props = isset( $component_config['props'] ) ? $component_config['props'] : [];
 		$component_props = array_merge( $props, [ 'child_props' => $child_props, 'className' => $this->build_classname_for_component( $component_config ) ] );
 		return $this->create_element( $found_component, $component_props, $child_components );
-	}
-
-	private function strip_namespace_from_component_type( $type ) {
-		return str_replace( 'Component_Themes_', '', $type );
 	}
 
 	private function get_component_by_type( $type ) {

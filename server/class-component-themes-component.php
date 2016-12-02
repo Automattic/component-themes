@@ -9,7 +9,7 @@ abstract class Component_Themes_Component {
 	}
 
 	protected function get_prop( $key, $default = null ) {
-		return isset( $this->props[ $key ] ) ? $this->props[ $key ] : $default;
+		return ct_get_value( $this->props, $key, $default );
 	}
 
 	protected function get_prop_from_parent( $key, $default = null ) {
