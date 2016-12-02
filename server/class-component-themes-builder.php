@@ -125,7 +125,7 @@ class Builder {
 			}
 			print_r( $partials );
 			echo  '['.$partial_key .']<br>';
-			throw new Exception( 'No partial found matching ' . $partial_key );
+			throw new \Exception( 'No partial found matching ' . $partial_key );
 		}
 		if ( isset( $component_config['children'] ) ) {
 			$expander = function( $child ) use ( &$partials ) {
@@ -150,7 +150,7 @@ class Builder {
 		$theme_config = $this->merge_themes( $this->get_default_theme(), $theme_config );
 		$original_slug = $slug;
 		if ( ! isset( $theme_config['templates'] ) ) {
-			throw new Exception( 'No template found matching ' . $slug . ' and no templates were defined in the theme' );
+			throw new \Exception( 'No template found matching ' . $slug . ' and no templates were defined in the theme' );
 		}
 		// Try a '404' template, then 'home'
 		if ( ! isset( $theme_config['templates'][ $slug ] ) ) {
@@ -160,7 +160,7 @@ class Builder {
 			$slug = 'home';
 		}
 		if ( ! isset( $theme_config['templates'][ $slug ] ) ) {
-			throw new Exception( 'No template found matching ' . $original_slug . ' and no 404 or home templates were defined in the theme' );
+			throw new \Exception( 'No template found matching ' . $original_slug . ' and no 404 or home templates were defined in the theme' );
 		}
 		$template = $theme_config['templates'][ $slug ];
 		if ( isset( $template['template'] ) ) {
