@@ -123,8 +123,6 @@ class Builder {
 			if ( isset( $partials[ $partial_key ] ) ) {
 				return $partials[ $partial_key ];
 			}
-			print_r( $partials );
-			echo  '['.$partial_key .']<br>';
 			throw new \Exception( 'No partial found matching ' . $partial_key );
 		}
 		if ( isset( $component_config['children'] ) ) {
