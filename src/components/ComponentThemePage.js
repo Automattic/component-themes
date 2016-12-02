@@ -9,6 +9,7 @@ import React, { Component, PropTypes } from 'react';
 import Styles from '~/src/components/Styles';
 import { buildStylesFromTheme } from '~/src/lib/styles';
 import { buildComponentsFromTheme, getTemplateForSlug } from '~/src/lib/component-builder';
+import { apiDataProvider } from '~/src/lib/api';
 
 class ComponentThemePage extends Component {
 	render() {
@@ -35,4 +36,4 @@ ComponentThemePage.propTypes = {
 	content: PropTypes.object,
 };
 
-export default ComponentThemePage;
+export default apiDataProvider()( ComponentThemePage );
