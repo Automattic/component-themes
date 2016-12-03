@@ -36,6 +36,7 @@ export function getBootstrappedRequiredApiData() {
 	if ( window.ComponentThemesApiData ) {
 		return window.ComponentThemesApiData;
 	}
+	return {};
 }
 
 export function apiDataWrapper( endpoints, mapApiToProps ) {
