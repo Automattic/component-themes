@@ -9,7 +9,7 @@ class Component_Themes_PostList extends Component_Themes_Component {
 			'componentType' => 'PostBody',
 			'children' => [
 				[ 'componentType' => 'PostTitle' ],
-				[ 'partial' => 'PostDateAndAuthor' ],
+				[ 'componentType' => 'PostDate' ],
 				[ 'componentType' => 'PostContent' ],
 			],
 		];
@@ -19,6 +19,20 @@ class Component_Themes_PostList extends Component_Themes_Component {
 			return $component->render();
 		};
 		return "<div class='" . $this->get_prop( 'className' ) . "'>" . implode( '', array_map( $render_blog_post, $posts ) ) . '</div>';
+	}
+
+	public static $required_api_endpoints = [ '/wp/v2/posts' ];
+
+	public static function map_api_to_props( $api ) {
+		$posts_data = ct_get_value( $api, '/wp/v2/posts', [] );
+		$posts = array_map( function( $post ) {
+			return [
+				'title' => $post['title']['rendered'],
+				'date' => $post['date'],
+				'content' => $post['content']['rendered'],
+			];
+		}, $posts_data );
+		return [ 'posts' => $posts ];
 	}
 }
 

@@ -8,19 +8,16 @@ abstract class Component_Themes_Component {
 		$this->builder = Component_Themes_Builder::get_builder();
 	}
 
-	protected function get_prop( $key, $default = null ) {
+	public function get_prop( $key, $default = null ) {
 		return ct_get_value( $this->props, $key, $default );
 	}
 
-	protected function get_prop_from_parent( $key, $default = null ) {
-		$child_props = isset( $this->props['childProps'] ) ? $this->props['childProps'] : null;
-		if ( ! isset( $child_props ) ) {
-			return $default;
-		}
-		return isset( $child_props[ $key ] ) ? $child_props[ $key ] : $default;
+	public function get_prop_from_parent( $key, $default = null ) {
+		$child_props = ct_get_value( $this->props, 'child_props', [] );
+		return ct_get_value( $child_props, $key, $default );
 	}
 
-	protected function make_component_with( $config, $data ) {
+	public function make_component_with( $config, $data ) {
 		return $this->builder->make_component_with( $config, $data );
 	}
 
