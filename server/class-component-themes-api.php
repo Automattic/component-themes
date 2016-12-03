@@ -25,7 +25,7 @@ class Component_Themes_Api {
 		$request = new WP_REST_Request( 'GET', $endpoint );
 		$response = $this->server->dispatch( $request );
 		if ( 200 !== $response->get_status() ) {
-			return [ $endpoint => null ];
+			return null;
 		}
 		return $response->get_data();
 	}
