@@ -32,9 +32,9 @@ function fetchRequiredApiEndpoint( endpoint ) {
 	} );
 }
 
-export function getBootstrappedRequiredApiData( componentType ) {
-	if ( window.ComponentThemesApiData && window.ComponentThemesApiData[ componentType ] ) {
-		return window.ComponentThemesApiData[ componentType ];
+export function getBootstrappedRequiredApiData() {
+	if ( window.ComponentThemesApiData ) {
+		return window.ComponentThemesApiData;
 	}
 }
 
@@ -72,7 +72,8 @@ export function apiDataProvider() {
 			constructor( props ) {
 				super( props );
 				this.fetchApiData = this.fetchApiData.bind( this );
-				this.state = { apiProps: {} };
+				const apiProps = getBootstrappedRequiredApiData();
+				this.state = { apiProps };
 			}
 
 			getChildContext() {

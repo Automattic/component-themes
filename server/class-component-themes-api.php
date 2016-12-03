@@ -3,6 +3,10 @@ class Component_Themes_Api {
 	private $server;
 	private $api = [];
 
+	public function get_api() {
+		return $this->api;
+	}
+
 	public function api_data_wrapper( $props, $context, $endpoints, $class_name ) {
 		$this->api = array_merge( $this->api, ct_get_value( $context, 'apiProps', [] ) );
 		foreach ( $endpoints as $endpoint ) {

@@ -38,7 +38,6 @@ class Component_Themes_Stateless_Component extends Component_Themes_Component {
 }
 
 class Component_Themes_Builder {
-	private $component_api_data = [];
 	private $api;
 
 	public function __construct( $options ) {
@@ -199,6 +198,6 @@ class Component_Themes_Builder {
 	}
 
 	public function get_component_api_data() {
-		return $this->component_api_data;
+		return $this->api->get_api();
 	}
 }
