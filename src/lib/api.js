@@ -50,7 +50,7 @@ export function apiDataWrapper( endpoints, mapApiToProps ) {
 					context.fetchApiData( endpoint );
 				}
 			} );
-			const newProps = Object.assign( {}, props, mapApiToProps( context.apiProps ) );
+			const newProps = Object.assign( {}, props, mapApiToProps( context.apiProps, props ) );
 			return <Target { ...newProps } >{ newProps.children }</Target>;
 		};
 

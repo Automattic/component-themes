@@ -14,7 +14,7 @@ class Component_Themes_Api {
 				$this->api[ $endpoint ] = $this->fetch_required_api_endpoint( $endpoint );
 			}
 		}
-		$new_props = call_user_func( array( $class_name, 'map_api_to_props' ), $this->api );
+		$new_props = call_user_func( array( $class_name, 'map_api_to_props' ), $this->api, $props );
 		return array_merge( $props, $new_props );
 	}
 
