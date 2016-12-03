@@ -1,6 +1,8 @@
-import React from 'react';
-
-import { apiDataWrapper, getApiEndpoint } from '~/src/lib/api';
+/* globals window */
+const ComponentThemes = window.ComponentThemes;
+const React = ComponentThemes.React;
+const registerComponent = ComponentThemes.registerComponent;
+const apiDataWrapper = ComponentThemes.apiDataWrapper;
 
 const HeaderText = ( { siteTitle, siteTagline, className } ) => {
 	return (
@@ -24,12 +26,12 @@ HeaderText.editableProps = {
 };
 
 const mapApiToProps = ( api ) => {
-	const siteInfo = getApiEndpoint( api, '/' );
+	const siteInfo = api[ '/' ];
 	return {
 		siteTitle: siteInfo && siteInfo.name,
 		siteTagline: siteInfo && siteInfo.description,
 	};
 };
 
-export default apiDataWrapper( [ '/' ], mapApiToProps )( HeaderText );
+registerComponent( 'HeaderText', apiDataWrapper( [ '/' ], mapApiToProps )( HeaderText ) );
 

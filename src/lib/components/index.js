@@ -9,7 +9,6 @@ import React from 'react';
 import TextWidget from '~/src/themes/components/TextWidget';
 import MenuWidget from '~/src/themes/components/MenuWidget';
 import SearchWidget from '~/src/themes/components/SearchWidget';
-import HeaderText from '~/src/themes/components/HeaderText';
 import FooterText from '~/src/themes/components/FooterText';
 import PostBody from '~/src/themes/components/PostBody';
 import PostTitle from '~/src/themes/components/PostTitle';
@@ -27,7 +26,6 @@ const componentMap = {
 	TextWidget: TextWidget,
 	MenuWidget: MenuWidget,
 	SearchWidget: SearchWidget,
-	HeaderText: HeaderText,
 	FooterText: FooterText,
 	PostBody: PostBody,
 	PostTitle: PostTitle,
@@ -63,4 +61,8 @@ export function getComponentProps( componentType ) {
 
 export function canComponentHaveChildren( componentType ) {
 	return getComponentByType( componentType ).hasChildren || false;
+}
+
+export function registerComponent( componentType, component ) {
+	componentMap[ componentType ] = component;
 }

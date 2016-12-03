@@ -1,0 +1,3 @@
+/* globals require */
+
+require( './HeaderText' );
