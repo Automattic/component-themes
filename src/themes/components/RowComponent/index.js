@@ -1,12 +1,6 @@
-/**
- * External dependencies
- */
-import React from 'react';
-
-/**
- * Internal dependencies
- */
-import Styles from '~/src/components/Styles';
+/* globals window */
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent, Styles } = ComponentThemes;
 
 const css = `
 .RowComponent {
@@ -27,4 +21,4 @@ const RowComponent = ( { children, className } ) => {
 RowComponent.description = 'A wrapper for a row of components. Always use this as the parent component for content components.';
 RowComponent.hasChildren = true;
 
-export default RowComponent;
+registerComponent( 'RowComponent', RowComponent );

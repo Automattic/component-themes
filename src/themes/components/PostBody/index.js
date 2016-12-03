@@ -1,4 +1,6 @@
-import React from 'react';
+/* globals window */
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent } = ComponentThemes;
 
 const PostBody = ( { children, className } ) => {
 	return (
@@ -11,4 +13,4 @@ const PostBody = ( { children, className } ) => {
 PostBody.description = 'A wrapper for a post. Use PostContent, PostTitle, PostDate, and PostAuthor for the inside.';
 PostBody.hasChildren = true;
 
-export default PostBody;
+registerComponent( 'PostBody', PostBody );

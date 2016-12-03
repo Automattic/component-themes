@@ -1,4 +1,6 @@
-import React from 'react';
+/* globals window */
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent } = ComponentThemes;
 
 const SearchWidget = ( { placeholder, className } ) => {
 	return (
@@ -16,5 +18,5 @@ SearchWidget.editableProps = {
 	}
 };
 
-export default SearchWidget;
+registerComponent( 'SearchWidget', SearchWidget );
 

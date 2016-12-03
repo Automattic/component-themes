@@ -1,4 +1,6 @@
-import React from 'react';
+/* globals window */
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent } = ComponentThemes;
 
 const FooterText = ( { text, className } ) => {
 	return (
@@ -16,4 +18,4 @@ FooterText.editableProps = {
 	}
 };
 
-export default FooterText;
+registerComponent( 'FooterText', FooterText );

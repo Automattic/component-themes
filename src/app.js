@@ -12,7 +12,8 @@ import ReactDOM from 'react-dom';
 import { ComponentThemePage } from '../build';
 import { apiDataWrapper } from '../build/lib/api';
 import { registerComponent } from '../build/lib/components';
-import { makeComponentWith } from '../build/lib/component-builder';
+import { makeComponentWith, getPropsFromParent } from '../build/lib/component-builder';
+import Styles from '../build/components/Styles';
 
 const ComponentThemes = {
 	renderPage: function( theme, slug, page, target ) {
@@ -24,6 +25,8 @@ const ComponentThemes = {
 	registerComponent,
 	apiDataWrapper,
 	makeComponentWith,
+	getPropsFromParent,
+	Styles,
 };
 
 window.ComponentThemes = ComponentThemes;

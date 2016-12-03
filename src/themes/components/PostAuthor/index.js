@@ -1,5 +1,6 @@
-import React from 'react';
-import { getPropsFromParent } from '~/src/lib/component-builder';
+/* globals window */
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent, getPropsFromParent } = ComponentThemes;
 
 const PostAuthor = ( { author, className } ) => {
 	return (
@@ -18,5 +19,4 @@ PostAuthor.editableProps = {
 };
 
 const mapProps = ( { author } ) => ( { author } );
-export default getPropsFromParent( mapProps )( PostAuthor );
-
+registerComponent( 'PostAuthor', getPropsFromParent( mapProps )( PostAuthor ) );
