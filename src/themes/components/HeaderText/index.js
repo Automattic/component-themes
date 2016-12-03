@@ -1,8 +1,6 @@
 /* globals window */
 const ComponentThemes = window.ComponentThemes;
-const React = ComponentThemes.React;
-const registerComponent = ComponentThemes.registerComponent;
-const apiDataWrapper = ComponentThemes.apiDataWrapper;
+const { React, registerComponent, apiDataWrapper } = ComponentThemes;
 
 const HeaderText = ( { siteTitle, siteTagline, className } ) => {
 	return (

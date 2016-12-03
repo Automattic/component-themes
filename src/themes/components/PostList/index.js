@@ -1,6 +1,6 @@
-import React from 'react';
-import { makeComponentWith } from '~/src/lib/component-builder';
-import { apiDataWrapper, getApiEndpoint } from '~/src/lib/api';
+/* globals window */
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent, apiDataWrapper, makeComponentWith } = ComponentThemes;
 
 const PostList = ( { posts, post, className } ) => {
 	const defaultPostConfig = { componentType: 'PostBody', children: [
@@ -29,7 +29,7 @@ PostList.editableProps = {
 };
 
 const mapApiToProps = ( api ) => {
-	const postsData = getApiEndpoint( api, '/wp/v2/posts' ) || [];
+	const postsData = api[ '/wp/v2/posts' ] || [];
 	const posts = postsData.map( post => ( {
 		title: post.title.rendered,
 		content: post.content.rendered,
@@ -38,4 +38,4 @@ const mapApiToProps = ( api ) => {
 	return { posts };
 };
 
-export default apiDataWrapper( [ '/wp/v2/posts' ], mapApiToProps )( PostList );
+registerComponent( 'PostList', apiDataWrapper( [ '/wp/v2/posts' ], mapApiToProps )( PostList ) );

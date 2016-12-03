@@ -1,3 +1,2 @@
-/* globals require */
-
-require( './HeaderText' );
+import './HeaderText';
+import './PostList';
