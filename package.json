@@ -9,6 +9,9 @@
     "build:lib": "NODE_ENV=development babel --out-dir build src && cp src/themes/default.json build/themes/",
     "build:app": "NODE_ENV=development webpack",
     "build": "npm run build:lib && npm run build:app && npm run copy",
+    "dist:lib": "NODE_ENV=production babel --out-dir build src && cp src/themes/default.json build/themes/",
+    "dist:app": "NODE_ENV=production webpack",
+    "dist": "npm run dist:lib && npm run dist:app && npm run copy",
     "distclean": "rm -rf build",
     "watch": "onchange '**/*.php' '**/*.js' -e 'build/**/*.js' -e 'build/**/*.php' -- npm run build",
     "copy": "copytotheplace *.php admin build src includes languages public server themes vendor"
