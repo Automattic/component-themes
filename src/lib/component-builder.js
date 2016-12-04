@@ -9,7 +9,7 @@ import shortid from 'shortid';
  * Internal dependencies
  */
 import { getComponentByType } from '~/src/lib/components';
-import defaultTheme from 'json-loader!../themes/default.json';
+import defaultTheme from '~/src/themes/default.json';
 
 function buildComponent( Component, props = {}, children = [] ) {
 	return <Component key={ props.key } { ...props }>{ children }</Component>;
