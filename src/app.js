@@ -9,11 +9,11 @@ import ReactDOM from 'react-dom';
 /**
  * Internal dependencies
  */
-import { ComponentThemePage } from '../build';
-import { apiDataWrapper } from '../build/lib/api';
-import { registerComponent } from '../build/lib/components';
-import { makeComponentWith, getPropsFromParent } from '../build/lib/component-builder';
-import Styles from '../build/components/Styles';
+import { ComponentThemePage } from '~/src/';
+import { apiDataWrapper } from '~/src/lib/api';
+import { registerComponent } from '~/src/lib/components';
+import { makeComponentWith, getPropsFromParent } from '~/src/lib/component-builder';
+import Styles from '~/src/components/Styles';
 
 const ComponentThemes = {
 	renderPage: function( theme, slug, page, target ) {
