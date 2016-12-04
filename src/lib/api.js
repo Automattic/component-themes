@@ -4,10 +4,7 @@ import React from 'react';
 /**
  * External dependencies
  */
-import Promise from 'promise-polyfill';
-if ( ! window.Promise ) {
-	window.Promise = Promise;
-}
+import 'es6-promise/auto';
 import 'whatwg-fetch';
 
 function checkStatus( response ) {
