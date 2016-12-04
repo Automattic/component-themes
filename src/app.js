@@ -29,4 +29,8 @@ const ComponentThemes = {
 	Styles,
 };
 
-window.ComponentThemes = ComponentThemes;
+if ( typeof window !== 'undefined' ) {
+	window.ComponentThemes = ComponentThemes;
+}
+
+export default ComponentThemes;
