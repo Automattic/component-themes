@@ -17,7 +17,7 @@ import Styles from '~/src/components/Styles';
 
 const ComponentThemes = {
 	renderPage: function( theme, slug, page, target ) {
-		const App = React.createElement( ComponentThemePage, { theme, page, slug } );
+		const App = <ComponentThemePage theme={ theme } page={ page } slug={ slug } />;
 		ReactDOM.render( App, target );
 	},
 
