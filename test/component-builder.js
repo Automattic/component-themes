@@ -100,6 +100,30 @@ describe( 'buildComponentsFromTheme()', function() {
 			expect( wrapper.find( '.TextWidget' ) ).to.have.length( 1 );
 		} );
 	} );
+
+	describe( 'with a partial that is part of the theme', function() {
+		beforeEach( function() {
+			theme = { name: 'TestTheme', slug: 'testtheme', partials: { hello: { id: 'helloWorld', componentType: 'TextWidget', props: { text: 'something' } } } };
+			page = { partial: 'hello' };
+		} );
+
+		it( 'returns a React component', function() {
+			const Result = buildComponentsFromTheme( theme, page );
+			expect( Result.props ).to.include.keys( 'text' );
+		} );
+
+		it( 'includes the partial id as a className', function() {
+			const Result = buildComponentsFromTheme( theme, page );
+			const wrapper = shallow( Result );
+			expect( wrapper.find( '.helloWorld' ) ).to.have.length( 1 );
+		} );
+
+		it( 'includes the partial componentType as a className', function() {
+			const Result = buildComponentsFromTheme( theme, page );
+			const wrapper = shallow( Result );
+			expect( wrapper.find( '.TextWidget' ) ).to.have.length( 1 );
+		} );
+	} );
 } );
 
 describe( 'mergeThemes()', function() {
