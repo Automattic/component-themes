@@ -1,7 +1,8 @@
 <?php
 class Component_Themes_Not_Found_Component extends Component_Themes_Component {
 	public function render() {
-		return "Could not find component '" . $this->get_prop( 'componentId' ) . "'";
+		$type = $this->get_prop( 'componentType', json_encode( $this->props ) );
+		return "Could not find component '" . $type . "'";
 	}
 }
 
@@ -57,6 +58,9 @@ class Component_Themes_Builder {
 	public function create_element( $component_type, $props = [], $children = [] ) {
 		$context = ct_get_value( $props, 'context', [] );
 		$props = array_merge( $props, [ 'context' => $context ] );
+		if ( is_callable( $component_type ) ) {
+			return new Component_Themes_Stateless_Component( $component_type, $props, $children );
+		}
 		if ( ! ctype_upper( $component_type[0] ) ) {
 			return new Component_Themes_Html_Component( $component_type, $props, $children );
 		}
@@ -71,8 +75,8 @@ class Component_Themes_Builder {
 
 	public function make_component_with( $component_config, $child_props = [] ) {
 		if ( ! isset( $component_config['componentType'] ) ) {
-			$name = isset( $component_config['id'] ) ? $component_config['id'] : json_encode( $component_config );
-			return $this->create_element( 'Component_Themes_Not_Found_Component', [ 'componentId' => $name ] );
+			$name = ct_get_value( $component_config, 'id', json_encode( $component_config ) );
+			return $this->create_element( 'Component_Themes_Not_Found_Component', [ 'componentType' => $name ] );
 		}
 		$found_component = $this->get_component_by_type( $component_config['componentType'] );
 		$child_components = isset( $component_config['children'] ) ? array_map( function( $child ) use ( &$child_props ) {
@@ -88,13 +92,15 @@ class Component_Themes_Builder {
 		if ( function_exists( $namespaced_type ) || class_exists( $namespaced_type ) ) {
 			return $namespaced_type;
 		}
-		return 'Component_Themes_Not_Found_Component';
+		return function() use ( &$type ) {
+			return "Could not find component '" . $type . "'";
+		};
 	}
 
 	private function build_component_from_config( $component_config, $component_data ) {
 		if ( ! isset( $component_config['componentType'] ) ) {
-			$name = isset( $component_config['id'] ) ? $component_config['id'] : json_encode( $component_config );
-			return $this->create_element( 'Component_Themes_Not_Found_Component', [ 'componentId' => $name ] );
+			$name = ct_get_value( $component_config, 'id', json_encode( $component_config ) );
+			return $this->create_element( 'Component_Themes_Not_Found_Component', [ 'componentType' => $name ] );
 		}
 		$found_component = $this->get_component_by_type( $component_config['componentType'] );
 		$child_components = isset( $component_config['children'] ) ? array_map( function( $child ) use ( &$component_data ) {
