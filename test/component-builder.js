@@ -4,7 +4,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 
-import { buildComponentsFromTheme } from '~/src/lib/component-builder';
+import { buildComponentsFromTheme, mergeThemes } from '~/src/lib/component-builder';
 
 let theme;
 let page;
@@ -102,3 +102,36 @@ describe( 'buildComponentsFromTheme()', function() {
 	} );
 } );
 
+describe( 'mergeThemes()', function() {
+	let theme1, theme2;
+
+	beforeEach( function() {
+		theme1 = { name: 'First Theme', slug: 'first', templates: { firstTemplate: { id: 'helloWorld', componentType: 'TextWidget', props: { text: 'first text' } }, mergingTemplate: { id: 'toBeOverwritten', componentType: 'TextWidget' } } };
+		theme2 = { name: 'Second Theme', partials: {}, templates: { secondTemplate: { id: 'helloWorld', componentType: 'TextWidget', props: { text: 'second text' } }, mergingTemplate: { id: 'overwriter', componentType: 'TextWidget' } } };
+	} );
+
+	it( 'includes the keys of both themes', function() {
+		const newTheme = mergeThemes( theme1, theme2 );
+		expect( newTheme ).to.include.keys( 'name', 'slug', 'partials', 'templates' );
+	} );
+
+	it( 'includes the templates in the first theme', function() {
+		const newTheme = mergeThemes( theme1, theme2 );
+		expect( newTheme.templates ).to.include.keys( 'firstTemplate' );
+	} );
+
+	it( 'includes the templates in the second theme', function() {
+		const newTheme = mergeThemes( theme1, theme2 );
+		expect( newTheme.templates ).to.include.keys( 'secondTemplate' );
+	} );
+
+	it( 'overwrites string properties of the first theme with properties of the second', function() {
+		const newTheme = mergeThemes( theme1, theme2 );
+		expect( newTheme.name ).to.equal( 'Second Theme' );
+	} );
+
+	it( 'overwrites object property properties of the first theme with those of the second', function() {
+		const newTheme = mergeThemes( theme1, theme2 );
+		expect( newTheme.templates.mergingTemplate.id ).to.equal( 'overwriter' );
+	} );
+} );
