@@ -1,10 +1,11 @@
 import React from 'react';
 import { makeComponentWith } from '~/src/lib/component-builder';
+import { apiDataWrapper, getApiEndpoint } from '~/src/lib/api';
 
 const PostList = ( { posts, post, className } ) => {
 	const defaultPostConfig = { componentType: 'PostBody', children: [
 		{ componentType: 'PostTitle' },
-		{ partial: 'PostDateAndAuthor' },
+		{ componentType: 'PostDate' },
 		{ componentType: 'PostContent' }
 	] };
 	return (
@@ -27,4 +28,14 @@ PostList.editableProps = {
 	}
 };
 
-export default PostList;
+const mapApiToProps = ( api ) => {
+	const postsData = getApiEndpoint( api, '/wp/v2/posts' ) || [];
+	const posts = postsData.map( post => ( {
+		title: post.title.rendered,
+		content: post.content.rendered,
+		date: post.date,
+	} ) );
+	return { posts };
+};
+
+export default apiDataWrapper( [ '/wp/v2/posts' ], mapApiToProps )( PostList );
