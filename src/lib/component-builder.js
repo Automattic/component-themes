@@ -81,7 +81,7 @@ function mergeThemeProperty( property, theme1, theme2 ) {
 	return Object.assign( {}, prop1, prop2 );
 }
 
-function mergeThemes( theme1, theme2 ) {
+export function mergeThemes( theme1, theme2 ) {
 	const properties = Object.keys( theme1 ).concat( Object.keys( theme2 ) ).filter( ( val, index, keys ) => keys.indexOf( val ) === index );
 	return properties.reduce( ( theme, prop ) => {
 		theme[ prop ] = mergeThemeProperty( prop, theme1, theme2 );
