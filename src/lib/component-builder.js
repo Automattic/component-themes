@@ -73,9 +73,10 @@ function expandConfigPartials( componentConfig, partials ) {
 }
 
 function mergeThemeProperty( property, theme1, theme2 ) {
+	const isObject = obj => ( ! Array.isArray( obj ) && obj === Object( obj ) );
 	const prop1 = theme1[ property ] || {};
 	const prop2 = theme2[ property ] || {};
-	if ( typeof prop1 === 'string' || typeof prop2 === 'string' ) {
+	if ( ! isObject( prop1 ) || ! isObject( prop2 ) ) {
 		return prop2;
 	}
 	return Object.assign( {}, prop1, prop2 );

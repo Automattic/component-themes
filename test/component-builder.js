@@ -130,6 +130,20 @@ describe( 'mergeThemes()', function() {
 		expect( newTheme.name ).to.equal( 'Second Theme' );
 	} );
 
+	it( 'overwrites number properties of the first theme with properties of the second', function() {
+		theme1.name = 4;
+		theme2.name = 8;
+		const newTheme = mergeThemes( theme1, theme2 );
+		expect( newTheme.name ).to.equal( 8 );
+	} );
+
+	it( 'overwrites array properties of the first theme with properties of the second', function() {
+		theme1.name = [ 'a' ];
+		theme2.name = [ 'b' ];
+		const newTheme = mergeThemes( theme1, theme2 );
+		expect( newTheme.name ).to.eql( [ 'b' ] );
+	} );
+
 	it( 'overwrites object property properties of the first theme with those of the second', function() {
 		const newTheme = mergeThemes( theme1, theme2 );
 		expect( newTheme.templates.mergingTemplate.id ).to.equal( 'overwriter' );
