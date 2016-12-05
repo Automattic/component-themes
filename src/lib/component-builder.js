@@ -8,14 +8,17 @@ import shortid from 'shortid';
 /**
  * Internal dependencies
  */
-import { getComponentByType } from '~/src/lib/components';
+import { getComponentByType, getPartialByType, registerPartial } from '~/src/lib/components';
 
 function buildComponent( Component, props = {}, children = [] ) {
 	return <Component key={ props.key } { ...props }>{ children }</Component>;
 }
 
 function buildComponentTreeFromConfig( componentConfig, childProps = {} ) {
-	const { id, componentType, children, props } = componentConfig;
+	const { id, componentType, children, props, partial } = componentConfig;
+	if ( partial ) {
+		return buildComponentTreeFromConfig( getPartialByType( partial ), childProps );
+	}
 	const componentId = id || shortid.generate();
 	const Component = getComponentByType( componentType );
 	const childComponents = children ? children.map( child => buildComponentTreeFromConfig( child, childProps ) ) : null;
@@ -57,20 +60,6 @@ function buildComponentFromConfig( componentConfig, content = {} ) {
 	return buildComponentFromTree( buildComponentTreeFromConfig( componentConfig ), content );
 }
 
-function expandConfigPartials( componentConfig, partials ) {
-	if ( componentConfig.partial ) {
-		if ( partials[ componentConfig.partial ] ) {
-			return partials[ componentConfig.partial ];
-		}
-		return { componentType: 'ErrorComponent', props: { message: `No partial found matching '${ componentConfig.partial }'` } };
-	}
-	if ( componentConfig.children ) {
-		const children = componentConfig.children.map( child => expandConfigPartials( child, partials ) );
-		return Object.assign( {}, componentConfig, { children } );
-	}
-	return componentConfig;
-}
-
 function mergeThemeProperty( property, theme1, theme2 ) {
 	const isObject = obj => ( ! Array.isArray( obj ) && obj === Object( obj ) );
 	const prop1 = theme1[ property ] || {};
@@ -96,8 +85,13 @@ function expandConfigTemplates( componentConfig, themeConfig ) {
 	return componentConfig;
 }
 
+function registerPartials( partials ) {
+	Object.keys( partials ).map( key => registerPartial( key, partials[ key ] ) );
+}
+
 export function buildComponentsFromTheme( themeConfig, pageConfig, content = {} ) {
-	return buildComponentFromConfig( expandConfigPartials( expandConfigTemplates( pageConfig, themeConfig ), themeConfig.partials || {} ), content );
+	registerPartials( themeConfig.partials || {} );
+	return buildComponentFromConfig( expandConfigTemplates( pageConfig, themeConfig ), content );
 }
 
 export function getTemplateForSlug( themeConfig, slug ) {
