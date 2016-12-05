@@ -1,3 +1,4 @@
+/* globals window */
 /**
  * External dependencies
  */
@@ -51,4 +52,22 @@ export function buildStylesFromTheme( themeConfig ) {
 		.map( key => buildStyleBlock( key, stylesByComponent[ key ] ) )
 		.join( '' );
 	return expandStyleVariants( addAdditionalStyles( basicStyles, themeConfig ), themeConfig );
+}
+
+export function writeStylesToPage( key, styles ) {
+	if ( typeof window === 'undefined' ) {
+		return;
+	}
+	const className = `component-themes-${ key }`;
+	let el = window.document.querySelector( `.${ className }` );
+	if ( ! el ) {
+		const head = window.document.querySelector( 'head' );
+		if ( ! head ) {
+			return;
+		}
+		el = window.document.createElement( 'style' );
+		el.className = className;
+		head.appendChild( el );
+	}
+	el.innerHTML = styles;
 }
