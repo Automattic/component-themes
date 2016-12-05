@@ -1,0 +1,74 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "570ccbc74f40d4ce587a6531ac5c8286",
+    "content-hash": "c5bbbba8473a3a3955c009100fa1654e",
+    "packages": [],
+    "packages-dev": [
+        {
+            "name": "sirbrillig/corretto",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sirbrillig/corretto.git",
+                "reference": "1a14e6918740884d50fc19f9a4571128fd9aea7b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sirbrillig/corretto/zipball/1a14e6918740884d50fc19f9a4571128fd9aea7b",
+                "reference": "1a14e6918740884d50fc19f9a4571128fd9aea7b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "sirbrillig/spies": "^1.4"
+            },
+            "bin": [
+                "bin/corretto"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Corretto": "src/"
+                },
+                "files": [
+                    "src/Corretto/functions.php",
+                    "src/Corretto/Assert.php",
+                    "src/Corretto/Expect.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Payton Swick",
+                    "email": "payton@foolord.com"
+                }
+            ],
+            "description": "A simple and expressive PHP test runner",
+            "homepage": "https://github.com/sirbrillig/corretto",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "phpunit",
+                "testing",
+                "unittests"
+            ],
+            "time": "2016-10-16 01:08:42"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

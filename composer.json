@@ -1,0 +1,16 @@
+{
+    "name": "automattic/component-themes",
+    "description": "Component-based themes for WordPress",
+    "type": "project",
+    "license": "GPLv2",
+    "authors": [
+        {
+            "name": "Payton Swick",
+            "email": "payton@automattic.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "sirbrillig/corretto": "^1.2"
+    }
+}
