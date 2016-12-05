@@ -14,10 +14,11 @@ import { apiDataWrapper } from '~/src/lib/api';
 import { registerComponent } from '~/src/lib/components';
 import { makeComponentWith, getPropsFromParent } from '~/src/lib/component-builder';
 import Styles from '~/src/components/Styles';
+import defaultTheme from '~/src/themes/default.json';
 
 const ComponentThemes = {
 	renderPage: function( theme, slug, page, target ) {
-		const App = <ComponentThemePage theme={ theme } page={ page } slug={ slug } />;
+		const App = <ComponentThemePage theme={ theme } defaultTheme={ defaultTheme } page={ page } slug={ slug } />;
 		ReactDOM.render( App, target );
 	},
 

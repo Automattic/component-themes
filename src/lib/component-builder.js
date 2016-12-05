@@ -9,7 +9,6 @@ import shortid from 'shortid';
  * Internal dependencies
  */
 import { getComponentByType } from '~/src/lib/components';
-import defaultTheme from '~/src/themes/default.json';
 
 function buildComponent( Component, props = {}, children = [] ) {
 	return <Component key={ props.key } { ...props }>{ children }</Component>;
@@ -91,16 +90,14 @@ export function mergeThemes( theme1, theme2 ) {
 }
 
 function expandConfigTemplates( componentConfig, themeConfig ) {
-	const mergedThemeConfig = mergeThemes( defaultTheme, themeConfig );
 	if ( componentConfig.template ) {
-		return getTemplateForSlug( mergedThemeConfig, componentConfig.template );
+		return getTemplateForSlug( themeConfig, componentConfig.template );
 	}
 	return componentConfig;
 }
 
 export function buildComponentsFromTheme( themeConfig, pageConfig, content = {} ) {
-	const mergedThemeConfig = mergeThemes( defaultTheme, themeConfig );
-	return buildComponentFromConfig( expandConfigPartials( expandConfigTemplates( pageConfig, mergedThemeConfig ), mergedThemeConfig.partials || {} ), content );
+	return buildComponentFromConfig( expandConfigPartials( expandConfigTemplates( pageConfig, themeConfig ), themeConfig.partials || {} ), content );
 }
 
 export function getTemplateForSlug( themeConfig, slug ) {
