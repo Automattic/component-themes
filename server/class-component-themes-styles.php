@@ -1,5 +1,5 @@
 <?php
-require( dirname( __DIR__ ) . '/vendor/CSS-Parser/parser.php' );
+require( dirname( __DIR__ ) . '/server_requirements/CSS-Parser/parser.php' );
 
 class Component_Themes_Styles {
 	public function build_styles_from_theme( $theme_config ) {
