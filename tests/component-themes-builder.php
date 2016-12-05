@@ -11,6 +11,13 @@ function Component_Themes_TextWidget( $props ) {
 	$color = ct_get_value( $props, 'color', 'default' );
 	return React::createElement( 'div', [ 'className' => $class ], [ React::createElement( 'p', [], 'text is: ' . $text ), React::createElement( 'p', [], 'color is: ' . $color ) ] );
 };
+// @codingStandardsIgnoreStart
+class Component_Themes_ColumnComponent extends Component_Themes_Component {
+	// @codingStandardsIgnoreEnd
+	public function render() {
+		return "<div class='" . $this->get_prop( 'className' ) . "'>" . $this->render_children() . '</div>';
+	}
+}
 
 describe( 'Component_Themes_Builder', function() {
 	beforeEach( function( $c ) {
@@ -71,6 +78,23 @@ describe( 'Component_Themes_Builder', function() {
 			it( 'includes the template componentType as a className', function( $c ) {
 				$result = $c->builder->render( $c->theme, $c->page );
 				expect( $result )->toContain( 'TextWidget' );
+			} );
+		} );
+
+		describe( 'with a partial that is part of the theme', function() {
+			beforeEach( function( $c ) {
+				$c->theme = [ 'name' => 'TestTheme', 'slug' => 'testtheme', 'partials' => [ 'hello' => [ 'id' => 'helloWorld', 'componentType' => 'TextWidget' ] ] ];
+				$c->page = [ 'id' => 'layout', 'componentType' => 'ColumnComponent', 'children' => [ [ 'id' => 'existing', 'componentType' => 'TextWidget' ], [ 'partial' => 'hello' ] ] ];
+			} );
+
+			it( 'does not affect sibling components', function( $c ) {
+				$result = $c->builder->render( $c->theme, $c->page );
+				expect( $result )->toContain( 'existing' );
+			} );
+
+			it( 'includes the partial id as a className', function( $c ) {
+				$result = $c->builder->render( $c->theme, $c->page );
+				expect( $result )->toContain( 'helloWorld' );
 			} );
 		} );
 	} );
