@@ -1,6 +1,9 @@
 {
 	"name": "WordPress",
 	"slug": "wordpress-default",
+	"additional-styles": {
+		"postDateAndAuthor": ".postDateAndAuthor { justify-content: flex-start; } .postDateAndAuthor > span { padding-right: 0.5em; }"
+	},
 	"templates": {
 		"home": { "id": "pageLayout", "componentType": "PageLayout", "children": [
 			{ "partial": "PageHeader" },

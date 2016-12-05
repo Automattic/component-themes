@@ -37,12 +37,18 @@ function expandStyleVariants( styles, themeConfig ) {
 	return Object.keys( finalVariants ).reduce( ( prev, varName ) => prev.replace( `$${ varName }`, finalVariants[ varName ] ), styles );
 }
 
+function addAdditionalStyles( styles, themeConfig ) {
+	const additional = themeConfig[ 'additional-styles' ] || {};
+	return styles + Object.keys( additional ).map( key => additional[ key ] ).join( '' );
+}
+
 export function buildStylesFromTheme( themeConfig ) {
 	const stylesByComponent = themeConfig.styles || {};
 	if ( typeof stylesByComponent === 'string' ) {
 		return prependNamespaceToStyleString( '.ComponentThemes', expandStyleVariants( stylesByComponent, themeConfig ) );
 	}
-	return expandStyleVariants( Object.keys( stylesByComponent )
+	const basicStyles = Object.keys( stylesByComponent )
 		.map( key => buildStyleBlock( key, stylesByComponent[ key ] ) )
-		.join( '' ), themeConfig );
+		.join( '' );
+	return expandStyleVariants( addAdditionalStyles( basicStyles, themeConfig ), themeConfig );
 }
