@@ -23,7 +23,7 @@ class ComponentThemePage extends Component {
 		const styles = buildStylesFromTheme( theme, this.props.content );
 		return (
 			<div className="ComponentThemes">
-				<Styles styles={ styles } />
+				<Styles key="ComponentThemePage__styles" styles={ styles } />
 				{ children }
 			</div>
 		);

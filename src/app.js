@@ -5,6 +5,7 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom';
+import styled from 'styled-components';
 
 /**
  * Internal dependencies
@@ -13,7 +14,6 @@ import { ComponentThemePage } from '~/src/';
 import { apiDataWrapper } from '~/src/lib/api';
 import { registerComponent, registerPartial } from '~/src/lib/components';
 import { makeComponentWith, getPropsFromParent } from '~/src/lib/component-builder';
-import Styles from '~/src/components/Styles';
 import defaultTheme from '~/src/themes/default.json';
 
 const ComponentThemes = {
@@ -23,12 +23,12 @@ const ComponentThemes = {
 	},
 
 	React,
+	styled,
 	registerComponent,
 	registerPartial,
 	apiDataWrapper,
 	makeComponentWith,
 	getPropsFromParent,
-	Styles,
 };
 
 if ( typeof window !== 'undefined' ) {
