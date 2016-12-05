@@ -6,9 +6,6 @@ import { expect } from 'chai';
 
 import { buildComponentsFromTheme, mergeThemes } from '~/src/lib/component-builder';
 
-let theme;
-let page;
-
 import ComponentThemes from '~/src/app';
 const { registerComponent } = ComponentThemes;
 
@@ -21,6 +18,18 @@ const TextWidget = ( { text, color, className } ) => {
 	);
 };
 registerComponent( 'TextWidget', TextWidget );
+
+const ColumnComponent = ( { children, className } ) => {
+	return (
+		<div className={ className }>
+			{ children }
+		</div>
+	);
+};
+registerComponent( 'ColumnComponent', ColumnComponent );
+
+let theme;
+let page;
 
 describe( 'buildComponentsFromTheme()', function() {
 	describe( 'for an unregistered componentType', function() {
@@ -104,12 +113,13 @@ describe( 'buildComponentsFromTheme()', function() {
 	describe( 'with a partial that is part of the theme', function() {
 		beforeEach( function() {
 			theme = { name: 'TestTheme', slug: 'testtheme', partials: { hello: { id: 'helloWorld', componentType: 'TextWidget', props: { text: 'something' } } } };
-			page = { partial: 'hello' };
+			page = { id: 'layout', componentType: 'ColumnComponent', children: [ { id: 'existing', componentType: 'TextWidget' }, { partial: 'hello' } ] };
 		} );
 
-		it( 'returns a React component', function() {
+		it( 'does not affect sibling components', function() {
 			const Result = buildComponentsFromTheme( theme, page );
-			expect( Result.props ).to.include.keys( 'text' );
+			const wrapper = shallow( Result );
+			expect( wrapper.find( '.existing' ) ).to.have.length( 1 );
 		} );
 
 		it( 'includes the partial id as a className', function() {
@@ -121,7 +131,7 @@ describe( 'buildComponentsFromTheme()', function() {
 		it( 'includes the partial componentType as a className', function() {
 			const Result = buildComponentsFromTheme( theme, page );
 			const wrapper = shallow( Result );
-			expect( wrapper.find( '.TextWidget' ) ).to.have.length( 1 );
+			expect( wrapper.find( '.TextWidget' ) ).to.have.length( 2 );
 		} );
 	} );
 } );
