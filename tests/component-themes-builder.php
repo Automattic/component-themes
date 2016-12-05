@@ -13,12 +13,15 @@ function Component_Themes_TextWidget( $props ) {
 };
 
 describe( 'Component_Themes_Builder', function() {
+	beforeEach( function( $c ) {
+		$c->builder = Component_Themes_Builder::get_builder();
+	} );
+
 	describe( '#render()', function() {
 		describe( 'for an unregistered componentType', function() {
 			beforeEach( function( $c ) {
 				$c->theme = [ 'name' => 'TestTheme', 'slug' => 'testtheme' ];
 				$c->page = [ 'id' => 'helloWorld', 'componentType' => 'WeirdThing', 'props' => [ 'text' => 'hello world' ] ];
-				$c->builder = Component_Themes_Builder::get_builder();
 			} );
 
 			it( 'mentions the undefined componentType', function( $c ) {
@@ -31,7 +34,6 @@ describe( 'Component_Themes_Builder', function() {
 			beforeEach( function( $c ) {
 				$c->theme = [ 'name' => 'TestTheme', 'slug' => 'testtheme' ];
 				$c->page = [ 'id' => 'helloWorld', 'componentType' => 'TextWidget', 'props' => [ 'text' => 'hello world' ] ];
-				$c->builder = Component_Themes_Builder::get_builder();
 			} );
 
 			it( 'includes the id as a className', function( $c ) {
@@ -52,6 +54,23 @@ describe( 'Component_Themes_Builder', function() {
 			it( 'includes props not passed in the object description as falsy values', function( $c ) {
 				$result = $c->builder->render( $c->theme, $c->page );
 				expect( $result )->toContain( 'color is: default' );
+			} );
+		} );
+
+		describe( 'with a template that is part of the theme', function() {
+			beforeEach( function( $c ) {
+				$c->theme = [ 'name' => 'TestTheme', 'slug' => 'testtheme', 'templates' => [ 'hello' => [ 'id' => 'helloWorld', 'componentType' => 'TextWidget' ] ] ];
+				$c->page = [ 'template' => 'hello' ];
+			} );
+
+			it( 'includes the template id as a className', function( $c ) {
+				$result = $c->builder->render( $c->theme, $c->page );
+				expect( $result )->toContain( 'helloWorld' );
+			} );
+
+			it( 'includes the template componentType as a className', function( $c ) {
+				$result = $c->builder->render( $c->theme, $c->page );
+				expect( $result )->toContain( 'TextWidget' );
 			} );
 		} );
 	} );
