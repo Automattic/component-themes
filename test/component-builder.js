@@ -7,7 +7,7 @@ import { expect } from 'chai';
 import { buildComponentsFromTheme, mergeThemes } from '~/src/lib/component-builder';
 
 import ComponentThemes from '~/src/app';
-const { registerComponent } = ComponentThemes;
+const { registerComponent, registerPartial } = ComponentThemes;
 
 const TextWidget = ( { text, color, className } ) => {
 	return (
@@ -27,6 +27,9 @@ const ColumnComponent = ( { children, className } ) => {
 	);
 };
 registerComponent( 'ColumnComponent', ColumnComponent );
+
+const TestPartial = { id: 'helloWorld', componentType: 'TextWidget', props: { text: 'test partial' } };
+registerPartial( 'TestPartial', TestPartial );
 
 let theme;
 let page;
@@ -114,6 +117,31 @@ describe( 'buildComponentsFromTheme()', function() {
 		beforeEach( function() {
 			theme = { name: 'TestTheme', slug: 'testtheme', partials: { hello: { id: 'helloWorld', componentType: 'TextWidget', props: { text: 'something' } } } };
 			page = { id: 'layout', componentType: 'ColumnComponent', children: [ { id: 'existing', componentType: 'TextWidget' }, { partial: 'hello' } ] };
+		} );
+
+		it( 'does not affect sibling components', function() {
+			const Result = buildComponentsFromTheme( theme, page );
+			const wrapper = shallow( Result );
+			expect( wrapper.find( '.existing' ) ).to.have.length( 1 );
+		} );
+
+		it( 'includes the partial id as a className', function() {
+			const Result = buildComponentsFromTheme( theme, page );
+			const wrapper = shallow( Result );
+			expect( wrapper.find( '.helloWorld' ) ).to.have.length( 1 );
+		} );
+
+		it( 'includes the partial componentType as a className', function() {
+			const Result = buildComponentsFromTheme( theme, page );
+			const wrapper = shallow( Result );
+			expect( wrapper.find( '.TextWidget' ) ).to.have.length( 2 );
+		} );
+	} );
+
+	describe( 'with a registered partial that is not part of the theme', function() {
+		beforeEach( function() {
+			theme = { name: 'TestTheme', slug: 'testtheme' };
+			page = { id: 'layout', componentType: 'ColumnComponent', children: [ { id: 'existing', componentType: 'TextWidget' }, { partial: 'TestPartial' } ] };
 		} );
 
 		it( 'does not affect sibling components', function() {

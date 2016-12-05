@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom';
  */
 import { ComponentThemePage } from '~/src/';
 import { apiDataWrapper } from '~/src/lib/api';
-import { registerComponent } from '~/src/lib/components';
+import { registerComponent, registerPartial } from '~/src/lib/components';
 import { makeComponentWith, getPropsFromParent } from '~/src/lib/component-builder';
 import Styles from '~/src/components/Styles';
 import defaultTheme from '~/src/themes/default.json';
@@ -24,6 +24,7 @@ const ComponentThemes = {
 
 	React,
 	registerComponent,
+	registerPartial,
 	apiDataWrapper,
 	makeComponentWith,
 	getPropsFromParent,
