@@ -76,5 +76,29 @@ describe( 'buildComponentsFromTheme()', function() {
 			expect( wrapper.text() ).to.contain( 'color is: default' );
 		} );
 	} );
+
+	describe( 'with a template that is part of the theme', function() {
+		beforeEach( function() {
+			theme = { name: 'TestTheme', slug: 'testtheme', templates: { hello: { id: 'helloWorld', componentType: 'TextWidget', props: { text: 'something' } } } };
+			page = { template: 'hello' };
+		} );
+
+		it( 'returns a React component', function() {
+			const Result = buildComponentsFromTheme( theme, page );
+			expect( Result.props ).to.include.keys( 'text' );
+		} );
+
+		it( 'includes the template id as a className', function() {
+			const Result = buildComponentsFromTheme( theme, page );
+			const wrapper = shallow( Result );
+			expect( wrapper.find( '.helloWorld' ) ).to.have.length( 1 );
+		} );
+
+		it( 'includes the template componentType as a className', function() {
+			const Result = buildComponentsFromTheme( theme, page );
+			const wrapper = shallow( Result );
+			expect( wrapper.find( '.TextWidget' ) ).to.have.length( 1 );
+		} );
+	} );
 } );
 
