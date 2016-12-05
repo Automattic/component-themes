@@ -5,7 +5,6 @@ require( __DIR__ . '/class-component-themes-api.php' );
 require( __DIR__ . '/class-component-themes-builder.php' );
 require( __DIR__ . '/class-component-themes-styles.php' );
 require( __DIR__ . '/class-react.php' );
-require( __DIR__ . '/core-components.php' );
 
 class Component_Themes {
 	public function render_page( $theme, $slug, $page = [], $content = [] ) {
