@@ -1,5 +1,6 @@
-import React from 'react';
-import { getPropsFromParent } from '~/src/lib/component-builder';
+/* globals window */
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent, getPropsFromParent } = ComponentThemes;
 
 function convertNewlines( content ) {
 	return content.replace( /\n/g, '<br />' );
@@ -25,4 +26,4 @@ PostContent.editableProps = {
 };
 
 const mapProps = ( { content } ) => ( { content } );
-export default getPropsFromParent( mapProps )( PostContent );
+registerComponent( 'PostContent', getPropsFromParent( mapProps )( PostContent ) );

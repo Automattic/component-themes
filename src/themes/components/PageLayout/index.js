@@ -1,4 +1,6 @@
-import React from 'react';
+/* globals window */
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent } = ComponentThemes;
 
 const PageLayout = ( { children, className } ) => {
 	return (
@@ -13,4 +15,4 @@ const PageLayout = ( { children, className } ) => {
 PageLayout.description = 'A wrapper for a whole page. Always use this as the parent component for all other page elements.';
 PageLayout.hasChildren = true;
 
-export default PageLayout;
+registerComponent( 'PageLayout', PageLayout );

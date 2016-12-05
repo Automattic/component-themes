@@ -1,12 +1,6 @@
-/**
- * External dependencies
- */
-import React from 'react';
-
-/**
- * Internal dependencies
- */
-import Styles from '~/src/components/Styles';
+/* globals window */
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent, Styles } = ComponentThemes;
 
 const css = `
 .MenuWidget .MenuWidget__title {
@@ -52,5 +46,5 @@ MenuWidget.editableProps = {
 	}
 };
 
-export default MenuWidget;
+registerComponent( 'MenuWidget', MenuWidget );
 

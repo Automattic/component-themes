@@ -5,22 +5,7 @@ require( __DIR__ . '/class-component-themes-api.php' );
 require( __DIR__ . '/class-component-themes-builder.php' );
 require( __DIR__ . '/class-component-themes-styles.php' );
 require( __DIR__ . '/class-react.php' );
-
-// TODO: register these components automatically
-require( __DIR__ . '/../src/themes/components/SearchWidget/index.php' );
-require( __DIR__ . '/../src/themes/components/MenuWidget/index.php' );
-require( __DIR__ . '/../src/themes/components/RowComponent/index.php' );
-require( __DIR__ . '/../src/themes/components/TextWidget/index.php' );
-require( __DIR__ . '/../src/themes/components/PostList/index.php' );
-require( __DIR__ . '/../src/themes/components/PostBody/index.php' );
-require( __DIR__ . '/../src/themes/components/PostTitle/index.php' );
-require( __DIR__ . '/../src/themes/components/PostDate/index.php' );
-require( __DIR__ . '/../src/themes/components/PostAuthor/index.php' );
-require( __DIR__ . '/../src/themes/components/PostContent/index.php' );
-require( __DIR__ . '/../src/themes/components/ColumnComponent/index.php' );
-require( __DIR__ . '/../src/themes/components/FooterText/index.php' );
-require( __DIR__ . '/../src/themes/components/HeaderText/index.php' );
-require( __DIR__ . '/../src/themes/components/PageLayout/index.php' );
+require( __DIR__ . '/core-components.php' );
 
 class Component_Themes {
 	public function render_page( $theme, $slug, $page = [], $content = [] ) {

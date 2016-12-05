@@ -110,7 +110,6 @@ class Component_Themes_Public {
 				<title><?php wp_title(); ?></title>
 				<link rel="profile" href="http://gmpg.org/xfn/11" />
 				<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
-				<script src="/wp-content/plugins/component-themes/build/app.js"></script>
 				<style> body { padding: 0; margin: 0; font-family: Sans-Serif; } </style>
 		</head>
 		<body>
@@ -125,12 +124,14 @@ $renderer = new Component_Themes();
 $rendered_output = $renderer->render_page( $theme_config, $page_slug, $page_config );
 echo $rendered_output;
 ?>
-	<script type="text/javascript">
+		<script src="/wp-content/plugins/component-themes/build/app.js"></script>
+		<script src="/wp-content/plugins/component-themes/build/core-components.js"></script>
+		<script type="text/javascript">
 const themeConfig = <?php echo json_encode( $theme_config ); ?>;
 const pageConfig = <?php echo json_encode( $page_config ); ?>;
 const pageSlug = '<?php echo $page_slug ?>';
 ComponentThemes.renderPage( themeConfig, pageSlug, pageConfig, window.document.getElementById( 'root' ) );
-	</script>
+		</script>
 	</body>
 </html>
 <?php

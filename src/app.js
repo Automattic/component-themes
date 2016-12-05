@@ -1,22 +1,32 @@
-/* globals window, require */
-/* eslint-disable no-var */
+/* globals window */
 
 /**
  * External dependencies
  */
-var React = require( 'react' );
-var ReactDOM = require( 'react-dom' );
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 /**
  * Internal dependencies
  */
-var ComponentThemePage = require( '../build' ).ComponentThemePage;
+import { ComponentThemePage } from '~/src/';
+import { apiDataWrapper } from '~/src/lib/api';
+import { registerComponent } from '~/src/lib/components';
+import { makeComponentWith, getPropsFromParent } from '~/src/lib/component-builder';
+import Styles from '~/src/components/Styles';
 
-var ComponentThemes = {
+const ComponentThemes = {
 	renderPage: function( theme, slug, page, target ) {
-		var App = React.createElement( ComponentThemePage, { theme, page, slug } );
+		const App = <ComponentThemePage theme={ theme } page={ page } slug={ slug } />;
 		ReactDOM.render( App, target );
-	}
+	},
+
+	React,
+	registerComponent,
+	apiDataWrapper,
+	makeComponentWith,
+	getPropsFromParent,
+	Styles,
 };
 
 window.ComponentThemes = ComponentThemes;

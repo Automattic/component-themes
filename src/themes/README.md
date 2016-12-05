@@ -62,6 +62,10 @@ Here is a slightly more realistic example of a theme for a blog (still without a
 }
 ```
 
+## Components
+
+You can read more about the format of Components in the [Components README](./components/README.md).
+
 ## Core Components
 
 There are two main categories of components: **container** components and **content** components. Container components generally have few or no visual elements but serve to lay out other components. Content components display some content. Both are designed to be customized by providing props (content and settings).

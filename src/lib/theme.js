@@ -1,7 +1,4 @@
-/* global require, module */
-
-// no import because this is running directly from node
-const omit = require( 'lodash' ).omit;
+/* global module */
 
 // These style functions are similar to those in lib/styles but include spacing
 function getStyleStringFromStyleData( style ) {
@@ -23,7 +20,11 @@ function getStylesFromTheme( themeConfig ) {
 }
 
 function getNonStylesFromTheme( themeConfig ) {
-	return JSON.stringify( omit( themeConfig, 'styles' ), null, 2 );
+	const configWithoutStyles = Object.keys( themeConfig ).reduce( ( newConfig, key ) => {
+		( key === 'styles' ) && ( newConfig[ key ] = themeConfig[ key ] );
+		return newConfig;
+	}, {} );
+	return JSON.stringify( configWithoutStyles, null, 2 );
 }
 
 function buildTheme( styles, components ) {

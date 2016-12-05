@@ -1,4 +1,6 @@
-import React from 'react';
+/* globals window */
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent } = ComponentThemes;
 
 const ColumnComponent = ( { children, className } ) => {
 	return (
@@ -11,4 +13,4 @@ const ColumnComponent = ( { children, className } ) => {
 ColumnComponent.description = 'A generic layout component for rendering children with no styling included.';
 ColumnComponent.hasChildren = true;
 
-export default ColumnComponent;
+registerComponent( 'ColumnComponent', ColumnComponent );

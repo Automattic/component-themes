@@ -9,12 +9,14 @@ Each theme component is a React Component which will be available to be used in 
 3. It should include a description. You can export a `description` property on the Component object (eg: `TextWidget.description = 'This is a box for text';`).
 4. All its data should come from props. There ideally should be no calls to outside libraries, unless it's just for processing data.
 5. It should include meta-data about its editable props. Rather than, or in addition to, using React's `propTypes`, you can export an `editableProps` property on the Component object which contains meta-data about each prop. The meta-data should be an object that has two properties of its own: `type` (a string describing the property type, like `'boolean'` or `'string'` or `'array'`), and `label` (a string description for that property).
-6. It must be registered in `lib/components`.
+6. It must be registered in JS by calling `ComponentThemes.registerComponent()` before the theme is rendered.
+7. It must be registered in PHP by including the component file before the theme is rendered.
 
 Here's an example component:
 
 ```js
-import React from 'react';
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent } = ComponentThemes;
 
 const TextWidget = ( { text, className } ) => {
 	return (
@@ -32,7 +34,7 @@ TextWidget.editableProps = {
 	}
 };
 
-export default TextWidget;
+registerComponent( 'TextWidget', TextWidget );
 ```
 
 The PHP version of the component can be slightly simpler because it does not require the description and editableProps properties, but it can use `React::createElement()` which is what the JSX in the React component will be transpiled into.
@@ -59,9 +61,8 @@ These pieces of data are specified differently in React and PHP as shown below.
 In JavaScript we use a Higher Order Component function called 'apiDataWrapper'. The function accepts two arguments: an array of endpoints required, and a function to map the api data (the same pieces of data as noted above).
 
 ```js
-import React from 'react';
-
-import { apiDataWrapper, getApiEndpoint } from '~/src/lib/api';
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent, apiDataWrapper } = ComponentThemes;
 
 const HeaderText = ( { siteTitle, siteTagline, className } ) => {
 	return (
@@ -85,15 +86,14 @@ HeaderText.editableProps = {
 };
 
 const mapApiToProps = ( api ) => {
-	const siteInfo = getApiEndpoint( api, '/' );
+	const siteInfo = api[ '/' ];
 	return {
 		siteTitle: siteInfo && siteInfo.name,
 		siteTagline: siteInfo && siteInfo.description,
 	};
 };
 
-export default apiDataWrapper( [ '/' ], mapApiToProps )( HeaderText );
-
+registerComponent( 'HeaderText', apiDataWrapper( [ '/' ], mapApiToProps )( HeaderText ) );
 ```
 
 In PHP we must use a different technique. The component class should have the static property `$required_api_endpoints` which is an array of API endpoints. It must then also have a static function `map_api_to_props` which translates the API data into the props required by the component.

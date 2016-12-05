@@ -1,5 +1,6 @@
-import React from 'react';
-import { getPropsFromParent } from '~/src/lib/component-builder';
+/* globals window */
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent, getPropsFromParent } = ComponentThemes;
 
 const PostDate = ( { date, className } ) => {
 	return (
@@ -18,5 +19,5 @@ PostDate.editableProps = {
 };
 
 const mapProps = ( { date } ) => ( { date } );
-export default getPropsFromParent( mapProps )( PostDate );
+registerComponent( 'PostDate', getPropsFromParent( mapProps )( PostDate ) );
 
