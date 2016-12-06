@@ -168,13 +168,13 @@ describe( 'mergeThemes()', function() {
 	let theme1, theme2;
 
 	beforeEach( function() {
-		theme1 = { name: 'First Theme', slug: 'first', templates: { firstTemplate: { id: 'helloWorld', componentType: 'TextWidget', props: { text: 'first text' } }, mergingTemplate: { id: 'toBeOverwritten', componentType: 'TextWidget' } } };
-		theme2 = { name: 'Second Theme', partials: {}, templates: { secondTemplate: { id: 'helloWorld', componentType: 'TextWidget', props: { text: 'second text' } }, mergingTemplate: { id: 'overwriter', componentType: 'TextWidget' } } };
+		theme1 = { name: 'First Theme', slug: 'first', 'additional-styles': { basic: '.foo { color: green; }' }, templates: { firstTemplate: { id: 'helloWorld', componentType: 'TextWidget', props: { text: 'first text' } }, mergingTemplate: { id: 'toBeOverwritten', componentType: 'TextWidget' } } };
+		theme2 = { name: 'Second Theme', partials: { hello: { id: 'helloWorld', componentType: 'TextWidget', props: { text: 'something' } } }, templates: { secondTemplate: { id: 'helloWorld', componentType: 'TextWidget', props: { text: 'second text' } }, mergingTemplate: { id: 'overwriter', componentType: 'TextWidget' } } };
 	} );
 
 	it( 'includes the keys of both themes', function() {
 		const newTheme = mergeThemes( theme1, theme2 );
-		expect( newTheme ).to.include.keys( 'name', 'slug', 'partials', 'templates' );
+		expect( newTheme ).to.include.keys( 'name', 'slug', 'partials', 'templates', 'additional-styles' );
 	} );
 
 	it( 'includes the templates in the first theme', function() {
@@ -209,5 +209,15 @@ describe( 'mergeThemes()', function() {
 	it( 'overwrites object property properties of the first theme with those of the second', function() {
 		const newTheme = mergeThemes( theme1, theme2 );
 		expect( newTheme.templates.mergingTemplate.id ).to.equal( 'overwriter' );
+	} );
+
+	it( 'contains the object properties of the second theme that are not present in the first', function() {
+		const newTheme = mergeThemes( theme1, theme2 );
+		expect( newTheme.partials ).to.include.keys( 'hello' );
+	} );
+
+	it( 'contains the object properties of the first theme that are not present in the second', function() {
+		const newTheme = mergeThemes( theme1, theme2 );
+		expect( newTheme[ 'additional-styles' ] ).to.include.keys( 'basic' );
 	} );
 } );

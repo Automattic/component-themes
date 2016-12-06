@@ -122,8 +122,8 @@ describe( 'Component_Themes_Builder', function() {
 
 	describe( '#merge_themes()', function() {
 		beforeEach( function( $c ) {
-			$c->theme1 = [ 'name' => 'First Theme', 'slug' => 'first', 'templates' => [ 'firstTemplate' => [ 'id' => 'helloWorld', 'componentType' => 'TextWidget', 'props' => [ 'text' => 'first text' ] ], 'mergingTemplate' => [ 'id' => 'toBeOverwritten', 'componentType' => 'TextWidget' ] ] ];
-			$c->theme2 = [ 'name' => 'Second Theme', 'partials' => [], 'templates' => [ 'secondTemplate' => [ 'id' => 'helloWorld', 'componentType' => 'TextWidget', 'props' => [ 'text' => 'second text' ] ], 'mergingTemplate' => [ 'id' => 'overwriter', 'componentType' => 'TextWidget' ] ] ];
+			$c->theme1 = [ 'name' => 'First Theme', 'slug' => 'first', 'templates' => [ 'firstTemplate' => [ 'id' => 'helloWorld', 'componentType' => 'TextWidget', 'props' => [ 'text' => 'first text' ] ], 'mergingTemplate' => [ 'id' => 'toBeOverwritten', 'componentType' => 'TextWidget' ] ], 'additional-styles' => [ 'basic' => '.foo{ color: green; }' ] ];
+			$c->theme2 = [ 'name' => 'Second Theme', 'partials' => [ 'hello' => [ 'id' => 'helloWorld', 'componentType' => 'TextWidget' ] ], 'templates' => [ 'secondTemplate' => [ 'id' => 'helloWorld', 'componentType' => 'TextWidget', 'props' => [ 'text' => 'second text' ] ], 'mergingTemplate' => [ 'id' => 'overwriter', 'componentType' => 'TextWidget' ] ] ];
 		} );
 
 		it( 'includes the keys of both themes', function( $c ) {
@@ -131,6 +131,7 @@ describe( 'Component_Themes_Builder', function() {
 			expect( array_keys( $theme ) )->toContain( 'name' );
 			expect( array_keys( $theme ) )->toContain( 'slug' );
 			expect( array_keys( $theme ) )->toContain( 'partials' );
+			expect( array_keys( $theme ) )->toContain( 'additional-styles' );
 			expect( array_keys( $theme ) )->toContain( 'templates' );
 		} );
 
@@ -166,6 +167,16 @@ describe( 'Component_Themes_Builder', function() {
 		it( 'overwrites object property properties of the first theme with those of the second', function( $c ) {
 			$theme = $c->builder->merge_themes( $c->theme1, $c->theme2 );
 			expect( $theme['templates']['mergingTemplate']['id'] )->toEqual( 'overwriter' );
+		} );
+
+		it( 'contains the object properties of the second theme that are not present in the first', function( $c ) {
+			$theme = $c->builder->merge_themes( $c->theme1, $c->theme2 );
+			expect( array_keys( $theme['partials'] ) )->toContain( 'hello' );
+		} );
+
+		it( 'contains the object properties of the first theme that are not present in the second', function( $c ) {
+			$theme = $c->builder->merge_themes( $c->theme1, $c->theme2 );
+			expect( array_keys( $theme['additional-styles'] ) )->toContain( 'basic' );
 		} );
 	} );
 } );

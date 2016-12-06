@@ -197,6 +197,14 @@ class Component_Themes_Builder {
 		$has_string_keys = function( array $ary ) {
 			return count( array_filter( array_keys( $ary ), 'is_string' ) ) > 0;
 		};
+		$prop1 = ct_get_value( $theme1, $property );
+		$prop2 = ct_get_value( $theme2, $property );
+		if ( ! isset( $prop1 ) && isset( $prop2 ) ) {
+			return $prop2;
+		}
+		if ( ! isset( $prop2 ) && isset( $prop1 ) ) {
+			return $prop1;
+		}
 		$prop1 = ct_get_value( $theme1, $property, [] );
 		$prop2 = ct_get_value( $theme2, $property, [] );
 		if ( ! is_array( $prop1 ) || ! is_array( $prop2 ) ) {
