@@ -97,5 +97,24 @@ describe( 'Component_Themes_Builder', function() {
 				expect( $result )->toContain( 'helloWorld' );
 			} );
 		} );
+
+		describe( 'with a registered partial that is not part of the theme', function() {
+			beforeEach( function( $c ) {
+				$c->theme = [ 'name' => 'TestTheme', 'slug' => 'testtheme' ];
+				$c->page = [ 'id' => 'layout', 'componentType' => 'ColumnComponent', 'children' => [ [ 'id' => 'existing', 'componentType' => 'TextWidget' ], [ 'partial' => 'TestPartial' ] ] ];
+				$test_partial = [ 'id' => 'helloWorld', 'componentType' => 'TextWidget', 'props' => [ 'text' => 'test partial' ] ];
+				$c->builder->register_partial( 'TestPartial', $test_partial );
+			} );
+
+			it( 'does not affect sibling components', function( $c ) {
+				$result = $c->builder->render( $c->theme, $c->page );
+				expect( $result )->toContain( 'existing' );
+			} );
+
+			it( 'includes the partial id as a className', function( $c ) {
+				$result = $c->builder->render( $c->theme, $c->page );
+				expect( $result )->toContain( 'helloWorld' );
+			} );
+		} );
 	} );
 } );
