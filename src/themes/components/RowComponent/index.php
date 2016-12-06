@@ -5,8 +5,9 @@ $row_component = function( $props, $children ) {
 };
 
 $styled = Component_Themes::style_component( $row_component, '
+.RowComponent {
 	display: flex;
 	justify-content: space-between;
-' );
+}' );
 
 Component_Themes::register_component( 'RowComponent', $styled );

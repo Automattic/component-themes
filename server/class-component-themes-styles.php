@@ -11,19 +11,18 @@ class Component_Themes_Styles {
 		$styler = Component_Themes_Styles::get_styler();
 		$class_name = $builder->generate_id( $component );
 		$scoped_styles = $styler->get_scoped_styles( $class_name, $styles );
-		$styler->add_styles_to_header( $class_name, $scoped_styles );
+		$styler->add_styles_to_header( $scoped_styles );
 		return function( $props, $children ) use ( &$component, &$class_name ) {
-			// TODO: this is somehow not rendering the component content
 			$props['className'] = $class_name . ' ' . ct_get_value( $props, 'className', '' );
 			return React::createElement( $component, $props, $children );
 		};
 	}
 
 	public function get_scoped_styles( $class_name, $styles ) {
-		return ".$class_name { $styles }";
+		return $this->prepend_namespace_to_style_string( ".$class_name", $styles );
 	}
 
-	public function add_styles_to_header( $key, $styles ) {
+	public function add_styles_to_header( $styles ) {
 		echo '<style type="text/css" class="component-themes-styles">' . $styles . '</style>';
 	}
 
