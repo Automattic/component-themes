@@ -12,10 +12,10 @@ class Component_Themes_Styles {
 		$class_name = $builder->generate_id( $component );
 		$scoped_styles = $styler->get_scoped_styles( $class_name, $styles );
 		$styler->add_styles_to_header( $class_name, $scoped_styles );
-		return function( $props ) use ( &$component, &$class_name ) {
+		return function( $props, $children ) use ( &$component, &$class_name ) {
 			// TODO: this is somehow not rendering the component content
 			$props['className'] = $class_name . ' ' . ct_get_value( $props, 'className', '' );
-			return React::createElement( $component, $props );
+			return React::createElement( $component, $props, $children );
 		};
 	}
 

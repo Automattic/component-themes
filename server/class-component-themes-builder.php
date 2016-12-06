@@ -40,7 +40,7 @@ class Component_Themes_Stateless_Component extends Component_Themes_Component {
 	}
 
 	public function render() {
-		return call_user_func( $this->function_name, $this->props, $this );
+		return call_user_func( $this->function_name, $this->props, $this->children, $this );
 	}
 }
 
@@ -63,22 +63,22 @@ class Component_Themes_Builder {
 		return $component->render();
 	}
 
-	public function create_element( $component_type, $props = [], $children = [] ) {
+	public function create_element( $component, $props = [], $children = [] ) {
 		$context = ct_get_value( $props, 'context', [] );
 		$props = array_merge( $props, [ 'context' => $context ] );
-		if ( is_callable( $component_type ) ) {
-			return new Component_Themes_Stateless_Component( $component_type, $props, $children );
+		if ( is_callable( $component ) ) {
+			return new Component_Themes_Stateless_Component( $component, $props, $children );
 		}
-		if ( ! ctype_upper( $component_type[0] ) ) {
-			return new Component_Themes_Html_Component( $component_type, $props, $children );
+		if ( ! ctype_upper( $component[0] ) ) {
+			return new Component_Themes_Html_Component( $component, $props, $children );
 		}
-		if ( function_exists( $component_type ) ) {
-			return new Component_Themes_Stateless_Component( $component_type, $props, $children );
+		if ( function_exists( $component ) ) {
+			return new Component_Themes_Stateless_Component( $component, $props, $children );
 		}
-		if ( isset( $component_type::$required_api_endpoints ) ) {
-			$props = $this->api->api_data_wrapper( $props, $context, $component_type::$required_api_endpoints, $component_type );
+		if ( isset( $component::$required_api_endpoints ) ) {
+			$props = $this->api->api_data_wrapper( $props, $context, $component::$required_api_endpoints, $component );
 		}
-		return new $component_type( $props, $children );
+		return new $component( $props, $children );
 	}
 
 	public function make_component_with( $component_config, $child_props = [] ) {
