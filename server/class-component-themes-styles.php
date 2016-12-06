@@ -19,13 +19,19 @@ class Component_Themes_Styles {
 	}
 
 	public function build_styles_from_theme( $theme_config ) {
-		$styles = isset( $theme_config['styles'] ) ? $theme_config['styles'] : [];
+		$styles = ct_get_value( $theme_config, 'styles', [] );
 		if ( is_string( $styles ) ) {
-			return $this->prepend_namespace_to_style_string( '.ComponentThemes', $this->expand_style_variants( $styles, $theme_config ) );
+			return $this->prepend_namespace_to_style_string( '.ComponentThemes', $this->expand_style_variants( $this->add_additional_styles( $styles, $theme_config ), $theme_config ) );
 		}
-		return $this->expand_style_variants( implode( '', array_map( function( $key ) use ( &$styles ) {
+		$basic_styles = implode( '', array_map( function( $key ) use ( &$styles ) {
 			return $this->build_style_block( $key, $styles[ $key ] );
-		}, array_keys( $styles ) ) ), $theme_config );
+		}, array_keys( $styles ) ) );
+		return $this->expand_style_variants( $this->add_additional_styles( $basic_styles, $theme_config ), $theme_config );
+	}
+
+	private function add_additional_styles( $styles, $theme_config ) {
+		$additional = ct_get_value( $theme_config, 'additional-styles', [] );
+		return $styles . implode( '', array_values( $additional ) );
 	}
 
 	private function expand_style_variants( $styles, $theme_config ) {
