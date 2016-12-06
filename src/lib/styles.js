@@ -26,16 +26,15 @@ function prependNamespaceToStyleString( namespace, styles ) {
 }
 
 function expandStyleVariants( styles, themeConfig ) {
-	if ( ! themeConfig[ 'variant-styles' ] || ! themeConfig[ 'active-variant-styles' ] ) {
+	if ( ! themeConfig[ 'variant-styles' ] ) {
 		return styles;
 	}
 	const variants = themeConfig[ 'variant-styles' ];
-	const activeVariants = themeConfig[ 'active-variant-styles' ] || [];
-	const defaults = variants.defaults || {};
-	const finalVariants = activeVariants.reduce( ( prev, variantKey ) => {
+	const activeVariants = [ 'defaults' ].concat( themeConfig[ 'active-variant-styles' ] || [] );
+	const variantValues = activeVariants.reduce( ( prev, variantKey ) => {
 		return Object.assign( {}, prev, variants[ variantKey ] || {} );
-	}, defaults );
-	return Object.keys( finalVariants ).reduce( ( prev, varName ) => prev.replace( `$${ varName }`, finalVariants[ varName ] ), styles );
+	}, {} );
+	return Object.keys( variantValues ).reduce( ( prev, varName ) => prev.replace( `$${ varName }`, variantValues[ varName ] ), styles );
 }
 
 function addAdditionalStyles( styles, themeConfig ) {
