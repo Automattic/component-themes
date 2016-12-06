@@ -22,7 +22,7 @@ function prependNamespaceToStyleString( namespace, styles ) {
 	const updatedObj = traverse( styleObj ).map( function( node ) {
 		return this.key === 'selectors' ? this.update( node.map( selector => `${ namespace } ${ selector }` ) ) : node;
 	} );
-	return css.stringify( updatedObj );
+	return css.stringify( updatedObj, { compress: true } );
 }
 
 function expandStyleVariants( styles, themeConfig ) {
