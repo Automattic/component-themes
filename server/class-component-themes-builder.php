@@ -6,6 +6,12 @@ class Component_Themes_Not_Found_Component extends Component_Themes_Component {
 	}
 }
 
+// @codingStandardsIgnoreStart
+function Component_Themes_ErrorComponent( $props ) {
+	// @codingStandardsIgnoreEnd
+	return '<p>' . ct_get_value( $props, 'message' ) . '</p>';
+}
+
 class Component_Themes_Html_Component extends Component_Themes_Component {
 	public function __construct( $tag = 'div', $props = [], $children = [] ) {
 		parent::__construct( $props, $children );
@@ -40,6 +46,7 @@ class Component_Themes_Stateless_Component extends Component_Themes_Component {
 
 class Component_Themes_Builder {
 	private $api;
+	private $registered_partials = [];
 
 	public function __construct( $options ) {
 		$this->api = isset( $options['api'] ) ? $options['api'] : null;
@@ -97,7 +104,27 @@ class Component_Themes_Builder {
 		};
 	}
 
+	private function get_partial_by_type( $type ) {
+		if ( isset( $this->registered_partials[ $type ] ) ) {
+			return $this->registered_partials[ $type ];
+		}
+		return [ 'componentType' => 'ErrorComponent', 'props' => [ 'message' => "I could not find the partial '$type'" ] ];
+	}
+
+	public function register_partial( $type, $component_config ) {
+		$this->registered_partials[ $type ] = $component_config;
+	}
+
+	private function register_partials( $partials ) {
+		foreach ( $partials as $type => $config ) {
+			$this->register_partial( $type, $config );
+		}
+	}
+
 	private function build_component_from_config( $component_config, $component_data ) {
+		if ( isset( $component_config['partial'] ) ) {
+			return $this->build_component_from_config( $this->get_partial_by_type( $component_config['partial'] ), $component_data );
+		}
 		if ( ! isset( $component_config['componentType'] ) ) {
 			$name = ct_get_value( $component_config, 'id', json_encode( $component_config ) );
 			return $this->create_element( 'Component_Themes_Not_Found_Component', [ 'componentType' => $name ] );
@@ -107,9 +134,14 @@ class Component_Themes_Builder {
 			return $this->build_component_from_config( $child, $component_data );
 		}, $component_config['children'] ) : [];
 		$props = isset( $component_config['props'] ) ? $component_config['props'] : [];
-		$data = isset( $component_data[ $component_config['id'] ] ) ? $component_data[ $component_config['id'] ] : [];
+		$component_config['id'] = ct_get_value( $component_config, 'id', $this->generate_id( $component_config ) );
+		$data = ct_get_value( $component_data, $component_config['id'], [] );
 		$component_props = array_merge( $props, $data, [ 'componentId' => $component_config['id'], 'className' => $this->build_classname_for_component( $component_config ) ] );
 		return $this->create_element( $found_component, $component_props, $child_components );
+	}
+
+	private function generate_id( $data ) {
+		return hash( 'md5', json_encode( $data ) );
 	}
 
 	private function build_classname_for_component( $component_config ) {
@@ -195,8 +227,8 @@ class Component_Themes_Builder {
 
 	private function build_components_from_theme( $theme_config, $page_config, $component_data ) {
 		$theme_config = $this->merge_themes( $this->get_default_theme(), $theme_config );
-		$partials = isset( $theme_config['partials'] ) ? $theme_config['partials'] : [];
-		return $this->build_component_from_config( $this->expand_config_partials( $this->expand_config_templates( $page_config, $theme_config ), $partials ), $component_data );
+		$this->register_partials( ct_get_value( $theme_config, 'partials', [] ) );
+		return $this->build_component_from_config( $this->expand_config_templates( $page_config, $theme_config ), $component_data );
 	}
 
 	public function render( $theme_config, $page_config, $component_data = [] ) {
