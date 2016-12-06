@@ -7,19 +7,11 @@ class Component_Themes_Styles {
 	}
 
 	public static function style_component( $component, $styles ) {
-		$builder = Component_Themes_Builder::get_builder();
 		$styler = Component_Themes_Styles::get_styler();
-		$class_name = $builder->generate_id( $component );
-		$scoped_styles = $styler->get_scoped_styles( $class_name, $styles );
-		$styler->add_styles_to_header( $scoped_styles );
+		$styler->add_styles_to_header( $styles );
 		return function( $props, $children ) use ( &$component, &$class_name ) {
-			$props['className'] = $class_name . ' ' . ct_get_value( $props, 'className', '' );
 			return React::createElement( $component, $props, $children );
 		};
-	}
-
-	public function get_scoped_styles( $class_name, $styles ) {
-		return $this->prepend_namespace_to_style_string( ".$class_name", $styles );
 	}
 
 	public function add_styles_to_header( $styles ) {

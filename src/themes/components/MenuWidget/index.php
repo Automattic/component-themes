@@ -19,12 +19,12 @@ class Component_Themes_MenuWidget extends Component_Themes_Component {
 }
 
 $styled = Component_Themes::style_component( 'Component_Themes_MenuWidget', '
-.MenuWidget__title {
+.MenuWidget .MenuWidget__title {
   font-size: 0.8em;
   margin: 5px 0 0;
   padding: 0;
 }
-ul {
+.MenuWidget ul {
   list-style: none;
   margin: 5px 0 0 10px;
   padding: 0;
