@@ -20,11 +20,11 @@ class Component_Themes_Styles {
 	}
 
 	public function get_scoped_styles( $class_name, $styles ) {
-		return "$class_name { $styles }";
+		return ".$class_name { $styles }";
 	}
 
 	public function add_styles_to_header( $key, $styles ) {
-		// TODO: add styles to end of HEAD or beginning of BODY (they must be overridden by the JS)
+		echo '<style type="text/css" class="component-themes-styles">' . $styles . '</style>';
 	}
 
 	public function build_styles_from_theme( $theme_config ) {

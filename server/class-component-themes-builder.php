@@ -135,7 +135,7 @@ class Component_Themes_Builder {
 	}
 
 	public function generate_id( $data ) {
-		return hash( 'md5', json_encode( $data ) );
+		return 'ct-' . hash( 'md5', json_encode( $data ) );
 	}
 
 	private function build_classname_for_component( $component_config ) {
