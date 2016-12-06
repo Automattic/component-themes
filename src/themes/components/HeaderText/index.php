@@ -21,3 +21,4 @@ class Component_Themes_HeaderText extends Component_Themes_Component {
 	}
 }
 
+Component_Themes::register_component( 'HeaderText', 'Component_Themes_HeaderText' );

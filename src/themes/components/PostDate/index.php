@@ -4,3 +4,4 @@ function Component_Themes_PostDate( $props, $component ) {
 	return "<span class='PostDate'>$date</span>";
 }
 
+Component_Themes::register_component( 'PostDate', 'Component_Themes_PostDate' );

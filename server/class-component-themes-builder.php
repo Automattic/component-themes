@@ -40,12 +40,13 @@ class Component_Themes_Stateless_Component extends Component_Themes_Component {
 	}
 
 	public function render() {
-		return call_user_func( $this->function_name, (object) $this->props, $this );
+		return call_user_func( $this->function_name, $this->props, $this );
 	}
 }
 
 class Component_Themes_Builder {
 	private $api;
+	private static $registered_components = [];
 	private static $registered_partials = [];
 
 	public function __construct( $options ) {
@@ -84,10 +85,13 @@ class Component_Themes_Builder {
 		return $this->build_component_from_config( $component_config, $child_props );
 	}
 
+	public static function register_component( $type, $component ) {
+		self::$registered_components[ $type ] = $component;
+	}
+
 	private function get_component_by_type( $type ) {
-		$namespaced_type = 'Component_Themes_' . $type;
-		if ( function_exists( $namespaced_type ) || class_exists( $namespaced_type ) ) {
-			return $namespaced_type;
+		if ( isset( self::$registered_components[ $type ] ) ) {
+			return self::$registered_components[ $type ];
 		}
 		return function() use ( &$type ) {
 			return "Could not find component '" . $type . "'";
@@ -130,7 +134,7 @@ class Component_Themes_Builder {
 		return $this->create_element( $found_component, $component_props, $child_components );
 	}
 
-	private function generate_id( $data ) {
+	public function generate_id( $data ) {
 		return hash( 'md5', json_encode( $data ) );
 	}
 

@@ -27,4 +27,16 @@ class Component_Themes {
 		}
 		return $this->default_theme;
 	}
+
+	public static function register_component( $type, $component ) {
+		return Component_Themes_Builder::register_component( $type, $component );
+	}
+
+	public static function register_partial( $type, $component_config ) {
+		return Component_Themes_Builder::register_partial( $type, $component_config );
+	}
+
+	public static function style_component( $component, $styles ) {
+		return Component_Themes_Styles::style_component( $component, $styles );
+	}
 }

@@ -4,23 +4,24 @@ use function Corretto\describe, Corretto\it, Corretto\expect, Corretto\beforeEac
 require( './server/class-component-themes.php' );
 
 // @codingStandardsIgnoreStart
-function Component_Themes_TextWidget( $props ) {
+function component_Themes_Text_Widget( $props ) {
 	// @codingStandardsIgnoreEnd
 	$class = ct_get_value( $props, 'className', '' );
 	$text = ct_get_value( $props, 'text', 'This is a text widget with no data!' );
 	$color = ct_get_value( $props, 'color', 'default' );
 	return React::createElement( 'div', [ 'className' => $class ], [ React::createElement( 'p', [], 'text is: ' . $text ), React::createElement( 'p', [], 'color is: ' . $color ) ] );
 };
-// @codingStandardsIgnoreStart
-class Component_Themes_ColumnComponent extends Component_Themes_Component {
-	// @codingStandardsIgnoreEnd
+Component_Themes::register_component( 'TextWidget', 'Component_Themes_Text_Widget' );
+
+class Component_Themes_Column_Component extends Component_Themes_Component {
 	public function render() {
 		return "<div class='" . $this->get_prop( 'className' ) . "'>" . $this->render_children() . '</div>';
 	}
 }
+Component_Themes::register_component( 'ColumnComponent', 'Component_Themes_Column_Component' );
 
 $test_partial = [ 'id' => 'helloWorld', 'componentType' => 'TextWidget', 'props' => [ 'text' => 'test partial' ] ];
-Component_Themes_Builder::register_partial( 'TestPartial', $test_partial );
+Component_Themes::register_partial( 'TestPartial', $test_partial );
 
 describe( 'Component_Themes_Builder', function() {
 	beforeEach( function( $c ) {

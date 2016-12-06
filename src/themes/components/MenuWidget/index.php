@@ -42,3 +42,5 @@ class Component_Themes_MenuWidget extends Component_Themes_Component {
 ';
 	}
 }
+
+Component_Themes::register_component( 'MenuWidget', 'Component_Themes_MenuWidget' );

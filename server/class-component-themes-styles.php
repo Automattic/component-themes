@@ -2,6 +2,31 @@
 require( dirname( __DIR__ ) . '/server_requirements/CSS-Parser/parser.php' );
 
 class Component_Themes_Styles {
+	public static function get_styler() {
+		return new Component_Themes_Styles();
+	}
+
+	public static function style_component( $component, $styles ) {
+		$builder = Component_Themes_Builder::get_builder();
+		$styler = Component_Themes_Styles::get_styler();
+		$class_name = $builder->generate_id( $component );
+		$scoped_styles = $styler->get_scoped_styles( $class_name, $styles );
+		$styler->add_styles_to_header( $class_name, $scoped_styles );
+		return function( $props ) use ( &$component, &$class_name ) {
+			// TODO: this is somehow not rendering the component content
+			$props['className'] = $class_name . ' ' . ct_get_value( $props, 'className', '' );
+			return React::createElement( $component, $props );
+		};
+	}
+
+	public function get_scoped_styles( $class_name, $styles ) {
+		return "$class_name { $styles }";
+	}
+
+	public function add_styles_to_header( $key, $styles ) {
+		// TODO: add styles to end of HEAD or beginning of BODY (they must be overridden by the JS)
+	}
+
 	public function build_styles_from_theme( $theme_config ) {
 		$styles = isset( $theme_config['styles'] ) ? $theme_config['styles'] : [];
 		if ( is_string( $styles ) ) {

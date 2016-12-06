@@ -5,3 +5,4 @@ class Component_Themes_PageLayout extends Component_Themes_Component {
 	}
 }
 
+Component_Themes::register_component( 'PageLayout', 'Component_Themes_PageLayout' );

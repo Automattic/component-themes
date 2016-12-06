@@ -5,3 +5,5 @@ class Component_Themes_ColumnComponent extends Component_Themes_Component {
 	}
 }
 
+Component_Themes::register_component( 'ColumnComponent', 'Component_Themes_ColumnComponent' );
+
