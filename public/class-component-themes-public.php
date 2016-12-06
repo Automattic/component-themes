@@ -100,6 +100,9 @@ class Component_Themes_Public {
 
 	}
 
+	/**
+	 * @SuppressWarnings(PHPMD.ExitExpression)
+	 */
 	public function render_page() {
 		// TODO: include wp_head except for stylesheets
 ?>
