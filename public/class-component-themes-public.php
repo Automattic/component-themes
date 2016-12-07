@@ -100,6 +100,9 @@ class Component_Themes_Public {
 
 	}
 
+	/**
+	 * @SuppressWarnings(PHPMD.ExitExpression)
+	 */
 	public function render_page() {
 		// TODO: include wp_head except for stylesheets
 ?>
@@ -116,6 +119,7 @@ class Component_Themes_Public {
 			<div id="root">
 <?php
 require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'server/class-component-themes.php' );
+require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'server/core-components.php' );
 $theme_config = json_decode( file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'themes/kubrick/theme.json' ), true );
 $page_config = null;
 $page_slug = ( is_home() || is_front_page() ) ? 'home' : get_post_field( 'post_name', get_post() );

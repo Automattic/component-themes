@@ -72,6 +72,7 @@ To render a page using PHP, use the `Component_Themes->render_page()` method:
 ```php
 <?php
 require( './node_modules/component-themes/server/class-component-themes.php' );
+require( './node_modules/component-themes/server/core-components.php' );
 
 $themeConfig = json_decode( '{
 	"name": "MyTheme",

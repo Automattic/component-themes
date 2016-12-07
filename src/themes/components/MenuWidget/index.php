@@ -9,36 +9,31 @@ class Component_Themes_MenuWidget extends Component_Themes_Component {
 			$text = $link['text'];
 			return "<li class='MenuWidget__link'><a href=$url>$text</a></li>";
 		}, $links ) );
-		$styles = '<style>' . $this->getStyles() . '</style>';
 		return "<div class='" . $this->get_prop( 'className' ) . "'>
-		$styles
 		$title_area
 		<ul>
 			$links_area
 		</ul>
 		</div>";
 	}
+}
 
-	private function getStyles() {
-		return '
+$styled = Component_Themes::style_component( 'Component_Themes_MenuWidget', '
 .MenuWidget .MenuWidget__title {
   font-size: 0.8em;
   margin: 5px 0 0;
   padding: 0;
 }
-
 .MenuWidget ul {
   list-style: none;
   margin: 5px 0 0 10px;
   padding: 0;
 }
-
 .MenuWidget__link {
   margin: 3px 0 0;
   padding: 0;
   list-style-type: none;
   list-style-image: none;
-}
-';
-	}
-}
+}' );
+
+Component_Themes::register_component( 'MenuWidget', $styled );

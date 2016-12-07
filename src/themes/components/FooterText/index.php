@@ -6,3 +6,4 @@ class Component_Themes_FooterText extends Component_Themes_Component {
 	}
 }
 
+Component_Themes::register_component( 'FooterText', 'Component_Themes_FooterText' );

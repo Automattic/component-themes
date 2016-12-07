@@ -8,15 +8,17 @@ import shortid from 'shortid';
 /**
  * Internal dependencies
  */
-import { getComponentByType } from '~/src/lib/components';
-import defaultTheme from 'json-loader!../themes/default.json';
+import { getComponentByType, getPartialByType, registerPartial } from '~/src/lib/components';
 
 function buildComponent( Component, props = {}, children = [] ) {
 	return <Component key={ props.key } { ...props }>{ children }</Component>;
 }
 
 function buildComponentTreeFromConfig( componentConfig, childProps = {} ) {
-	const { id, componentType, children, props } = componentConfig;
+	const { id, componentType, children, props, partial } = componentConfig;
+	if ( partial ) {
+		return buildComponentTreeFromConfig( getPartialByType( partial ), childProps );
+	}
 	const componentId = id || shortid.generate();
 	const Component = getComponentByType( componentType );
 	const childComponents = children ? children.map( child => buildComponentTreeFromConfig( child, childProps ) ) : null;
@@ -58,30 +60,17 @@ function buildComponentFromConfig( componentConfig, content = {} ) {
 	return buildComponentFromTree( buildComponentTreeFromConfig( componentConfig ), content );
 }
 
-function expandConfigPartials( componentConfig, partials ) {
-	if ( componentConfig.partial ) {
-		if ( partials[ componentConfig.partial ] ) {
-			return partials[ componentConfig.partial ];
-		}
-		return { componentType: 'ErrorComponent', props: { message: `No partial found matching '${ componentConfig.partial }'` } };
-	}
-	if ( componentConfig.children ) {
-		const children = componentConfig.children.map( child => expandConfigPartials( child, partials ) );
-		return Object.assign( {}, componentConfig, { children } );
-	}
-	return componentConfig;
-}
-
 function mergeThemeProperty( property, theme1, theme2 ) {
+	const isObject = obj => ( ! Array.isArray( obj ) && obj === Object( obj ) );
 	const prop1 = theme1[ property ] || {};
 	const prop2 = theme2[ property ] || {};
-	if ( typeof prop1 === 'string' || typeof prop2 === 'string' ) {
+	if ( ! isObject( prop1 ) || ! isObject( prop2 ) ) {
 		return prop2;
 	}
 	return Object.assign( {}, prop1, prop2 );
 }
 
-function mergeThemes( theme1, theme2 ) {
+export function mergeThemes( theme1, theme2 ) {
 	const properties = Object.keys( theme1 ).concat( Object.keys( theme2 ) ).filter( ( val, index, keys ) => keys.indexOf( val ) === index );
 	return properties.reduce( ( theme, prop ) => {
 		theme[ prop ] = mergeThemeProperty( prop, theme1, theme2 );
@@ -90,16 +79,19 @@ function mergeThemes( theme1, theme2 ) {
 }
 
 function expandConfigTemplates( componentConfig, themeConfig ) {
-	const mergedThemeConfig = mergeThemes( defaultTheme, themeConfig );
 	if ( componentConfig.template ) {
-		return getTemplateForSlug( mergedThemeConfig, componentConfig.template );
+		return getTemplateForSlug( themeConfig, componentConfig.template );
 	}
 	return componentConfig;
 }
 
+function registerPartials( partials ) {
+	Object.keys( partials ).map( key => registerPartial( key, partials[ key ] ) );
+}
+
 export function buildComponentsFromTheme( themeConfig, pageConfig, content = {} ) {
-	const mergedThemeConfig = mergeThemes( defaultTheme, themeConfig );
-	return buildComponentFromConfig( expandConfigPartials( expandConfigTemplates( pageConfig, mergedThemeConfig ), mergedThemeConfig.partials || {} ), content );
+	registerPartials( themeConfig.partials || {} );
+	return buildComponentFromConfig( expandConfigTemplates( pageConfig, themeConfig ), content );
 }
 
 export function getTemplateForSlug( themeConfig, slug ) {

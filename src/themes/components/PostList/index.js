@@ -5,7 +5,7 @@ const { React, registerComponent, apiDataWrapper, makeComponentWith } = Componen
 const PostList = ( { posts, post, className } ) => {
 	const defaultPostConfig = { componentType: 'PostBody', children: [
 		{ componentType: 'PostTitle' },
-		{ componentType: 'PostDate' },
+		{ partial: 'PostDateAndAuthor' },
 		{ componentType: 'PostContent' }
 	] };
 	return (

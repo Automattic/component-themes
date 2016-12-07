@@ -1,16 +1,13 @@
 <?php
-class Component_Themes_RowComponent extends Component_Themes_Component {
-	public function render() {
-		$styles = '<style>' . $this->getStyles() . '</style>';
-		return "<div class='" . $this->get_prop( 'className' ) . "'>$styles" . $this->render_children() . '</div>';
-	}
+$row_component = function( $props, $children ) {
+	$class_name = ct_get_value( $props, 'className', '' );
+	return React::createElement( 'div', [ 'className' => $class_name ], $children );
+};
 
-	private function getStyles() {
-		return '
+$styled = Component_Themes::style_component( $row_component, '
 .RowComponent {
-  display: flex;
-  justify-content: space-between;
-}
-';
-	}
-}
+	display: flex;
+	justify-content: space-between;
+}' );
+
+Component_Themes::register_component( 'RowComponent', $styled );

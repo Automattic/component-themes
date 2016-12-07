@@ -250,9 +250,9 @@ Here are all the types of styles in the order they are applied.
 
 ### Component Type styles
 
-Some components have styles built-in. You cannot change these, but you can override them using the the theme.
+Some components have styles built-in. You cannot change these, but you can override them using the the theme. See [the Components README](./components/README.md) for more information about these.
 
-**You cannot change these directly!**
+These can be overridden by `additional-styles` in a theme.
 
 ### Theme Global styles
 
@@ -277,8 +277,6 @@ To target specific parts of a component, use the modified BEM syntax, where two 
 ```json
 ".PostTitle_link { color: #333; font-family: 'Trebuchet MS','Lucida Grande',Verdana,Arial,Sans-Serif; font-size: 1.2em; font-weight: bold; text-decoration: none; }"
 ```
-
-**Use this type of style the most!**
 
 ### Theme Component Instance styles
 
@@ -331,3 +329,17 @@ Site editors should expose these variants to the user as theme options. Any numb
 }
 ```
 
+## Additional Styles
+
+Each theme may also have any number of "additional styles" which are style strings that will be appended to all the styles when they are written to the page. Each `additional-styles` string requires a key, but that key is used only for descriptive purporses so it can be anything that makes sense for those rules. Generally these will be used by the theme to override Component Styles or by the user to override theme styles.
+
+```json
+{
+	"name": "MyTheme",
+	"slug": "mytheme",
+	"styles": ".contentLayout { font-family: 'Lucida Grande',Verdana,Arial,Sans-Serif; padding: 0 0 20px 45px; } .siteLayout { background-color: #e7e7e7;height: 100%; } .myPosts { width: 450px; }",
+	"additional-styles": {
+		"red text": "p { color: red; }"
+	}
+}
+```

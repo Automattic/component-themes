@@ -8,21 +8,22 @@ import React, { Component, PropTypes } from 'react';
  */
 import Styles from '~/src/components/Styles';
 import { buildStylesFromTheme } from '~/src/lib/styles';
-import { buildComponentsFromTheme, getTemplateForSlug } from '~/src/lib/component-builder';
+import { buildComponentsFromTheme, getTemplateForSlug, mergeThemes } from '~/src/lib/component-builder';
 import { apiDataProvider } from '~/src/lib/api';
 
 class ComponentThemePage extends Component {
 	render() {
-		const page = this.props.page || getTemplateForSlug( this.props.theme, this.props.slug );
+		const theme = mergeThemes( this.props.defaultTheme || {}, this.props.theme );
+		const page = this.props.page || getTemplateForSlug( theme, this.props.slug );
 		const children = buildComponentsFromTheme(
-			this.props.theme,
+			theme,
 			page,
 			this.props.content || {}
 		);
-		const styles = buildStylesFromTheme( this.props.theme, this.props.content );
+		const styles = buildStylesFromTheme( theme, this.props.content );
 		return (
 			<div className="ComponentThemes">
-				<Styles styles={ styles } />
+				<Styles name="ComponentThemePage__styles" styles={ styles } />
 				{ children }
 			</div>
 		);
@@ -31,6 +32,7 @@ class ComponentThemePage extends Component {
 
 ComponentThemePage.propTypes = {
 	theme: PropTypes.object.isRequired,
+	defaultTheme: PropTypes.object.isRequired,
 	page: PropTypes.object,
 	slug: PropTypes.string.isRequired,
 	content: PropTypes.object,

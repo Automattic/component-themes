@@ -1,18 +1,10 @@
 /* globals window */
 const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent, Styles } = ComponentThemes;
-
-const css = `
-.RowComponent {
-	display: flex;
-	justify-content: space-between;
-}
-`;
+const { React, registerComponent, styled } = ComponentThemes;
 
 const RowComponent = ( { children, className } ) => {
 	return (
 		<div className={ className }>
-			<Styles styles={ css } />
 			{ children }
 		</div>
 	);
@@ -21,4 +13,9 @@ const RowComponent = ( { children, className } ) => {
 RowComponent.description = 'A wrapper for a row of components. Always use this as the parent component for content components.';
 RowComponent.hasChildren = true;
 
-registerComponent( 'RowComponent', RowComponent );
+const Styled = styled( RowComponent )`
+	display: flex;
+	justify-content: space-between;
+`;
+
+registerComponent( 'RowComponent', Styled );

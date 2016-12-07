@@ -9,3 +9,4 @@ class Component_Themes_PostTitle extends Component_Themes_Component {
 	}
 }
 
+Component_Themes::register_component( 'PostTitle', 'Component_Themes_PostTitle' );

@@ -1,5 +1,5 @@
 <?php
-abstract class Component_Themes_Component {
+class Component_Themes_Component {
 	protected $builder;
 
 	public function __construct( $props = [], $children = [] ) {

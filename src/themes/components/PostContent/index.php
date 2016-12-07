@@ -9,3 +9,4 @@ class Component_Themes_PostContent extends Component_Themes_Component {
 	}
 }
 
+Component_Themes::register_component( 'PostContent', 'Component_Themes_PostContent' );

@@ -1,11 +1,11 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import React from 'react';
+import { writeStylesToPage } from '~/src/lib/styles';
 
-const Styles = ( { styles } ) => {
-	// eslint-disable-next-line react/no-danger
-	return <style dangerouslySetInnerHTML={ { __html: styles } } />;
+const Styles = ( { name, styles } ) => {
+	writeStylesToPage( name, styles );
+	return null;
 };
 
 export default Styles;

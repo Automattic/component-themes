@@ -10,7 +10,7 @@ Each theme component is a React Component which will be available to be used in 
 4. All its data should come from props. There ideally should be no calls to outside libraries, unless it's just for processing data.
 5. It should include meta-data about its editable props. Rather than, or in addition to, using React's `propTypes`, you can export an `editableProps` property on the Component object which contains meta-data about each prop. The meta-data should be an object that has two properties of its own: `type` (a string describing the property type, like `'boolean'` or `'string'` or `'array'`), and `label` (a string description for that property).
 6. It must be registered in JS by calling `ComponentThemes.registerComponent()` before the theme is rendered.
-7. It must be registered in PHP by including the component file before the theme is rendered.
+7. It must be registered in PHP by including the component file before the theme is rendered and calling `Component_Themes::register_component()`.
 
 Here's an example component:
 
@@ -42,11 +42,12 @@ The PHP version of the component can be slightly simpler because it does not req
 ```php
 <?php
 function Component_Themes_TextWidget( $props ) {
-	$text = isset( $props->text ) ? $props->text : 'This is a text widget with no data!';
-	$className = isset( $props->className ) ? $props->className : '';
-	return React::createElement('div',['className' => $className],$text);
+	$text = ct_get_value( $props, 'text', 'This is a text widget with no data!' );
+	$class_name = ct_get_value( $props, 'className', '' );
+	return React::createElement( 'div', [ 'className' => $class_name ], $text );
 }
 
+Component_Themes::register_component( 'TextWidget', 'Component_Themes_TextWidget' );
 ```
 
 ## Required API data
@@ -124,6 +125,51 @@ class Component_Themes_HeaderText extends Component_Themes_Component {
 	}
 }
 
+Component_Themes::register_component( 'HeaderText', 'Component_Themes_HeaderText' );
+```
+
+## Component Styles
+
+Some components need default styles applied that are independent of the theme. These can be applied in the component definition.
+
+In JavaScript we use the `styled()` Higher-Order-Component function. Note that in the JS version we **must** skip a className for the top-level tag, as it will be added automatically. See the documentation for [Styled Components](https://github.com/styled-components/styled-components) for more information.
+
+```js
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent, styled } = ComponentThemes;
+
+const RowComponent = ( { children, className } ) => {
+	return (
+		<div className={ className }>
+			{ children }
+		</div>
+	);
+};
+
+const Styled = styled( RowComponent )`
+	display: flex;
+	justify-content: space-between;
+`;
+
+registerComponent( 'RowComponent', Styled );
+```
+
+In PHP we use `Component_Themes::style_component()`. Note that in the PHP version, we **must** specify classNames explicity. Bare style rules will not be automatically wrapped in a selector as they are in JavaScript.
+
+```php
+<?php
+$row_component = function( $props, $children ) {
+	$class_name = ct_get_value( $props, 'className', '' );
+	return React::createElement( 'div', [ 'className' => $class_name ], $children );
+};
+
+$styled = Component_Themes::style_component( $row_component, '
+.RowComponent {
+	display: flex;
+	justify-content: space-between;
+}' );
+
+Component_Themes::register_component( 'RowComponent', $styled );
 ```
 
 For more information about how Theme Components are used see the [Theme documentation](../themes/README.md).
