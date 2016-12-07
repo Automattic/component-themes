@@ -5,18 +5,6 @@
 import css from 'css';
 import traverse from 'traverse';
 
-function minifyStyleString( styleString ) {
-	return styleString.split( /\s*\n\s*/ ).join( '' );
-}
-
-function getStyleStringFromStyleData( style ) {
-	return minifyStyleString( Array.isArray( style ) ? style.join( '' ) : style );
-}
-
-function buildStyleBlock( key, style ) {
-	return `.ComponentThemes ${ key }{${ getStyleStringFromStyleData( style ) }}`;
-}
-
 function prependNamespaceToStyleString( namespace, styles ) {
 	const styleObj = css.parse( styles, { silent: true } );
 	const updatedObj = traverse( styleObj ).map( function( node ) {
@@ -44,13 +32,7 @@ function addAdditionalStyles( styles, themeConfig ) {
 
 export function buildStylesFromTheme( themeConfig ) {
 	const stylesByComponent = themeConfig.styles || {};
-	if ( typeof stylesByComponent === 'string' ) {
-		return prependNamespaceToStyleString( '.ComponentThemes', expandStyleVariants( addAdditionalStyles( stylesByComponent, themeConfig ), themeConfig ) );
-	}
-	const basicStyles = Object.keys( stylesByComponent )
-		.map( key => buildStyleBlock( key, stylesByComponent[ key ] ) )
-		.join( '' );
-	return expandStyleVariants( addAdditionalStyles( basicStyles, themeConfig ), themeConfig );
+	return prependNamespaceToStyleString( '.ComponentThemes', expandStyleVariants( addAdditionalStyles( stylesByComponent, themeConfig ), themeConfig ) );
 }
 
 export function writeStylesToPage( key, styles ) {

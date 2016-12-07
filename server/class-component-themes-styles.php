@@ -20,13 +20,7 @@ class Component_Themes_Styles {
 
 	public function build_styles_from_theme( $theme_config ) {
 		$styles = ct_get_value( $theme_config, 'styles', [] );
-		if ( is_string( $styles ) ) {
-			return $this->strip_whitespace( $this->prepend_namespace_to_style_string( '.ComponentThemes', $this->expand_style_variants( $this->add_additional_styles( $styles, $theme_config ), $theme_config ) ) );
-		}
-		$basic_styles = implode( '', array_map( function( $key ) use ( &$styles ) {
-			return $this->build_style_block( $key, $styles[ $key ] );
-		}, array_keys( $styles ) ) );
-		return $this->expand_style_variants( $this->add_additional_styles( $basic_styles, $theme_config ), $theme_config );
+		return $this->strip_whitespace( $this->prepend_namespace_to_style_string( '.ComponentThemes', $this->expand_style_variants( $this->add_additional_styles( $styles, $theme_config ), $theme_config ) ) );
 	}
 
 	private function strip_whitespace( $styles ) {
@@ -54,14 +48,6 @@ class Component_Themes_Styles {
 		return array_reduce( array_keys( $final_variants ), function( $prev, $var_name ) use ( &$final_variants ) {
 			return str_replace( '$' . $var_name, $final_variants[ $var_name ], $prev );
 		}, $styles );
-	}
-
-	private function build_style_block( $key, $style ) {
-		return ".ComponentThemes $key{" . $this->get_style_string_from_style_data( $style ) . '}';
-	}
-
-	private function get_style_string_from_style_data( $style ) {
-		return is_array( $style ) ? implode( '', $style ) : $style;
 	}
 
 	private function prepend_namespace_to_node( $namespace, $val ) {
