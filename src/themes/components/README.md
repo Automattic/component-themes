@@ -126,4 +126,48 @@ class Component_Themes_HeaderText extends Component_Themes_Component {
 
 ```
 
+## Component Styles
+
+Some components need default styles applied that are independent of the theme. These can be applied in the component definition.
+
+In JavaScript we use the `styled()` Higher-Order-Component function. Note that in the JS version we **must** skip a className for the top-level tag, as it will be added automatically. See the documentation for [Styled Components](https://github.com/styled-components/styled-components) for more information.
+
+```js
+const ComponentThemes = window.ComponentThemes;
+const { React, registerComponent, styled } = ComponentThemes;
+
+const RowComponent = ( { children, className } ) => {
+	return (
+		<div className={ className }>
+			{ children }
+		</div>
+	);
+};
+
+const Styled = styled( RowComponent )`
+	display: flex;
+	justify-content: space-between;
+`;
+
+registerComponent( 'RowComponent', Styled );
+```
+
+In PHP we use `Component_Themes::style_component()`. Note that in the PHP version, we **must** specify classNames explicity. Bare style rules will not be automatically wrapped in a selector as they are in JavaScript.
+
+```php
+<?php
+$row_component = function( $props, $children ) {
+	$class_name = ct_get_value( $props, 'className', '' );
+	return React::createElement( 'div', [ 'className' => $class_name ], $children );
+};
+
+$styled = Component_Themes::style_component( $row_component, '
+.RowComponent {
+	display: flex;
+	justify-content: space-between;
+}' );
+
+Component_Themes::register_component( 'RowComponent', $styled );
+```
+
 For more information about how Theme Components are used see the [Theme documentation](../themes/README.md).
