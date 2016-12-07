@@ -34,6 +34,7 @@ const mapApiToProps = ( api ) => {
 		title: post.title.rendered,
 		content: post.content.rendered,
 		date: post.date,
+		link: post.link,
 	} ) );
 	return { posts };
 };

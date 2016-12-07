@@ -30,6 +30,7 @@ class Component_Themes_PostList extends Component_Themes_Component {
 				'title' => $post['title']['rendered'],
 				'date' => $post['date'],
 				'content' => $post['content']['rendered'],
+				'link' => $post['link'],
 			];
 		}, $posts_data );
 		return [ 'posts' => $posts ];
