@@ -33,7 +33,7 @@ export function getBootstrappedRequiredApiData() {
 	if ( window.ComponentThemesApiData ) {
 		return window.ComponentThemesApiData;
 	}
-	return { api: {} };
+	return { api: {}, pageInfo: {} };
 }
 
 export function apiDataWrapper( mapApiToProps ) {
@@ -61,6 +61,7 @@ export function apiDataProvider() {
 		class ApiProvider extends React.Component {
 			constructor( props ) {
 				super( props );
+				this.setPageInfo = this.setPageInfo.bind( this );
 				this.getApiEndpoint = this.getApiEndpoint.bind( this );
 				this.fetchApiData = this.fetchApiData.bind( this );
 				const apiProps = getBootstrappedRequiredApiData();
@@ -69,6 +70,12 @@ export function apiDataProvider() {
 
 			getChildContext() {
 				return { apiProps: this.state.apiProps, fetchApiData: this.fetchApiData, getApiEndpoint: this.getApiEndpoint };
+			}
+
+			setPageInfo( info ) {
+				const pageInfo = Object.assign( {}, this.state.apiProps.pageInfo, info );
+				const apiProps = Object.assign( {}, this.state.apiProps, { pageInfo } );
+				this.setState( { apiProps } );
 			}
 
 			getApiEndpoint( endpoint ) {
@@ -92,7 +99,8 @@ export function apiDataProvider() {
 			}
 
 			render() {
-				return <Target { ...this.props }>{ this.props.children }</Target>;
+				const props = Object.assign( {}, this.props, { setPageInfo: this.setPageInfo } );
+				return <Target { ...props }>{ this.props.children }</Target>;
 			}
 		}
 

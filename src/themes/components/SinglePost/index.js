@@ -28,7 +28,7 @@ SinglePost.editableProps = {
 };
 
 const mapApiToProps = ( getApiEndpoint, state ) => {
-	const { postId } = state.pageInfo;
+	const { postId } = state.pageInfo || {};
 	if ( ! postId ) {
 		return {};
 	}

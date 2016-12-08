@@ -142,7 +142,6 @@ echo $rendered_output;
 const themeConfig = <?php echo json_encode( $theme_config ); ?>;
 const pageConfig = <?php echo json_encode( $page_config ); ?>;
 const pageInfo = <?php echo json_encode( $page_info ); ?>;
-// TODO: awkward passing pageInfo here and also down through the state tree. This should be everything the renderer needs.
 ComponentThemes.renderPage( themeConfig, pageInfo, pageConfig, window.document.getElementById( 'root' ) );
 		</script>
 	</body>
