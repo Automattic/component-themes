@@ -26,12 +26,14 @@ $wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_SinglePost', fu
 		return [];
 	}
 	$post = call_user_func( $get_api_endpoint, '/wp/v2/posts/' . $post_id );
+	$author = call_user_func( $get_api_endpoint, '/wp/v2/users/' . $post['author'] );
 	return [
 		'postData' => [
 			'title' => $post['title']['rendered'],
 			'date' => $post['date'],
 			'content' => $post['content']['rendered'],
 			'link' => $post['link'],
+			'author' => $author['name'],
 		],
 	];
 } );

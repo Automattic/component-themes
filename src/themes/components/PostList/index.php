@@ -24,12 +24,14 @@ class Component_Themes_PostList extends Component_Themes_Component {
 
 $wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_PostList', function( $get_api_endpoint ) {
 	$posts_data = call_user_func( $get_api_endpoint, '/wp/v2/posts' );
-	$posts = array_map( function( $post ) {
+	$posts = array_map( function( $post ) use ( &$get_api_endpoint ) {
+		$author = call_user_func( $get_api_endpoint, '/wp/v2/users/' . $post['author'] );
 		return [
 			'title' => $post['title']['rendered'],
 			'date' => $post['date'],
 			'content' => $post['content']['rendered'],
 			'link' => $post['link'],
+			'author' => $author['name'],
 		];
 	}, ct_or( $posts_data, [] ) );
 	return [ 'posts' => $posts ];

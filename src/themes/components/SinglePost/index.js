@@ -36,12 +36,14 @@ const mapApiToProps = ( getApiEndpoint, state ) => {
 	if ( ! post ) {
 		return {};
 	}
+	const author = getApiEndpoint( '/wp/v2/users/' + post.author ) || {};
 	return {
 		postData: {
 			title: post.title.rendered,
 			content: post.content.rendered,
 			date: post.date,
 			link: post.link,
+			author: author.name,
 		}
 	};
 };
