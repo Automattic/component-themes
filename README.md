@@ -44,11 +44,11 @@ const themeConfig = {
 const pageConfig = { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
 	{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
 ] };
-const pageSlug = 'home';
+const info = { slug: 'home' };
 
 const App = () => (
 	<div>
-		<ComponentThemePage theme={ themeConfig } page={ pageConfig } slug={ pageSlug } />
+		<ComponentThemePage theme={ themeConfig } page={ pageConfig } info={ info } />
 	</div>
 );
 ```
@@ -63,8 +63,8 @@ const themeConfig = {
 const pageConfig = { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
 	{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
 ] };
-const pageSlug = 'home';
-ComponentThemes.renderPage( themeConfig, pageSlug, pageConfig, document.getElementById( 'root' ) );
+const info = { slug: 'home' };
+ComponentThemes.renderPage( themeConfig, info, pageConfig, document.getElementById( 'root' ) );
 ```
 
 To render a page using PHP, use the `Component_Themes->render_page()` method:
@@ -81,10 +81,17 @@ $themeConfig = json_decode( '{
 $pageConfig = json_decode( '{ "id": "siteLayout", "componentType": "ColumnComponent", "children": [
 	{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
 ] }', true );
-$pageSlug = 'home';
+$page_slug = ( is_home() || is_front_page() ) ? 'home' : get_post_field( 'post_name', get_post() );
+$page_type = ( is_home() || is_front_page() ) ? 'home' : ( is_single() ? 'post' : ( is_archive() ? 'archive' : 'page' ) );
+$page_id = ( 'post' === $page_type || 'page' === $page_type ) ? $wp_query->post->ID : '';
+$page_info = [
+	'slug' => $page_slug,
+	'type' => $page_type,
+	'postId' => $page_id,
+];
 
 $renderer = new Component_Themes();
-$rendered_output = $renderer->render_page( $themeConfig, $pageSlug, $pageConfig );
+$rendered_output = $renderer->render_page( $theme_config, $page_info, $page_config );
 echo $rendered_output;
 ```
 
