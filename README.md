@@ -44,11 +44,11 @@ const themeConfig = {
 const pageConfig = { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
 	{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
 ] };
-const pageSlug = 'home';
+const info = { slug: 'home' };
 
 const App = () => (
 	<div>
-		<ComponentThemePage theme={ themeConfig } page={ pageConfig } slug={ pageSlug } />
+		<ComponentThemePage theme={ themeConfig } page={ pageConfig } info={ info } />
 	</div>
 );
 ```
@@ -63,8 +63,8 @@ const themeConfig = {
 const pageConfig = { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
 	{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
 ] };
-const pageSlug = 'home';
-ComponentThemes.renderPage( themeConfig, pageSlug, pageConfig, document.getElementById( 'root' ) );
+const info = { slug: 'home' };
+ComponentThemes.renderPage( themeConfig, info, pageConfig, document.getElementById( 'root' ) );
 ```
 
 To render a page using PHP, use the `Component_Themes->render_page()` method:
@@ -74,78 +74,24 @@ To render a page using PHP, use the `Component_Themes->render_page()` method:
 require( './node_modules/component-themes/server/class-component-themes.php' );
 require( './node_modules/component-themes/server/core-components.php' );
 
-$themeConfig = json_decode( '{
+$theme_config = json_decode( '{
 	"name": "MyTheme",
 	"slug": "mytheme"
 }', true);
-$pageConfig = json_decode( '{ "id": "siteLayout", "componentType": "ColumnComponent", "children": [
+$page_config = json_decode( '{ "id": "siteLayout", "componentType": "ColumnComponent", "children": [
 	{ "id": "helloWorld", "componentType": "TextWidget", "props": { "text": "hello world" } }
 ] }', true );
-$pageSlug = 'home';
+$page_slug = ( is_home() || is_front_page() ) ? 'home' : get_post_field( 'post_name', get_post() );
+$page_type = ( is_home() || is_front_page() ) ? 'home' : ( is_single() ? 'post' : ( is_archive() ? 'archive' : 'page' ) );
+$page_id = ( 'post' === $page_type || 'page' === $page_type ) ? $wp_query->post->ID : '';
+$page_info = [
+	'slug' => $page_slug,
+	'type' => $page_type,
+	'postId' => $page_id,
+];
 
 $renderer = new Component_Themes();
-$rendered_output = $renderer->render_page( $themeConfig, $pageSlug, $pageConfig );
-echo $rendered_output;
-```
-
-## Content
-
-**WARNING: Heavily subject to change!!**
-
-To inject content (eg: site title, posts) into pages, we will actually provide the content as props to the components that need it. For this to work we need to know the ID of the component we want to pass data to. Here's a component with the ID `myPosts`:
-
-```json
-{ "id": "myPosts", "componentType": "PostList" }
-```
-
-This component accepts an array of posts as a prop and then it displays them. The content, therefore, needs to be an array of post data in a JSON object under the key `myPosts`:
-
-```json
-{"myPosts":{"posts":[{"postId":1,"title":"My First Post","date":"February 22, 2013","author":"The Human","link":"http://localhost:3000","content":"This is my very first blog post."}]}}
-```
-
-This data can then be passed to the rendering engine as an additional parameter.
-
-Here's how to send it in Javascript:
-
-```js
-import { ComponentThemePage } from 'component-themes';
-
-const themeConfig = {
-	"name": "MyTheme",
-	"slug": "mytheme"
-};
-const pageConfig = { "id": "siteLayout", "componentType": "ColumnComponent", "children": [
-	{ "id": "myPosts", "componentType": "PostList" }
-] };
-const pageSlug = 'home';
-const content = {"myPosts":{"posts":[{"postId":1,"title":"My First Post","date":"February 22, 2013","author":"The Human","link":"http://localhost:3000","content":"This is my very first blog post."}]}};
-
-const App = () => (
-	<div>
-		<ComponentThemePage theme={ themeConfig } page={ pageConfig } slug={ pageSlug } content={ content } />
-	</div>
-);
-```
-
-And here's how to send the data in PHP:
-
-```php
-<?php
-require( './node_modules/component-themes/server/class-component-themes.php' );
-
-$themeConfig = json_decode( '{
-	"name": "MyTheme",
-	"slug": "mytheme"
-}', true );
-$pageConfig = json_decode( '{ "id": "siteLayout", "componentType": "ColumnComponent", "children": [
-	{ "id": "myPosts", "componentType": "PostList" }
-] }', true );
-$pageSlug = 'home';
-$content = json_decode( '{"myPosts":{"posts":[{"postId":1,"title":"My First Post","date":"February 22, 2013","author":"The Human","link":"http://localhost:3000","content":"This is my very first blog post."}]}}', true );
-
-$renderer = new Component_Themes();
-$rendered_output = $renderer->render_page( $themeConfig, $pageSlug, $pageConfig, $content );
+$rendered_output = $renderer->render_page( $theme_config, $page_info, $page_config );
 echo $rendered_output;
 ```
 

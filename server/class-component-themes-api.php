@@ -1,29 +1,39 @@
 <?php
 class Component_Themes_Api {
-	private $server;
-	private $api = [];
+	private static $server;
+	private static $state = [ 'api' => [] ];
 
-	public function get_api() {
-		return $this->api;
+	public static function get_api() {
+		return self::$state;
 	}
 
-	public function api_data_wrapper( $props, $context, $endpoints, $class_name ) {
-		$this->api = array_merge( $this->api, ct_get_value( $context, 'apiProps', [] ) );
-		foreach ( $endpoints as $endpoint ) {
-			if ( ! isset( $this->api[ $endpoint ] ) ) {
-				$this->api[ $endpoint ] = $this->fetch_required_api_endpoint( $endpoint );
-			}
+	public static function set_api( $api ) {
+		self::$state = $api;
+	}
+
+	public static function api_data_wrapper( $component, $map_api_to_props ) {
+		return function( $props, $children ) use ( &$component, &$map_api_to_props ) {
+			$context = ct_get_value( $props, 'context', [] );
+			self::$state = array_merge( self::$state, ct_get_value( $context, 'apiProps', [] ) );
+			$new_props = call_user_func( $map_api_to_props, [ 'Component_Themes_Api', 'get_api_endpoint' ], self::$state, $props );
+			$props = array_merge( $props, $new_props );
+			return React::createElement( $component, $props, $children );
+		};
+	}
+
+	public static function get_api_endpoint( $endpoint ) {
+		if ( ! isset( self::$state['api'][ $endpoint ] ) ) {
+			self::$state['api'][ $endpoint ] = self::fetch_required_api_endpoint( $endpoint );
 		}
-		$new_props = call_user_func( array( $class_name, 'map_api_to_props' ), $this->api, $props );
-		return array_merge( $props, $new_props );
+		return self::$state['api'][ $endpoint ];
 	}
 
-	public function fetch_required_api_endpoint( $endpoint ) {
-		if ( ! isset( $this->server ) ) {
-			$this->server = rest_get_server();
+	public static function fetch_required_api_endpoint( $endpoint ) {
+		if ( ! isset( self::$server ) ) {
+			self::$server = rest_get_server();
 		}
 		$request = new WP_REST_Request( 'GET', $endpoint );
-		$response = $this->server->dispatch( $request );
+		$response = self::$server->dispatch( $request );
 		if ( 200 !== $response->get_status() ) {
 			return null;
 		}

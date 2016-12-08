@@ -57,20 +57,19 @@ Many components will require WordPress data from the server. To specify that a c
 1. The list of REST API endpoints needed for the data to be available.
 2. A function to translate the REST API responses into props for the component.
 
-These pieces of data are specified differently in React and PHP as shown below.
-
-In JavaScript we use a Higher Order Component function called 'apiDataWrapper'. The function accepts two arguments: an array of endpoints required, and a function to map the api data (the same pieces of data as noted above).
+In JavaScript we use a Higher Order Component function called 'apiDataWrapper'. The function accepts a mapping function to map the api data (the same pieces of data as noted above). The api data can be accessed using the special function `getApiEndpoint()` which is passed as the first argument to the mapping function. If the data is not available yet, it will then fetch that data.
 
 ```js
+/* globals window */
 const ComponentThemes = window.ComponentThemes;
 const { React, registerComponent, apiDataWrapper } = ComponentThemes;
 
-const HeaderText = ( { siteTitle, siteTagline, className } ) => {
+const HeaderText = ( { link, siteTitle, siteTagline, className } ) => {
 	return (
-		<div className={ className }>
+		<div className={ className }><a href={ link }>
 			<h1 className="HeaderText__title">{ siteTitle || 'My Website' }</h1>
 			<div className="HeaderText__tagline">{ siteTagline || 'My home on the web' }</div>
-		</div>
+		</a></div>
 	);
 };
 
@@ -83,21 +82,26 @@ HeaderText.editableProps = {
 	siteTagline: {
 		type: 'string',
 		label: 'The site sub-title or tagline'
+	},
+	link: {
+		type: 'string',
+		label: 'The header link'
 	}
 };
 
-const mapApiToProps = ( api ) => {
-	const siteInfo = api[ '/' ];
+const mapApiToProps = ( getApiEndpoint ) => {
+	const siteInfo = getApiEndpoint( '/' );
 	return {
 		siteTitle: siteInfo && siteInfo.name,
 		siteTagline: siteInfo && siteInfo.description,
+		link: siteInfo && siteInfo.url,
 	};
 };
 
-registerComponent( 'HeaderText', apiDataWrapper( [ '/' ], mapApiToProps )( HeaderText ) );
+registerComponent( 'HeaderText', apiDataWrapper( mapApiToProps )( HeaderText ) );
 ```
 
-In PHP we must use a different technique. The component class should have the static property `$required_api_endpoints` which is an array of API endpoints. It must then also have a static function `map_api_to_props` which translates the API data into the props required by the component.
+In PHP we use a similar technique. The component must be wrapped in the Higher-Order-Component function `Component_Themes::api_data_wrapper()` which accepts a mapping function as above. Also as above, the first argument to the mapping function is a special function called `get_api_endpoint()` which fetches and returns the endpoint data requested.
 
 *NB: `ct_get_value()` is a helper function that just returns a property in an array if it exists, otherwise it returns a default value.*
 
@@ -108,24 +112,24 @@ class Component_Themes_HeaderText extends Component_Themes_Component {
 		$site_title = ct_get_value( $this->props, 'siteTitle', 'My Website' );
 		$site_tagline = ct_get_value( $this->props, 'siteTagline', 'My home on the web' );
 		$class_name = ct_get_value( $this->props, 'className', '' );
-		return "<div class='$class_name'>
+		$link = ct_get_value( $this->props, 'link', '' );
+		return "<div class='$class_name'><a href='$link'>
       <h1 class='HeaderText__title'>$site_title</h1>
       <div class='HeaderText__tagline'>$site_tagline</div>
-</div>";
-	}
-
-	public static $required_api_endpoints = [ '/' ];
-
-	public static function map_api_to_props( $api ) {
-		$site_info = ct_get_value( $api, '/' );
-		return [
-			'siteTitle' => ct_get_value( $site_info, 'name' ),
-			'siteTagline' => ct_get_value( $site_info, 'description' ),
-		];
+</a></div>";
 	}
 }
 
-Component_Themes::register_component( 'HeaderText', 'Component_Themes_HeaderText' );
+$wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_HeaderText', function( $get_api_endpoint ) {
+	$site_info = call_user_func( $get_api_endpoint, '/' );
+	return [
+		'siteTitle' => ct_get_value( $site_info, 'name' ),
+		'siteTagline' => ct_get_value( $site_info, 'description' ),
+		'link' => ct_get_value( $site_info, 'url' ),
+	];
+} );
+
+Component_Themes::register_component( 'HeaderText', $wrapped );
 ```
 
 ## Component Styles
