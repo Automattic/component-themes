@@ -9,7 +9,7 @@ class Component_Themes_Styles {
 	public static function style_component( $component, $styles ) {
 		$styler = Component_Themes_Styles::get_styler();
 		$styler->add_styles_to_header( $styles );
-		return function( $props, $children ) use ( &$component, &$class_name ) {
+		return function( $props, $children ) use ( &$component ) {
 			return React::createElement( $component, $props, $children );
 		};
 	}
