@@ -9,16 +9,14 @@ class Component_Themes_HeaderText extends Component_Themes_Component {
       <div class='HeaderText__tagline'>$site_tagline</div>
 </div>";
 	}
-
-	public static $required_api_endpoints = [ '/' ];
-
-	public static function map_api_to_props( $api ) {
-		$site_info = ct_get_value( $api, '/' );
-		return [
-			'siteTitle' => ct_get_value( $site_info, 'name' ),
-			'siteTagline' => ct_get_value( $site_info, 'description' ),
-		];
-	}
 }
 
-Component_Themes::register_component( 'HeaderText', 'Component_Themes_HeaderText' );
+$wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_HeaderText', function( $api, $operations ) {
+	$site_info = call_user_func( $operations['get_api_endpoint'], '/' );
+	return [
+		'siteTitle' => ct_get_value( $site_info, 'name' ),
+		'siteTagline' => ct_get_value( $site_info, 'description' ),
+	];
+} );
+
+Component_Themes::register_component( 'HeaderText', $wrapped );

@@ -20,21 +20,18 @@ class Component_Themes_PostList extends Component_Themes_Component {
 		};
 		return "<div class='" . $this->get_prop( 'className' ) . "'>" . implode( '', array_map( $render_blog_post, $posts ) ) . '</div>';
 	}
-
-	public static $required_api_endpoints = [ '/wp/v2/posts' ];
-
-	public static function map_api_to_props( $api ) {
-		$posts_data = ct_get_value( $api, '/wp/v2/posts', [] );
-		$posts = array_map( function( $post ) {
-			return [
-				'title' => $post['title']['rendered'],
-				'date' => $post['date'],
-				'content' => $post['content']['rendered'],
-				'link' => $post['link'],
-			];
-		}, $posts_data );
-		return [ 'posts' => $posts ];
-	}
 }
 
-Component_Themes::register_component( 'PostList', 'Component_Themes_PostList' );
+$wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_PostList', function( $api, $operations ) {
+	$posts_data = call_user_func( $operations['get_api_endpoint'], '/wp/v2/posts' );
+	$posts = array_map( function( $post ) {
+		return [
+			'title' => $post['title']['rendered'],
+			'date' => $post['date'],
+			'content' => $post['content']['rendered'],
+			'link' => $post['link'],
+		];
+	}, ct_or( $posts_data, [] ) );
+	return [ 'posts' => $posts ];
+} );
+Component_Themes::register_component( 'PostList', $wrapped );
