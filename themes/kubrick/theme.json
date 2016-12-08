@@ -19,6 +19,13 @@
 				{ "partial": "PageSidebar" }
 			] },
 			{ "partial": "PageFooter" }
+		] },
+		"post": { "id": "pageLayout", "componentType": "PageLayout", "children": [
+			{ "partial": "PageHeader" },
+			{ "id": "contentLayout", "componentType": "RowComponent", "children": [
+				{ "id": "thePost", "componentType": "SinglePost" }
+			] },
+			{ "partial": "PageFooter" }
 		] }
 	},
 	"partials": {

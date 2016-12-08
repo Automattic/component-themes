@@ -15,3 +15,4 @@ import '~/src/themes/components/PostContent';
 import '~/src/themes/components/ColumnComponent';
 import '~/src/themes/components/PageLayout';
 import '~/src/themes/components/RowComponent';
+import '~/src/themes/components/SinglePost';

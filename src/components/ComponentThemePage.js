@@ -14,7 +14,9 @@ import { apiDataProvider } from '~/src/lib/api';
 class ComponentThemePage extends Component {
 	render() {
 		const theme = mergeThemes( this.props.defaultTheme || {}, this.props.theme );
-		const page = this.props.page || getTemplateForSlug( theme, this.props.slug );
+		const slug = this.props.info.type === 'post' ? 'post' : this.props.info.slug;
+		const page = this.props.page || getTemplateForSlug( theme, slug );
+		//TODO: dispatch: save this.props.info to global state
 		const children = buildComponentsFromTheme(
 			theme,
 			page,
@@ -34,7 +36,7 @@ ComponentThemePage.propTypes = {
 	theme: PropTypes.object.isRequired,
 	defaultTheme: PropTypes.object.isRequired,
 	page: PropTypes.object,
-	slug: PropTypes.string.isRequired,
+	info: PropTypes.object.isRequired,
 	content: PropTypes.object,
 };
 

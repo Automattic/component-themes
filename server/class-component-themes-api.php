@@ -7,6 +7,10 @@ class Component_Themes_Api {
 		return self::$state;
 	}
 
+	public static function set_api( $api ) {
+		self::$state = $api;
+	}
+
 	public static function api_data_wrapper( $component, $map_api_to_props ) {
 		return function( $props, $children ) use ( &$component, &$map_api_to_props ) {
 			$context = ct_get_value( $props, 'context', [] );
