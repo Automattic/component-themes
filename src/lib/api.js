@@ -86,7 +86,8 @@ export function apiDataProvider() {
 				}
 				fetchRequiredApiEndpoint( endpoint )
 					.then( result => {
-						const apiProps = Object.assign( {}, this.state.apiProps, result );
+						const api = Object.assign( {}, this.state.apiProps.api, result );
+						const apiProps = Object.assign( {}, this.state.apiProps, { api } );
 						this.setState( { apiProps } );
 					} );
 			}
