@@ -1,19 +1,6 @@
 <?php
 
 /**
- * The file that defines the core plugin class
- *
- * A class definition that includes attributes and functions used across both the
- * public-facing side of the site and the admin area.
- *
- * @link       http://automattic.com
- * @since      1.0.0
- *
- * @package    Component_Themes
- * @subpackage Component_Themes/includes
- */
-
-/**
  * The core plugin class.
  *
  * This is used to define internationalization, admin-specific hooks, and
@@ -24,8 +11,6 @@
  *
  * @since      1.0.0
  * @package    Component_Themes
- * @subpackage Component_Themes/includes
- * @author     Automattic <payton@a8c.com>
  */
 class Component_Themes_Plugin {
 
@@ -73,7 +58,6 @@ class Component_Themes_Plugin {
 
 		$this->load_dependencies();
 		$this->set_locale();
-		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
 	}
@@ -84,8 +68,6 @@ class Component_Themes_Plugin {
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Component_Themes_Loader. Orchestrates the hooks of the plugin.
-	 * - Component_Themes_i18n. Defines internationalization functionality.
-	 * - Component_Themes_Admin. Defines all hooks for the admin area.
 	 * - Component_Themes_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
@@ -101,17 +83,6 @@ class Component_Themes_Plugin {
 		 * core plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-component-themes-loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-component-themes-i18n.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-component-themes-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -134,25 +105,17 @@ class Component_Themes_Plugin {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Component_Themes_i18n();
-
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+		$this->loader->add_action( 'plugins_loaded', $this, 'load_plugin_textdomain' );
 
 	}
 
-	/**
-	 * Register all of the hooks related to the admin area functionality
-	 * of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function define_admin_hooks() {
+	public function load_plugin_textdomain() {
 
-		$plugin_admin = new Component_Themes_Admin( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		load_plugin_textdomain(
+			'component-themes',
+			false,
+			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+		);
 
 	}
 
@@ -166,9 +129,6 @@ class Component_Themes_Plugin {
 	private function define_public_hooks() {
 
 		$plugin_public = new Component_Themes_Public( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'template_redirect', $plugin_public, 'render_page' );
 	}

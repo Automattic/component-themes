@@ -1,25 +1,14 @@
 <?php
 
 /**
- * Register all actions and filters for the plugin
- *
- * @link       http://automattic.com
- * @since      1.0.0
- *
- * @package    Component_Themes
- * @subpackage Component_Themes/includes
- */
-
-/**
  * Register all actions and filters for the plugin.
  *
  * Maintain a list of all hooks that are registered throughout
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
+ * @since      1.0.0
  * @package    Component_Themes
- * @subpackage Component_Themes/includes
- * @author     Automattic <payton@a8c.com>
  */
 class Component_Themes_Loader {
 
