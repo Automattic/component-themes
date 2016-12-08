@@ -15,8 +15,7 @@ class Component_Themes_Api {
 		return function( $props, $children ) use ( &$component, &$map_api_to_props ) {
 			$context = ct_get_value( $props, 'context', [] );
 			self::$state = array_merge( self::$state, ct_get_value( $context, 'apiProps', [] ) );
-			$operations = [ 'get_api_endpoint' => [ 'Component_Themes_Api', 'get_api_endpoint' ] ];
-			$new_props = call_user_func( $map_api_to_props, self::$state, $operations, $props );
+			$new_props = call_user_func( $map_api_to_props, [ 'Component_Themes_Api', 'get_api_endpoint' ], self::$state, $props );
 			$props = array_merge( $props, $new_props );
 			return React::createElement( $component, $props, $children );
 		};

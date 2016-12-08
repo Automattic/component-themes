@@ -57,7 +57,7 @@ Many components will require WordPress data from the server. To specify that a c
 1. The list of REST API endpoints needed for the data to be available.
 2. A function to translate the REST API responses into props for the component.
 
-In JavaScript we use a Higher Order Component function called 'apiDataWrapper'. The function accepts a mapping function to map the api data (the same pieces of data as noted above). The api data can be accessed using the special function `getApiEndpoint()` which is passed as a property of the second argument to the mapping function. If the data is not available yet, it will then fetch that data.
+In JavaScript we use a Higher Order Component function called 'apiDataWrapper'. The function accepts a mapping function to map the api data (the same pieces of data as noted above). The api data can be accessed using the special function `getApiEndpoint()` which is passed as the first argument to the mapping function. If the data is not available yet, it will then fetch that data.
 
 ```js
 /* globals window */
@@ -89,7 +89,7 @@ HeaderText.editableProps = {
 	}
 };
 
-const mapApiToProps = ( api, { getApiEndpoint } ) => {
+const mapApiToProps = ( getApiEndpoint ) => {
 	const siteInfo = getApiEndpoint( '/' );
 	return {
 		siteTitle: siteInfo && siteInfo.name,
@@ -99,10 +99,9 @@ const mapApiToProps = ( api, { getApiEndpoint } ) => {
 };
 
 registerComponent( 'HeaderText', apiDataWrapper( mapApiToProps )( HeaderText ) );
-
 ```
 
-In PHP we use a similar technique. The component must be wrapped in the Higher-Order-Component function `Component_Themes::api_data_wrapper()` which accepts a mapping function as above. Also as above, the second argument to the mapping function contains a special function called `get_api_endpoint()` which fetches and returns the endpoint data requested.
+In PHP we use a similar technique. The component must be wrapped in the Higher-Order-Component function `Component_Themes::api_data_wrapper()` which accepts a mapping function as above. Also as above, the first argument to the mapping function is a special function called `get_api_endpoint()` which fetches and returns the endpoint data requested.
 
 *NB: `ct_get_value()` is a helper function that just returns a property in an array if it exists, otherwise it returns a default value.*
 
@@ -121,8 +120,8 @@ class Component_Themes_HeaderText extends Component_Themes_Component {
 	}
 }
 
-$wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_HeaderText', function( $api, $operations ) {
-	$site_info = call_user_func( $operations['get_api_endpoint'], '/' );
+$wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_HeaderText', function( $get_api_endpoint ) {
+	$site_info = call_user_func( $get_api_endpoint, '/' );
 	return [
 		'siteTitle' => ct_get_value( $site_info, 'name' ),
 		'siteTagline' => ct_get_value( $site_info, 'description' ),

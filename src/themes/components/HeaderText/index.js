@@ -27,7 +27,7 @@ HeaderText.editableProps = {
 	}
 };
 
-const mapApiToProps = ( api, { getApiEndpoint } ) => {
+const mapApiToProps = ( getApiEndpoint ) => {
 	const siteInfo = getApiEndpoint( '/' );
 	return {
 		siteTitle: siteInfo && siteInfo.name,

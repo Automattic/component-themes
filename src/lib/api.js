@@ -42,7 +42,7 @@ export function apiDataWrapper( mapApiToProps ) {
 			if ( ! context.fetchApiData ) {
 				throw new Error( `Cannot render '${ Target }'. Components wrapped with apiDataWrapper must have an ancestor wrapped in apiDataProvider` );
 			}
-			const newProps = Object.assign( {}, props, mapApiToProps( context.apiProps, { getApiEndpoint: context.getApiEndpoint }, props ) );
+			const newProps = Object.assign( {}, props, mapApiToProps( context.getApiEndpoint, context.apiProps, props ) );
 			return <Target { ...newProps } >{ newProps.children }</Target>;
 		};
 

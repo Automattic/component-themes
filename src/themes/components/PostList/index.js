@@ -28,7 +28,7 @@ PostList.editableProps = {
 	}
 };
 
-const mapApiToProps = ( api, { getApiEndpoint } ) => {
+const mapApiToProps = ( getApiEndpoint ) => {
 	const postsData = getApiEndpoint( '/wp/v2/posts' ) || [];
 	const posts = postsData.map( post => ( {
 		title: post.title.rendered,

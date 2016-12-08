@@ -22,8 +22,8 @@ class Component_Themes_PostList extends Component_Themes_Component {
 	}
 }
 
-$wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_PostList', function( $api, $operations ) {
-	$posts_data = call_user_func( $operations['get_api_endpoint'], '/wp/v2/posts' );
+$wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_PostList', function( $get_api_endpoint ) {
+	$posts_data = call_user_func( $get_api_endpoint, '/wp/v2/posts' );
 	$posts = array_map( function( $post ) {
 		return [
 			'title' => $post['title']['rendered'],

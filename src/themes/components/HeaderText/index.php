@@ -12,8 +12,8 @@ class Component_Themes_HeaderText extends Component_Themes_Component {
 	}
 }
 
-$wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_HeaderText', function( $api, $operations ) {
-	$site_info = call_user_func( $operations['get_api_endpoint'], '/' );
+$wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_HeaderText', function( $get_api_endpoint ) {
+	$site_info = call_user_func( $get_api_endpoint, '/' );
 	return [
 		'siteTitle' => ct_get_value( $site_info, 'name' ),
 		'siteTagline' => ct_get_value( $site_info, 'description' ),

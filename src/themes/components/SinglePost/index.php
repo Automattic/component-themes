@@ -19,13 +19,13 @@ class Component_Themes_SinglePost extends Component_Themes_Component {
 	}
 }
 
-$wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_SinglePost', function( $api, $operations ) {
-	$info = ct_get_value( $api, 'pageInfo', [] );
+$wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_SinglePost', function( $get_api_endpoint, $state ) {
+	$info = ct_get_value( $state, 'pageInfo', [] );
 	$post_id = ct_get_value( $info, 'postId' );
 	if ( ! $post_id ) {
 		return [];
 	}
-	$post = call_user_func( $operations['get_api_endpoint'], '/wp/v2/posts/' . $post_id );
+	$post = call_user_func( $get_api_endpoint, '/wp/v2/posts/' . $post_id );
 	return [
 		'postData' => [
 			'title' => $post['title']['rendered'],
