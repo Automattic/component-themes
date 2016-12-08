@@ -23,13 +23,13 @@ HeaderText.editableProps = {
 	}
 };
 
-const mapApiToProps = ( api ) => {
-	const siteInfo = api[ '/' ];
+const mapApiToProps = ( api, { getApiEndpoint } ) => {
+	const siteInfo = getApiEndpoint( '/' );
 	return {
 		siteTitle: siteInfo && siteInfo.name,
 		siteTagline: siteInfo && siteInfo.description,
 	};
 };
 
-registerComponent( 'HeaderText', apiDataWrapper( [ '/' ], mapApiToProps )( HeaderText ) );
+registerComponent( 'HeaderText', apiDataWrapper( mapApiToProps )( HeaderText ) );
 

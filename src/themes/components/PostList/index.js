@@ -28,8 +28,8 @@ PostList.editableProps = {
 	}
 };
 
-const mapApiToProps = ( api ) => {
-	const postsData = api[ '/wp/v2/posts' ] || [];
+const mapApiToProps = ( api, { getApiEndpoint } ) => {
+	const postsData = getApiEndpoint( '/wp/v2/posts' ) || [];
 	const posts = postsData.map( post => ( {
 		title: post.title.rendered,
 		content: post.content.rendered,
@@ -39,4 +39,4 @@ const mapApiToProps = ( api ) => {
 	return { posts };
 };
 
-registerComponent( 'PostList', apiDataWrapper( [ '/wp/v2/posts' ], mapApiToProps )( PostList ) );
+registerComponent( 'PostList', apiDataWrapper( mapApiToProps )( PostList ) );

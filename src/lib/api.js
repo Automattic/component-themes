@@ -30,38 +30,31 @@ function fetchRequiredApiEndpoint( endpoint ) {
 }
 
 export function getBootstrappedRequiredApiData() {
+	let api = {};
 	if ( window.ComponentThemesApiData ) {
-		return window.ComponentThemesApiData;
+		api = window.ComponentThemesApiData;
 	}
-	return {};
+	return { api };
 }
 
-export function apiDataWrapper( endpoints, mapApiToProps ) {
+export function apiDataWrapper( mapApiToProps ) {
 	return ( Target ) => {
-		const ApiProps = ( props, context ) => {
+		const ApiDataWrapper = ( props, context ) => {
 			if ( ! context.fetchApiData ) {
 				throw new Error( `Cannot render '${ Target }'. Components wrapped with apiDataWrapper must have an ancestor wrapped in apiDataProvider` );
 			}
-			endpoints.map( endpoint => {
-				if ( ! getApiEndpoint( context.apiProps, endpoint ) ) {
-					context.fetchApiData( endpoint );
-				}
-			} );
-			const newProps = Object.assign( {}, props, mapApiToProps( context.apiProps, props ) );
+			const newProps = Object.assign( {}, props, mapApiToProps( context.apiProps, { getApiEndpoint: context.getApiEndpoint }, props ) );
 			return <Target { ...newProps } >{ newProps.children }</Target>;
 		};
 
-		ApiProps.contextTypes = {
+		ApiDataWrapper.contextTypes = {
 			apiProps: React.PropTypes.object,
 			fetchApiData: React.PropTypes.func,
+			getApiEndpoint: React.PropTypes.func,
 		};
 
-		return Object.assign( ApiProps, Target );
+		return Object.assign( ApiDataWrapper, Target );
 	};
-}
-
-export function getApiEndpoint( api = {}, endpoint ) {
-	return api[ endpoint ];
 }
 
 export function apiDataProvider() {
@@ -69,13 +62,22 @@ export function apiDataProvider() {
 		class ApiProvider extends React.Component {
 			constructor( props ) {
 				super( props );
+				this.getApiEndpoint = this.getApiEndpoint.bind( this );
 				this.fetchApiData = this.fetchApiData.bind( this );
 				const apiProps = getBootstrappedRequiredApiData();
 				this.state = { apiProps };
 			}
 
 			getChildContext() {
-				return { apiProps: this.state.apiProps, fetchApiData: this.fetchApiData };
+				return { apiProps: this.state.apiProps, fetchApiData: this.fetchApiData, getApiEndpoint: this.getApiEndpoint };
+			}
+
+			getApiEndpoint( endpoint ) {
+				const endpointData = this.state.apiProps.api[ endpoint ];
+				if ( ! endpointData ) {
+					this.fetchApiData( endpoint );
+				}
+				return this.state.apiProps.api[ endpoint ];
 			}
 
 			fetchApiData( endpoint ) {
@@ -97,6 +99,7 @@ export function apiDataProvider() {
 		ApiProvider.childContextTypes = {
 			apiProps: React.PropTypes.object,
 			fetchApiData: React.PropTypes.func,
+			getApiEndpoint: React.PropTypes.func,
 		};
 
 		return Object.assign( ApiProvider, Target );
