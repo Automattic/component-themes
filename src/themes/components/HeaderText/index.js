@@ -2,12 +2,12 @@
 const ComponentThemes = window.ComponentThemes;
 const { React, registerComponent, apiDataWrapper } = ComponentThemes;
 
-const HeaderText = ( { siteTitle, siteTagline, className } ) => {
+const HeaderText = ( { link, siteTitle, siteTagline, className } ) => {
 	return (
-		<div className={ className }>
+		<div className={ className }><a href={ link }>
 			<h1 className="HeaderText__title">{ siteTitle || 'My Website' }</h1>
 			<div className="HeaderText__tagline">{ siteTagline || 'My home on the web' }</div>
-		</div>
+		</a></div>
 	);
 };
 
@@ -20,6 +20,10 @@ HeaderText.editableProps = {
 	siteTagline: {
 		type: 'string',
 		label: 'The site sub-title or tagline'
+	},
+	link: {
+		type: 'string',
+		label: 'The header link'
 	}
 };
 
@@ -28,6 +32,7 @@ const mapApiToProps = ( api, { getApiEndpoint } ) => {
 	return {
 		siteTitle: siteInfo && siteInfo.name,
 		siteTagline: siteInfo && siteInfo.description,
+		link: siteInfo && siteInfo.url,
 	};
 };
 
