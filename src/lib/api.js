@@ -30,11 +30,10 @@ function fetchRequiredApiEndpoint( endpoint ) {
 }
 
 export function getBootstrappedRequiredApiData() {
-	let api = {};
 	if ( window.ComponentThemesApiData ) {
-		api = window.ComponentThemesApiData;
+		return window.ComponentThemesApiData;
 	}
-	return { api };
+	return { api: {} };
 }
 
 export function apiDataWrapper( mapApiToProps ) {
