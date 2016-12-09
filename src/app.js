@@ -6,6 +6,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import omit from 'lodash/omit';
 
 /**
  * Internal dependencies
@@ -29,6 +30,7 @@ const ComponentThemes = {
 	apiDataWrapper,
 	makeComponentWith,
 	getPropsFromParent,
+	omit,
 };
 
 if ( typeof window !== 'undefined' ) {
