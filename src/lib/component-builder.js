@@ -31,16 +31,6 @@ function buildComponentTreeFromConfig( componentConfig, childProps = {} ) {
 	return { Component, componentId, componentProps, childComponents, componentType };
 }
 
-export function getPropsFromParent( mapPropsToProps ) {
-	return function( Child ) {
-		const ParentProps = ( props ) => {
-			const newProps = mapPropsToProps( props.childProps );
-			return <Child { ...newProps } { ...props } />;
-		};
-		return Object.assign( ParentProps, Child );
-	};
-}
-
 function getContentById( content, componentId, componentType ) {
 	return Object.assign( {}, content[ componentId ] || {}, content[ componentType ] || {} );
 }
@@ -50,10 +40,6 @@ function buildComponentFromTree( tree, content = {} ) {
 	const children = childComponents ? childComponents.map( child => buildComponentFromTree( child, content ) ) : null;
 	const props = Object.assign( {}, componentProps, getContentById( content, componentId, componentType ) );
 	return buildComponent( Component, props, children );
-}
-
-export function makeComponentWith( componentConfig, childProps = {} ) {
-	return buildComponentFromTree( buildComponentTreeFromConfig( componentConfig, childProps ) );
 }
 
 function buildComponentFromConfig( componentConfig, content = {} ) {

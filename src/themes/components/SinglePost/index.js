@@ -1,16 +1,12 @@
 /* globals window */
 const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent, apiDataWrapper, makeComponentWith } = ComponentThemes;
+const { React, registerComponent, apiDataWrapper } = ComponentThemes;
 
-const SinglePost = ( { postData, post, className } ) => {
-	const defaultPostConfig = { componentType: 'PostBody', children: [
-		{ componentType: 'PostTitle' },
-		{ partial: 'PostDateAndAuthor' },
-		{ componentType: 'PostContent' }
-	] };
+const SinglePost = ( { postData, children, className } ) => {
+	const newChildren = React.Children.map( children, child => React.cloneElement( child, postData ) );
 	return (
 		<div className={ className }>
-			{ makeComponentWith( post || defaultPostConfig, postData ) }
+			{ newChildren }
 		</div>
 	);
 };
