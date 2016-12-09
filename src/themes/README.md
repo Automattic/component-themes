@@ -51,7 +51,13 @@ Here is a slightly more realistic example of a theme for a blog (still without a
 					{ "id": "headerText", "componentType": "HeaderText" }
 				] },
 					{ "id": "contentLayout", "componentType": "RowComponent", "children": [
-						{ "id": "myPosts", "componentType": "PostList" },
+						{ "id": "myPosts", "componentType": "PostList", "children": [
+							{ "componentType": "PostBody", "children": [
+								{ "componentType": "PostTitle" },
+								{ "partial": "PostDateAndAuthor" },
+								{ "componentType": "PostContent" }
+							] }
+						] },
 						{ "id": "sidebarLayout", "componentType": "ColumnComponent", "children": [
 							{ "id": "sidebarSearch", "componentType": "SearchWidget" }
 						] }
@@ -70,11 +76,11 @@ You can read more about the format of Components in the [Components README](./co
 
 There are two main categories of components: **container** components and **content** components. Container components generally have few or no visual elements but serve to lay out other components. Content components display some content. Both are designed to be customized by providing props (content and settings).
 
-Each component in a page is an object that has at least two properties: `id` and `componentType`.
+Each component in a page is an object that has at least one of the properties: `componentType`, `partial`, or (in some cases) `template`.
 
 `componentType` is a string that refers to an existing component.
 
-`id` is a unique identifier string for that instance of the component.
+Any component using `componentType` can also specify `id` as a unique identifier string for that instance of the component.
 
 When styles are applied, they are selected by either the `componentType` (to affect all components of that type) or by `id` (to affect just one instance of a component in a page).
 
@@ -130,7 +136,13 @@ For example, here is a `header` partial used in a page:
 			{ "id": "pageLayout", "componentType": "ColumnComponent", "children": [
 				{ "partial": "header" },
 				{ "id": "contentLayout", "componentType": "RowComponent", "children": [
-					{ "id": "myPosts", "componentType": "PostList" }
+					{ "id": "myPosts", "componentType": "PostList", "children": [
+						{ "componentType": "PostBody", "children": [
+							{ "componentType": "PostTitle" },
+							{ "partial": "PostDateAndAuthor" },
+							{ "componentType": "PostContent" }
+						] }
+					] },
 				] }
 			] }
 		] }
@@ -161,61 +173,19 @@ For example, here is a `blog` template used as a home page:
 			{ "id": "pageLayout", "componentType": "ColumnComponent", "children": [
 				{ "partial": "header" },
 				{ "id": "contentLayout", "componentType": "RowComponent", "children": [
-					{ "id": "myPosts", "componentType": "PostList" }
+					{ "id": "myPosts", "componentType": "PostList", "children": [
+						{ "componentType": "PostBody", "children": [
+							{ "componentType": "PostTitle" },
+							{ "partial": "PostDateAndAuthor" },
+							{ "componentType": "PostContent" }
+						] }
+					] },
 				] }
 			] }
 		] },
 		"home": { "template": "blog" }
 	}
 }
-```
-
-## Components as props
-
-When rendering a component like `PostList` we need to iterate over a data set and render a React component for each data element.
-
-To define what React component is rendered, we need to pass that component as a prop to `PostList`. But we're not passing the created component, we're just passing the component *type*.
-
-Then, when rendered, PostList must iterate over its data, *create an instance of the passed component type*, and render that component, passing it the data element as props.
-
-This is normal React practice, but the difference here is that the component we're passing around is not a React component, it's part of a config. So in addition to the above, we need to transform the config object into a component before creating its instance.
-
-Specifying these components in the theme is just like regular components except they lack an `id` property:
-
-```json
-{ "id": "myPosts", "componentType": "PostList", "props": {
-	"post": { "componentType": "PostBody", "children": [
-		{ "componentType": "PostTitle" },
-		{ "componentType": "PostContent" },
-		{ "componentType": "PostDate" },
-		{ "componentType": "PostAuthor" },
-	] }
-} }
-```
-
-In order to build these component type objects into component instances, the `PostList` component must use `makeComponentWith()`. The function's first argument is a the component type object, and the second argument is the props that that component and all its children should have access to (see below):
-
-```js
-const postData = { "title": "My post" };
-const postType = { "componentType": "PostTitle" };
-const postList = posts.map( postData => makeComponentWith( postType, postData ) );
-```
-
-Components created in this way may have their own children (that are also JSON objects).
-
-What we do in this case is that the components passed to `PostList` are aware that they will need certain parameters and they can request them at their leisure when instantiated. This is similar to how Redux silently passes its state tree to all components and they choose what data they want.
-
-Any component created using `makeComponentWith( type, data )` or any descendant of that component will receive that `data` as a special prop which it can access using the Higher-Order-Component function (HOC) `getPropsFromParent()`:
-
-```js
-const PostTitle = ( { link, title } ) => {
-	//...
-};
-
-function mapProps( props ) {
-	return { link: props.link, title: props.title };
-}
-export default getPropsFromParent( mapProps )( PostTitle );
 ```
 
 ## Styles
