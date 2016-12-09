@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Automattic/component-themes.svg?branch=master)](https://travis-ci.org/Automattic/component-themes)
+
 # Component Themes
 
 The theming system in WordPress dates [back to 2005](https://wordpress.org/news/2005/02/strayhorn/). A lot has changed on the web, and in WordPress, since then.

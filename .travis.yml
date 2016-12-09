@@ -1,0 +1,30 @@
+# Travis CI Configuration File
+
+# Tell Travis CI we're using PHP
+language: php
+
+matrix:
+  include:
+    - php: "7.0"
+    - php: "5.6"
+    - php: "5.3"
+      env: SYNTAX_ONLY=1
+    - php: "5.2"
+      env: SYNTAX_ONLY=1
+
+cache:
+  directories:
+    - vendor
+
+branches:
+  only:
+    - master
+
+before_script:
+    - if [[ "$SYNTAX_ONLY" == "" ]]; then composer install; fi
+
+script:
+    - find -L ./{src,includes,public,server} -name "*.php" -print0 | xargs -0 -n 1 -P 4 php -l
+    - if [[ "$SYNTAX_ONLY" == "" ]]; then ./vendor/bin/corretto; fi
+
+sudo: false
