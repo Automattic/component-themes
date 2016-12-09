@@ -17,8 +17,8 @@ import { makeComponentWith, getPropsFromParent } from '~/src/lib/component-build
 import defaultTheme from '~/src/themes/default.json';
 
 const ComponentThemes = {
-	renderPage: function( theme, slug, page, target ) {
-		const App = <ComponentThemePage theme={ theme } defaultTheme={ defaultTheme } page={ page } slug={ slug } />;
+	renderPage: function( theme, info, page, target ) {
+		const App = <ComponentThemePage theme={ theme } defaultTheme={ defaultTheme } page={ page } info={ info } />;
 		ReactDOM.render( App, target );
 	},
 

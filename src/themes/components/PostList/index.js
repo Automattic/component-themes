@@ -28,15 +28,19 @@ PostList.editableProps = {
 	}
 };
 
-const mapApiToProps = ( api ) => {
-	const postsData = api[ '/wp/v2/posts' ] || [];
-	const posts = postsData.map( post => ( {
-		title: post.title.rendered,
-		content: post.content.rendered,
-		date: post.date,
-		link: post.link,
-	} ) );
+const mapApiToProps = ( getApiEndpoint ) => {
+	const postsData = getApiEndpoint( '/wp/v2/posts' ) || [];
+	const posts = postsData.map( post => {
+		const author = getApiEndpoint( '/wp/v2/users/' + post.author ) || {};
+		return {
+			title: post.title.rendered,
+			content: post.content.rendered,
+			author: author.name,
+			date: post.date,
+			link: post.link,
+		};
+	} );
 	return { posts };
 };
 
-registerComponent( 'PostList', apiDataWrapper( [ '/wp/v2/posts' ], mapApiToProps )( PostList ) );
+registerComponent( 'PostList', apiDataWrapper( mapApiToProps )( PostList ) );

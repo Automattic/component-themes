@@ -7,16 +7,19 @@ require( __DIR__ . '/class-component-themes-styles.php' );
 require( __DIR__ . '/class-react.php' );
 
 class Component_Themes {
-	public function render_page( $theme, $slug, $page = [], $content = [] ) {
+	public function render_page( $theme, $info, $page = [], $content = [] ) {
 		$builder = Component_Themes_Builder::get_builder();
 		$theme = $builder->merge_themes( $this->get_default_theme(), $theme );
+		$slug = ( 'post' === $info['type'] ) ? 'post' : $info['slug'];
 		$page = ( ! empty( $page ) ) ? $page : $builder->get_template_for_slug( $theme, $slug );
+		$state = array_merge( Component_Themes_Api::get_api(), [ 'pageInfo' => $info ] );
+		Component_Themes_Api::set_api( $state );
 		$output = '<div class="ComponentThemes">';
 		$style = new Component_Themes_Styles();
 		$css = $style->build_styles_from_theme( $theme );
 		$output .= "<style class='theme-styles'>$css</style>";
 		$output .= $builder->render( $theme, $page, $content );
-		$output .= '<script>window.ComponentThemesApiData=' . json_encode( $builder->get_component_api_data() ) . '</script>';
+		$output .= '<script>window.ComponentThemesApiData=' . json_encode( Component_Themes_Api::get_api() ) . '</script>';
 		$output .= '</div>';
 		return $output;
 	}
@@ -38,5 +41,9 @@ class Component_Themes {
 
 	public static function style_component( $component, $styles ) {
 		return Component_Themes_Styles::style_component( $component, $styles );
+	}
+
+	public static function api_data_wrapper( $component, $map_api_to_props ) {
+		return Component_Themes_Api::api_data_wrapper( $component, $map_api_to_props );
 	}
 }

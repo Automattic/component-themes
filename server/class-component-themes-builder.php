@@ -45,18 +45,14 @@ class Component_Themes_Stateless_Component extends Component_Themes_Component {
 }
 
 class Component_Themes_Builder {
-	private $api;
 	private static $registered_components = [];
 	private static $registered_partials = [];
 
-	public function __construct( $options ) {
-		$this->api = isset( $options['api'] ) ? $options['api'] : null;
+	public function __construct() {
 	}
 
 	public static function get_builder() {
-		return new Component_Themes_Builder( [
-			'api' => new Component_Themes_Api(),
-		] );
+		return new Component_Themes_Builder();
 	}
 
 	public function render_element( $component ) {
@@ -74,9 +70,6 @@ class Component_Themes_Builder {
 		}
 		if ( function_exists( $component ) ) {
 			return new Component_Themes_Stateless_Component( $component, $props, $children );
-		}
-		if ( isset( $component::$required_api_endpoints ) ) {
-			$props = $this->api->api_data_wrapper( $props, $context, $component::$required_api_endpoints, $component );
 		}
 		return new $component( $props, $children );
 	}
@@ -232,9 +225,5 @@ class Component_Themes_Builder {
 
 	public function render( $theme_config, $page_config, $component_data = [] ) {
 		return $this->render_element( $this->build_components_from_theme( $theme_config, $page_config, $component_data ) );
-	}
-
-	public function get_component_api_data() {
-		return $this->api->get_api();
 	}
 }
