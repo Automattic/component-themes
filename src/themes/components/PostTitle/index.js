@@ -1,6 +1,6 @@
 /* globals window */
 const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent, getPropsFromParent } = ComponentThemes;
+const { React, registerComponent } = ComponentThemes;
 
 const PostTitle = ( { link, title, className } ) => {
 	return (
@@ -22,5 +22,4 @@ PostTitle.editableProps = {
 	},
 };
 
-const mapProps = ( { link, title } ) => ( { link, title } );
-registerComponent( 'PostTitle', getPropsFromParent( mapProps )( PostTitle ) );
+registerComponent( 'PostTitle', PostTitle );

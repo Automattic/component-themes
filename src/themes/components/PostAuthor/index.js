@@ -1,6 +1,6 @@
 /* globals window */
 const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent, getPropsFromParent } = ComponentThemes;
+const { React, registerComponent } = ComponentThemes;
 
 const PostAuthor = ( { author, className } ) => {
 	return (
@@ -18,5 +18,4 @@ PostAuthor.editableProps = {
 	},
 };
 
-const mapProps = ( { author } ) => ( { author } );
-registerComponent( 'PostAuthor', getPropsFromParent( mapProps )( PostAuthor ) );
+registerComponent( 'PostAuthor', PostAuthor );

@@ -15,7 +15,13 @@
 		"home": { "id": "pageLayout", "componentType": "PageLayout", "children": [
 			{ "partial": "PageHeader" },
 			{ "id": "homeContentLayout", "componentType": "RowComponent", "children": [
-				{ "id": "myPosts", "componentType": "PostList" },
+				{ "id": "myPosts", "componentType": "PostList", "children": [
+					{ "componentType": "PostBody", "children": [
+						{ "componentType": "PostTitle" },
+						{ "partial": "PostDateAndAuthor" },
+						{ "componentType": "PostContent" }
+					] }
+				] },
 				{ "partial": "PageSidebar" }
 			] },
 			{ "partial": "PageFooter" }
