@@ -11,89 +11,168 @@ class My_Component extends Component_Themes_Component {
 
 describe( 'React', function() {
 	describe( '::createElement()', function() {
-		it( 'returns html for a simple html component', function() {
+		it( 'returns a component for a simple html string', function() {
 			$result = React::createElement( 'em' );
-			expect( $result )->toEqual( '<em></em>' );
+			expect( get_class( $result ) )->toEqual( 'Component_Themes_Html_Component' );
 		} );
 
-		it( 'returns html with properties for a simple html component with properties', function() {
+		it( 'renders html for a simple html component', function() {
+			$result = React::createElement( 'em' );
+			expect( React::render( $result ) )->toEqual( '<em></em>' );
+		} );
+
+		it( 'renders html with properties for a simple html component with properties', function() {
 			$result = React::createElement( 'a', [ 'href' => 'localhost' ] );
-			expect( $result )->toEqual( '<a href="localhost"></a>' );
+			expect( React::render( $result ) )->toEqual( '<a href="localhost"></a>' );
 		} );
 
-		it( 'returns html with properties for a simple html component with multiple properties', function() {
+		it( 'renders html with properties for a simple html component with multiple properties', function() {
 			$result = React::createElement( 'a', [ 'href' => 'localhost', 'foo' => 'bar' ] );
-			expect( $result )->toEqual( '<a href="localhost" foo="bar"></a>' );
+			expect( React::render( $result ) )->toEqual( '<a href="localhost" foo="bar"></a>' );
 		} );
 
-		it( 'returns html with "class" for a simple html component with "className" property', function() {
+		it( 'renders html with "class" for a simple html component with "className" property', function() {
 			$result = React::createElement( 'a', [ 'className' => 'great-link' ] );
-			expect( $result )->toEqual( '<a class="great-link"></a>' );
+			expect( React::render( $result ) )->toEqual( '<a class="great-link"></a>' );
 		} );
 
-		it( 'returns html which ignores properties which do not have a string value', function() {
+		it( 'renders html which ignores properties which do not have a string value', function() {
 			$result = React::createElement( 'a', [ 'className' => 'great-link', 'foo' => [ 'hello', 'world' ] ] );
-			expect( $result )->toEqual( '<a class="great-link"></a>' );
+			expect( React::render( $result ) )->toEqual( '<a class="great-link"></a>' );
 		} );
 
-		it( 'returns html with a text child included', function() {
+		it( 'renders html with a text child included', function() {
 			$result = React::createElement( 'a', [ 'className' => 'great-link' ], 'hello' );
-			expect( $result )->toEqual( '<a class="great-link">hello</a>' );
+			expect( React::render( $result ) )->toEqual( '<a class="great-link">hello</a>' );
 		} );
 
-		it( 'returns html with an element child included', function() {
+		it( 'renders html with an element child included', function() {
 			$child = React::createElement( 'b', [ 'className' => 'bold' ], 'hello' );
 			$result = React::createElement( 'a', [ 'className' => 'great-link' ], $child );
-			expect( $result )->toEqual( '<a class="great-link"><b class="bold">hello</b></a>' );
+			expect( React::render( $result ) )->toEqual( '<a class="great-link"><b class="bold">hello</b></a>' );
 		} );
 
-		it( 'returns html with multiple element children included, separated by spaces', function() {
+		it( 'renders html with multiple element children included, separated by spaces', function() {
 			$child1 = React::createElement( 'b', [ 'className' => 'bold' ], 'hello' );
 			$child2 = React::createElement( 'em', [ 'className' => 'emphasis' ], 'world' );
 			$result = React::createElement( 'a', [ 'className' => 'great-link' ], [ $child1, 'there,', $child2 ] );
-			expect( $result )->toEqual( '<a class="great-link"><b class="bold">hello</b> there, <em class="emphasis">world</em></a>' );
+			expect( React::render( $result ) )->toEqual( '<a class="great-link"><b class="bold">hello</b> there, <em class="emphasis">world</em></a>' );
 		} );
 
-		it( 'returns html for a simple function component that returns a string', function() {
+		it( 'renders html for a simple function component that returns a string', function() {
 			$component = function() {
 				return '<b>hello</b>';
 			};
 			$result = React::createElement( $component );
-			expect( $result )->toEqual( '<b>hello</b>' );
+			expect( React::render( $result ) )->toEqual( '<b>hello</b>' );
 		} );
 
-		it( 'returns html for a simple function component that returns a component', function() {
+		it( 'renders html for a simple function component that returns a component', function() {
 			$component = function() {
 				return React::createElement( 'b', [], 'hello' );
 			};
 			$result = React::createElement( $component );
-			expect( $result )->toEqual( '<b>hello</b>' );
+			expect( React::render( $result ) )->toEqual( '<b>hello</b>' );
 		} );
 
-		it( 'returns html for a function component with props', function() {
+		it( 'renders html for a function component with props', function() {
 			$component = function( $props ) {
 				return React::createElement( 'b', [], ct_get_value( $props, 'name' ) );
 			};
 			$result = React::createElement( $component, [ 'name' => 'hello' ] );
-			expect( $result )->toEqual( '<b>hello</b>' );
+			expect( React::render( $result ) )->toEqual( '<b>hello</b>' );
 		} );
 
-		it( 'returns html for a function component with children', function() {
+		it( 'renders html for a function component with children', function() {
 			$component = function( $props, $children ) {
 				return React::createElement( 'b', [], $children );
 			};
 			$result = React::createElement( $component, [], 'hello' );
-			expect( $result )->toEqual( '<b>hello</b>' );
+			expect( React::render( $result ) )->toEqual( '<b>hello</b>' );
 		} );
 
-		it( 'returns html for a simple class component that returns a string', function() {
+		it( 'renders html for a simple class component that returns a string', function() {
 			$result = React::createElement( 'My_Component' );
-			expect( $result )->toEqual( '<b>hello</b>' );
+			expect( React::render( $result ) )->toEqual( '<b>hello</b>' );
 		} );
 
-		it( 'returns html for a class component with props', function() {
+		it( 'renders html for a class component with props', function() {
 			$result = React::createElement( 'My_Component', [ 'name' => ' world' ] );
-			expect( $result )->toEqual( '<b>hello world</b>' );
+			expect( React::render( $result ) )->toEqual( '<b>hello world</b>' );
+		} );
+	} );
+
+	describe( '::cloneElement()', function() {
+		it( 'returns an html component with the same tag as the passed component', function() {
+			$component = React::createElement( 'em' );
+			$result = React::cloneElement( $component );
+			expect( React::render( $result ) )->toEqual( '<em></em>' );
+		} );
+
+		it( 'returns an html component which is a different instance than the passed component', function() {
+			$component = React::createElement( 'em' );
+			$result = React::cloneElement( $component );
+			expect( $result )->toNotEqual( $component );
+		} );
+
+		it( 'returns an html component with the same props as the passed component', function() {
+			$component = React::createElement( 'em', [ 'foo' => 'bar' ] );
+			$result = React::cloneElement( $component );
+			expect( $result->props['foo'] )->toEqual( 'bar' );
+		} );
+
+		it( 'returns an html component with the same children as the passed component', function() {
+			$component = React::createElement( 'em', [], 'hello' );
+			$result = React::cloneElement( $component );
+			expect( React::render( $result ) )->toEqual( '<em>hello</em>' );
+		} );
+
+		it( 'returns an html component with its props overridden by the passed props', function() {
+			$component = React::createElement( 'em', [ 'foo' => 'bar' ], 'hello' );
+			$result = React::cloneElement( $component, [ 'foo' => 'baz' ] );
+			expect( React::render( $result ) )->toEqual( '<em foo="baz">hello</em>' );
+		} );
+
+		it( 'returns a function component which renders the same string as the passed component', function() {
+			$component = React::createElement( function() {
+				return '<b>hello</b>';
+			} );
+			$result = React::cloneElement( $component );
+			expect( React::render( $result ) )->toEqual( '<b>hello</b>' );
+		} );
+
+		it( 'returns a function component which is a different instance than the passed component', function() {
+			$component = React::createElement( function() {
+				return '<b>hello</b>';
+			} );
+			$result = React::cloneElement( $component );
+			expect( $result )->toNotEqual( $component );
+		} );
+
+		it( 'returns a function component with its props set by the passed props', function() {
+			$component = React::createElement( function() {
+				return '<b>hello</b>';
+			} );
+			$result = React::cloneElement( $component, [ 'foo' => 'bar' ] );
+			expect( $result->props['foo'] )->toEqual( 'bar' );
+		} );
+
+		it( 'returns a class component which renders the same string as the passed component', function() {
+			$component = React::createElement( 'My_Component' );
+			$result = React::cloneElement( $component );
+			expect( React::render( $result ) )->toEqual( '<b>hello</b>' );
+		} );
+
+		it( 'returns a class component which is a different instance than the passed component', function() {
+			$component = React::createElement( 'My_Component' );
+			$result = React::cloneElement( $component );
+			expect( $result )->toNotEqual( $component );
+		} );
+
+		it( 'returns a class component with its props set by the passed props', function() {
+			$component = React::createElement( 'My_Component' );
+			$result = React::cloneElement( $component, [ 'foo' => 'bar' ] );
+			expect( $result->props['foo'] )->toEqual( 'bar' );
 		} );
 	} );
 } );
