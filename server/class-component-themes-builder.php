@@ -76,10 +76,6 @@ class Component_Themes_Builder {
 		return new Component_Themes_Builder();
 	}
 
-	public function render_element( $component ) {
-		return $component->render();
-	}
-
 	public function create_element( $component, $props = [], $children = [] ) {
 		$context = ct_get_value( $props, 'context', [] );
 		$props = array_merge( $props, [ 'context' => $context ] );
@@ -253,6 +249,6 @@ class Component_Themes_Builder {
 	}
 
 	public function render( $theme_config, $page_config, $component_data = [] ) {
-		return $this->render_element( $this->build_components_from_theme( $theme_config, $page_config, $component_data ) );
+		return React::render( $this->build_components_from_theme( $theme_config, $page_config, $component_data ) );
 	}
 }
