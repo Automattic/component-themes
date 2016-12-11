@@ -12,35 +12,56 @@ function Component_Themes_ErrorComponent( $props ) {
 	return '<p>' . ct_get_value( $props, 'message' ) . '</p>';
 }
 
+class Component_Themes_Text_Component extends Component_Themes_Component {
+	public $text;
+
+	public function __construct( $text = '', $props = [], $children = [] ) {
+		parent::__construct( $props, $children );
+		$this->text = $text;
+	}
+
+	public function render() {
+		return $this->text;
+	}
+}
+
 class Component_Themes_Html_Component extends Component_Themes_Component {
+	public $tag;
+
 	public function __construct( $tag = 'div', $props = [], $children = [] ) {
 		parent::__construct( $props, $children );
 		$this->tag = $tag;
 	}
 
 	protected function render_props_as_html() {
-		return implode( ' ', array_map( function( $key, $prop ) {
+		return trim( implode( ' ', array_map( function( $key, $prop ) {
 			if ( ! is_string( $prop ) ) {
 				return '';
 			}
-			// TODO: look out for quotes
-			return "$key='$prop'";
-		}, array_keys( $this->props ), $this->props ) );
+			if ( 'className' === $key ) {
+				$key = 'class';
+			}
+			return $key . '="' . addslashes( $prop ) . '"';
+		}, array_keys( $this->props ), $this->props ) ) );
 	}
 
 	public function render() {
-		return '<' . $this->tag . " class='" . $this->get_prop( 'className' ) . "'" . $this->render_props_as_html() . '>' . $this->render_children() . '</' . $this->tag . '>';
+		$properties = $this->render_props_as_html();
+		$properties = empty( $properties ) ? '' : ' ' . $properties;
+		return '<' . $this->tag . $properties . '>' . $this->render_children() . '</' . $this->tag . '>';
 	}
 }
 
 class Component_Themes_Stateless_Component extends Component_Themes_Component {
-	public function __construct( $function_name, $props = [], $children = [] ) {
+	public $render_function;
+
+	public function __construct( $render_function, $props = [], $children = [] ) {
 		parent::__construct( $props, $children );
-		$this->function_name = $function_name;
+		$this->render_function = $render_function;
 	}
 
 	public function render() {
-		return call_user_func( $this->function_name, $this->props, $this->children, $this );
+		return call_user_func( $this->render_function, $this->props, $this->children, $this );
 	}
 }
 
@@ -65,17 +86,25 @@ class Component_Themes_Builder {
 		if ( is_callable( $component ) ) {
 			return new Component_Themes_Stateless_Component( $component, $props, $children );
 		}
-		if ( ! ctype_upper( $component[0] ) ) {
+		if ( is_string( $component ) && ! ctype_upper( $component[0] ) ) {
 			return new Component_Themes_Html_Component( $component, $props, $children );
 		}
 		if ( function_exists( $component ) ) {
 			return new Component_Themes_Stateless_Component( $component, $props, $children );
 		}
+		if ( 'Component_Themes_Text_Component' === $component ) {
+			// This would be an error state, but to prevent errors, we will make an empty text node
+			return new Component_Themes_Text_Component( '', $props, $children );
+		}
+		if ( 'Component_Themes_Html_Component' === $component ) {
+			// This would be an error state, but to prevent errors, we will make a div
+			return new Component_Themes_Html_Component( 'div', $props, $children );
+		}
+		if ( 'Component_Themes_Stateless_Component' === $component ) {
+			// This would be an error state, but to prevent errors, we will make a noop
+			return new Component_Themes_Stateless_Component( function() {}, $props, $children );
+		}
 		return new $component( $props, $children );
-	}
-
-	public function make_component_with( $component_config, $child_props = [] ) {
-		return $this->build_component_from_config( $component_config, $child_props );
 	}
 
 	public static function register_component( $type, $component ) {
