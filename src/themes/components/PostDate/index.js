@@ -1,6 +1,6 @@
 /* globals window */
 const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent, getPropsFromParent } = ComponentThemes;
+const { React, registerComponent } = ComponentThemes;
 
 const PostDate = ( { date, className } ) => {
 	return (
@@ -18,6 +18,5 @@ PostDate.editableProps = {
 	},
 };
 
-const mapProps = ( { date } ) => ( { date } );
-registerComponent( 'PostDate', getPropsFromParent( mapProps )( PostDate ) );
+registerComponent( 'PostDate', PostDate );
 

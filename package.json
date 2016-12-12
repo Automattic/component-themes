@@ -29,6 +29,7 @@
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.8",
+    "babel-plugin-lodash": "^3.2.10",
     "babel-preset-react-app": "^1.0.0",
     "babel-register": "^6.18.0",
     "babel-root-import": "^4.1.4",
@@ -42,6 +43,7 @@
     "eslint-config-wpcalypso": "^0.6.0",
     "eslint-plugin-wpcalypso": "^3.0.2",
     "json-loader": "^0.5.4",
+    "lodash": "^4.17.2",
     "mocha": "^3.2.0",
     "onchange": "^3.0.2",
     "react": "^15.4.1",
@@ -55,7 +57,8 @@
   },
   "babel": {
     "plugins": [
-      "babel-root-import"
+      "babel-root-import",
+      "lodash"
     ],
     "presets": [
       "react-app"

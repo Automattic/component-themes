@@ -2,10 +2,11 @@
 const ComponentThemes = window.ComponentThemes;
 const { React, registerComponent } = ComponentThemes;
 
-const PostBody = ( { children, className } ) => {
+const PostBody = ( { content, date, link, author, title, children, className } ) => {
+	const newChildren = React.Children.map( children, child => React.cloneElement( child, { title, content, link, date, author } ) );
 	return (
 		<div className={ className }>
-			{ children }
+			{ newChildren }
 		</div>
 	);
 };

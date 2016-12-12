@@ -1,25 +1,14 @@
 <?php
-class Component_Themes_SinglePost extends Component_Themes_Component {
-	public function render() {
-		$post_data = $this->get_prop( 'postData', [] );
-		$default_post_config = [
-			'componentType' => 'PostBody',
-			'children' => [
-				[ 'componentType' => 'PostTitle' ],
-				[ 'partial' => 'PostDateAndAuthor' ],
-				[ 'componentType' => 'PostContent' ],
-			],
-		];
-		$post_config = null !== $this->get_prop( 'post' ) ? $this->get_prop( 'post' ) : $default_post_config;
-		$render_blog_post = function( $post ) use ( &$post_config ) {
-			$component = $this->make_component_with( $post_config, $post );
-			return $component->render();
-		};
-		return "<div class='" . $this->get_prop( 'className' ) . "'>" . call_user_func( $render_blog_post, $post_data ) . '</div>';
-	}
-}
+$single_post = function( $props, $children ) {
+	$post_data = ct_get_value( $props, 'postData', [] );
+	$class_name = ct_get_value( $props, 'className', '' );
+	$new_children = React::mapChildren( $children, function( $child ) use ( &$post_data ) {
+		return React::cloneElement( $child, $post_data );
+	} );
+	return React::createElement( 'div', [ 'className' => $class_name ], $new_children );
+};
 
-$wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_SinglePost', function( $get_api_endpoint, $state ) {
+$wrapped = Component_Themes::api_data_wrapper( $single_post, function( $get_api_endpoint, $state ) {
 	$info = ct_get_value( $state, 'pageInfo', [] );
 	$post_id = ct_get_value( $info, 'postId' );
 	if ( ! $post_id ) {

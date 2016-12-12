@@ -1,6 +1,6 @@
 /* globals window */
 const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent, getPropsFromParent } = ComponentThemes;
+const { React, registerComponent } = ComponentThemes;
 
 function convertNewlines( content ) {
 	return content.replace( /\n/g, '<br />' );
@@ -25,5 +25,4 @@ PostContent.editableProps = {
 	}
 };
 
-const mapProps = ( { content } ) => ( { content } );
-registerComponent( 'PostContent', getPropsFromParent( mapProps )( PostContent ) );
+registerComponent( 'PostContent', PostContent );

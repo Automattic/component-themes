@@ -1,6 +1,6 @@
 <?php
 function Component_Themes_PostDate( $props, $children, $component ) {
-	$date = $component->get_prop_from_parent( 'date', 'No date' );
+	$date = $component->get_prop( 'date', 'No date' );
 	return "<span class='PostDate'>$date</span>";
 }
 

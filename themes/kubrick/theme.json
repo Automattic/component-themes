@@ -15,7 +15,13 @@
 		"home": { "id": "pageLayout", "componentType": "PageLayout", "children": [
 			{ "partial": "PageHeader" },
 			{ "id": "homeContentLayout", "componentType": "RowComponent", "children": [
-				{ "id": "myPosts", "componentType": "PostList" },
+				{ "id": "myPosts", "componentType": "PostList", "children": [
+					{ "componentType": "PostBody", "children": [
+						{ "componentType": "PostTitle" },
+						{ "partial": "PostDateAndAuthor" },
+						{ "componentType": "PostContent" }
+					] }
+				] },
 				{ "partial": "PageSidebar" }
 			] },
 			{ "partial": "PageFooter" }
@@ -23,7 +29,13 @@
 		"post": { "id": "pageLayout", "componentType": "PageLayout", "children": [
 			{ "partial": "PageHeader" },
 			{ "id": "singlePostContentLayout", "componentType": "RowComponent", "children": [
-				{ "id": "thePost", "componentType": "SinglePost" }
+				{ "id": "thePost", "componentType": "SinglePost", "children": [
+					{ "componentType": "PostBody", "children": [
+						{ "componentType": "PostTitle" },
+						{ "partial": "PostDateAndAuthor" },
+						{ "componentType": "PostContent" }
+					] }
+				] }
 			] },
 			{ "partial": "PageFooter" }
 		] }

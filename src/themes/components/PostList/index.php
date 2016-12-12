@@ -1,28 +1,16 @@
 <?php
-class Component_Themes_PostList extends Component_Themes_Component {
-	public function render() {
-		$posts = $this->get_prop( 'posts', [] );
-		if ( count( $posts ) < 1 ) {
-			return '<p>No posts</p>';
-		}
-		$default_post_config = [
-			'componentType' => 'PostBody',
-			'children' => [
-				[ 'componentType' => 'PostTitle' ],
-				[ 'partial' => 'PostDateAndAuthor' ],
-				[ 'componentType' => 'PostContent' ],
-			],
-		];
-		$post_config = null !== $this->get_prop( 'post' ) ? $this->get_prop( 'post' ) : $default_post_config;
-		$render_blog_post = function( $post ) use ( &$post_config ) {
-			$component = $this->make_component_with( $post_config, $post );
-			return $component->render();
-		};
-		return "<div class='" . $this->get_prop( 'className' ) . "'>" . implode( '', array_map( $render_blog_post, $posts ) ) . '</div>';
-	}
-}
+$post_list = function( $props, $children ) {
+	$posts = ct_get_value( $props, 'posts', [] );
+	$class_name = ct_get_value( $props, 'className', '' );
+	$new_children = ct_array_flatten( array_map( function( $post_data ) use ( &$children ) {
+		return React::mapChildren( $children, function( $child ) use ( &$post_data ) {
+			return React::cloneElement( $child, $post_data );
+		} );
+	}, $posts ) );
+	return React::createElement( 'div', [ 'className' => $class_name ], $new_children );
+};
 
-$wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_PostList', function( $get_api_endpoint ) {
+$wrapped = Component_Themes::api_data_wrapper( $post_list, function( $get_api_endpoint ) {
 	$posts_data = call_user_func( $get_api_endpoint, '/wp/v2/posts' );
 	$posts = array_map( function( $post ) use ( &$get_api_endpoint ) {
 		$author = call_user_func( $get_api_endpoint, '/wp/v2/users/' . $post['author'] );

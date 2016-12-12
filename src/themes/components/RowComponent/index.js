@@ -1,11 +1,14 @@
 /* globals window */
 const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent, styled } = ComponentThemes;
+const { React, registerComponent, styled, omit } = ComponentThemes;
 
-const RowComponent = ( { children, className } ) => {
+const RowComponent = ( props ) => {
+	const { children, className } = props;
+	const childProps = omit( props, [ 'children', 'className' ] );
+	const newChildren = React.Children.map( children, child => React.cloneElement( child, { ...childProps } ) );
 	return (
 		<div className={ className }>
-			{ children }
+			{ newChildren }
 		</div>
 	);
 };
