@@ -14,36 +14,30 @@ function buildComponent( Component, props = {}, children = [] ) {
 	return <Component key={ props.key } { ...props }>{ children }</Component>;
 }
 
-function buildComponentTreeFromConfig( componentConfig, childProps = {} ) {
+function buildComponentTreeFromConfig( componentConfig ) {
 	const { id, componentType, children, props, partial } = componentConfig;
 	if ( partial ) {
-		return buildComponentTreeFromConfig( getPartialByType( partial ), childProps );
+		return buildComponentTreeFromConfig( getPartialByType( partial ) );
 	}
 	const componentId = id || shortid.generate();
 	const Component = getComponentByType( componentType );
-	const childComponents = children ? children.map( child => buildComponentTreeFromConfig( child, childProps ) ) : null;
+	const childComponents = children ? children.map( child => buildComponentTreeFromConfig( child ) ) : null;
 	const componentProps = Object.assign(
 		{},
 		props || {},
-		{ childProps },
 		{ className: classNames( componentType, componentId ), key: componentId }
 	);
 	return { Component, componentId, componentProps, childComponents, componentType };
 }
 
-function getContentById( content, componentId, componentType ) {
-	return Object.assign( {}, content[ componentId ] || {}, content[ componentType ] || {} );
+function buildComponentFromTree( tree ) {
+	const { Component, componentProps, childComponents } = tree;
+	const children = childComponents ? childComponents.map( child => buildComponentFromTree( child ) ) : null;
+	return buildComponent( Component, componentProps, children );
 }
 
-function buildComponentFromTree( tree, content = {} ) {
-	const { Component, componentProps, childComponents, componentId, componentType } = tree;
-	const children = childComponents ? childComponents.map( child => buildComponentFromTree( child, content ) ) : null;
-	const props = Object.assign( {}, componentProps, getContentById( content, componentId, componentType ) );
-	return buildComponent( Component, props, children );
-}
-
-function buildComponentFromConfig( componentConfig, content = {} ) {
-	return buildComponentFromTree( buildComponentTreeFromConfig( componentConfig ), content );
+function buildComponentFromConfig( componentConfig ) {
+	return buildComponentFromTree( buildComponentTreeFromConfig( componentConfig ) );
 }
 
 function mergeThemeProperty( property, theme1, theme2 ) {
@@ -75,9 +69,9 @@ function registerPartials( partials ) {
 	Object.keys( partials ).map( key => registerPartial( key, partials[ key ] ) );
 }
 
-export function buildComponentsFromTheme( themeConfig, pageConfig, content = {} ) {
+export function buildComponentsFromTheme( themeConfig, pageConfig ) {
 	registerPartials( themeConfig.partials || {} );
-	return buildComponentFromConfig( expandConfigTemplates( pageConfig, themeConfig ), content );
+	return buildComponentFromConfig( expandConfigTemplates( pageConfig, themeConfig ) );
 }
 
 export function getTemplateForSlug( themeConfig, slug ) {

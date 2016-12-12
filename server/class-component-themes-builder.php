@@ -133,22 +133,21 @@ class Component_Themes_Builder {
 		}
 	}
 
-	private function build_component_from_config( $component_config, $component_data = [] ) {
+	private function build_component_from_config( $component_config ) {
 		if ( isset( $component_config['partial'] ) ) {
-			return $this->build_component_from_config( $this->get_partial_by_type( $component_config['partial'] ), $component_data );
+			return $this->build_component_from_config( $this->get_partial_by_type( $component_config['partial'] ) );
 		}
 		if ( ! isset( $component_config['componentType'] ) ) {
 			$name = ct_get_value( $component_config, 'id', json_encode( $component_config ) );
 			return $this->create_element( 'Component_Themes_Not_Found_Component', [ 'componentType' => $name ] );
 		}
 		$found_component = $this->get_component_by_type( $component_config['componentType'] );
-		$child_components = isset( $component_config['children'] ) ? array_map( function( $child ) use ( &$component_data ) {
-			return $this->build_component_from_config( $child, $component_data );
+		$child_components = isset( $component_config['children'] ) ? array_map( function( $child ) {
+			return $this->build_component_from_config( $child );
 		}, $component_config['children'] ) : [];
 		$props = ct_get_value( $component_config, 'props', [] );
 		$component_config['id'] = ct_get_value( $component_config, 'id', $this->generate_id( $component_config ) );
-		$data = ct_get_value( $component_data, $component_config['id'], [] );
-		$component_props = array_merge( $props, $data, [ 'componentId' => $component_config['id'], 'child_props' => $component_data, 'className' => $this->build_classname_for_component( $component_config ) ] );
+		$component_props = array_merge( $props, [ 'componentId' => $component_config['id'], 'className' => $this->build_classname_for_component( $component_config ) ] );
 		return $this->create_element( $found_component, $component_props, $child_components );
 	}
 
@@ -243,12 +242,12 @@ class Component_Themes_Builder {
 		return $theme;
 	}
 
-	private function build_components_from_theme( $theme_config, $page_config, $component_data ) {
+	private function build_components_from_theme( $theme_config, $page_config ) {
 		$this->register_partials( ct_get_value( $theme_config, 'partials', [] ) );
-		return $this->build_component_from_config( $this->expand_config_templates( $page_config, $theme_config ), $component_data );
+		return $this->build_component_from_config( $this->expand_config_templates( $page_config, $theme_config ) );
 	}
 
-	public function render( $theme_config, $page_config, $component_data = [] ) {
-		return React::render( $this->build_components_from_theme( $theme_config, $page_config, $component_data ) );
+	public function render( $theme_config, $page_config ) {
+		return React::render( $this->build_components_from_theme( $theme_config, $page_config ) );
 	}
 }
