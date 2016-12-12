@@ -17,6 +17,16 @@ function ct_array_flatten( $ary ) {
 		} else {
 			$result[] = $val;
 		}
-		return $result;
 	}
+	return $result;
+}
+
+function ct_omit( $ary, $keys ) {
+	$result = [];
+	foreach ( $ary as $key => $val ) {
+		if ( ! in_array( $key, $keys ) ) {
+			$result[ $key ] = $val;
+		}
+	}
+	return $result;
 }
