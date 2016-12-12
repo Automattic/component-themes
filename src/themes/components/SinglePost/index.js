@@ -11,18 +11,6 @@ const SinglePost = ( { postData, children, className } ) => {
 	);
 };
 
-SinglePost.description = 'A full single post. Not to be used in a list; for that, use PostList instead.';
-SinglePost.editableProps = {
-	postData: {
-		type: 'array',
-		label: 'The post data object.'
-	},
-	post: {
-		type: 'object',
-		label: 'The component to use for rendering each post. Use PostBody and PostTitle, PostContent, etc. Defaults to a standard blog post format.'
-	}
-};
-
 const mapApiToProps = ( getApiEndpoint, state ) => {
 	const { postId } = state.pageInfo || {};
 	if ( ! postId ) {
@@ -44,5 +32,17 @@ const mapApiToProps = ( getApiEndpoint, state ) => {
 	};
 };
 
-registerComponent( 'SinglePost', apiDataWrapper( mapApiToProps )( SinglePost ) );
+registerComponent( 'SinglePost', apiDataWrapper( mapApiToProps )( SinglePost ), {
+	description: 'A full single post. Not to be used in a list; for that, use PostList instead.',
+	editableProps: {
+		postData: {
+			type: 'array',
+			label: 'The post data object.'
+		},
+		post: {
+			type: 'object',
+			label: 'The component to use for rendering each post. Use PostBody and PostTitle, PostContent, etc. Defaults to a standard blog post format.'
+		}
+	},
+} );
 

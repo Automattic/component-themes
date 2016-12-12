@@ -12,7 +12,7 @@ const PageLayout = ( { children, className } ) => {
 	);
 };
 
-PageLayout.description = 'A wrapper for a whole page. Always use this as the parent component for all other page elements.';
-PageLayout.hasChildren = true;
-
-registerComponent( 'PageLayout', PageLayout );
+registerComponent( 'PageLayout', PageLayout, {
+	description: 'A wrapper for a whole page. Always use this as the parent component for all other page elements.',
+	hasChildren: true,
+} );

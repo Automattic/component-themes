@@ -10,13 +10,13 @@ const SearchWidget = ( { placeholder, className } ) => {
 	);
 };
 
-SearchWidget.description = 'A search field.';
-SearchWidget.editableProps = {
-	placeholder: {
-		type: 'string',
-		label: 'The placeholder text for the search field.'
-	}
-};
-
-registerComponent( 'SearchWidget', SearchWidget );
+registerComponent( 'SearchWidget', SearchWidget, {
+	description: 'A search field.',
+	editableProps: {
+		placeholder: {
+			type: 'string',
+			label: 'The placeholder text for the search field.'
+		}
+	},
+} );
 

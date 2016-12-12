@@ -19,8 +19,16 @@ function getNotFoundPartial( partialType ) {
 	return { componentType: 'ErrorComponent', props: { message: `I could not find the partial '${ partialType }'` } };
 }
 
+function getComponentEntryByType( componentType ) {
+	return componentMap[ componentType ] || { component: getNotFoundComponent( componentType ), properties: {} };
+}
+
+function getComponentPropertiesByType( componentType ) {
+	return getComponentEntryByType( componentType ).properties;
+}
+
 export function getComponentByType( componentType ) {
-	return componentMap[ componentType ] || getNotFoundComponent( componentType );
+	return getComponentEntryByType( componentType ).component;
 }
 
 export function getComponentTypes() {
@@ -28,19 +36,19 @@ export function getComponentTypes() {
 }
 
 export function getComponentDescription( componentType ) {
-	return getComponentByType( componentType ).description || '';
+	return getComponentPropertiesByType( componentType ).description || '';
 }
 
 export function getComponentProps( componentType ) {
-	return getComponentByType( componentType ).editableProps || {};
+	return getComponentPropertiesByType( componentType ).editableProps || {};
 }
 
 export function canComponentHaveChildren( componentType ) {
-	return getComponentByType( componentType ).hasChildren || false;
+	return getComponentPropertiesByType( componentType ).hasChildren || false;
 }
 
-export function registerComponent( componentType, component ) {
-	componentMap[ componentType ] = component;
+export function registerComponent( componentType, component, properties = {} ) {
+	componentMap[ componentType ] = { component, properties };
 }
 
 export function getPartialByType( partialType ) {

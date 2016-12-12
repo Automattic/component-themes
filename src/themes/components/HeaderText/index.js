@@ -11,22 +11,6 @@ const HeaderText = ( { link, siteTitle, siteTagline, className } ) => {
 	);
 };
 
-HeaderText.description = 'Header containing site title and tagline.';
-HeaderText.editableProps = {
-	siteTitle: {
-		type: 'string',
-		label: 'The site title'
-	},
-	siteTagline: {
-		type: 'string',
-		label: 'The site sub-title or tagline'
-	},
-	link: {
-		type: 'string',
-		label: 'The header link'
-	}
-};
-
 const mapApiToProps = ( getApiEndpoint ) => {
 	const siteInfo = getApiEndpoint( '/' );
 	return {
@@ -36,5 +20,21 @@ const mapApiToProps = ( getApiEndpoint ) => {
 	};
 };
 
-registerComponent( 'HeaderText', apiDataWrapper( mapApiToProps )( HeaderText ) );
+registerComponent( 'HeaderText', apiDataWrapper( mapApiToProps )( HeaderText ), {
+	description: 'Header containing site title and tagline.',
+	editableProps: {
+		siteTitle: {
+			type: 'string',
+			label: 'The site title'
+		},
+		siteTagline: {
+			type: 'string',
+			label: 'The site sub-title or tagline'
+		},
+		link: {
+			type: 'string',
+			label: 'The header link'
+		}
+	},
+} );
 

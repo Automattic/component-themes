@@ -11,18 +11,6 @@ const MenuWidget = ( { title, links, className } ) =>
 		</ul>
 	</div>;
 
-MenuWidget.description = 'A menu (list of links).';
-MenuWidget.editableProps = {
-	title: {
-		type: 'string',
-		label: 'The title of this list (optional)'
-	},
-	links: {
-		type: 'array',
-		label: 'A list of { text, url } objects.'
-	}
-};
-
 const Styled = styled( MenuWidget )`
 .MenuWidget__title {
 	font-size: 0.8em;
@@ -44,5 +32,17 @@ ul {
 }
 `;
 
-registerComponent( 'MenuWidget', Styled );
+registerComponent( 'MenuWidget', Styled, {
+	description: 'A menu (list of links).',
+	editableProps: {
+		title: {
+			type: 'string',
+			label: 'The title of this list (optional)'
+		},
+		links: {
+			type: 'array',
+			label: 'A list of { text, url } objects.'
+		}
+	},
+} );
 

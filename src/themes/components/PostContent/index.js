@@ -17,12 +17,12 @@ const PostContent = ( { content, className } ) => {
 	);
 };
 
-PostContent.description = 'The content of a post, rendered as html. Use inside a PostBody.';
-PostContent.editableProps = {
-	content: {
-		type: 'string',
-		label: 'The html content of a post.'
-	}
-};
-
-registerComponent( 'PostContent', PostContent );
+registerComponent( 'PostContent', PostContent, {
+	description: 'The content of a post, rendered as html. Use inside a PostBody.',
+	editableProps: {
+		content: {
+			type: 'string',
+			label: 'The html content of a post.'
+		}
+	},
+} );

@@ -13,7 +13,8 @@ const ColumnComponent = ( props ) => {
 	);
 };
 
-ColumnComponent.description = 'A generic layout component for rendering children with no styling included.';
-ColumnComponent.hasChildren = true;
 
-registerComponent( 'ColumnComponent', ColumnComponent );
+registerComponent( 'ColumnComponent', ColumnComponent, {
+	description: 'A generic layout component for rendering children with no styling included.',
+	hasChildren: true,
+} );

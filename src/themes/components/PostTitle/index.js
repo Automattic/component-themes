@@ -10,16 +10,16 @@ const PostTitle = ( { link, title, className } ) => {
 	);
 };
 
-PostTitle.description = 'The title block for a post. Use inside a PostBody.';
-PostTitle.editableProps = {
-	title: {
-		type: 'string',
-		label: 'The title string for the post'
+registerComponent( 'PostTitle', PostTitle, {
+	description: 'The title block for a post. Use inside a PostBody.',
+	editableProps: {
+		title: {
+			type: 'string',
+			label: 'The title string for the post'
+		},
+		link: {
+			type: 'string',
+			label: 'The url for the post title link'
+		},
 	},
-	link: {
-		type: 'string',
-		label: 'The url for the post title link'
-	},
-};
-
-registerComponent( 'PostTitle', PostTitle );
+} );
