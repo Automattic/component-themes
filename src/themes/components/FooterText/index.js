@@ -11,6 +11,7 @@ const FooterText = ( { text, className } ) => {
 };
 
 registerComponent( 'FooterText', FooterText, {
+	title: 'Footer',
 	description: 'The footer text block of a site.',
 	editableProps: {
 		text: {

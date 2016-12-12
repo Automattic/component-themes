@@ -11,6 +11,7 @@ const PostDate = ( { date, className } ) => {
 };
 
 registerComponent( 'PostDate', PostDate, {
+	title: 'Post Date',
 	description: 'The date for a post. Use inside a PostBody.',
 	editableProps: {
 		date: {

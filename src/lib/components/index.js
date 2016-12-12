@@ -35,6 +35,10 @@ export function getComponentTypes() {
 	return Object.keys( componentMap ).sort();
 }
 
+export function getComponentTitle( componentType ) {
+	return getComponentPropertiesByType( componentType ).title || componentType;
+}
+
 export function getComponentDescription( componentType ) {
 	return getComponentPropertiesByType( componentType ).description || '';
 }

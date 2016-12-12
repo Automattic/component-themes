@@ -11,6 +11,7 @@ const SearchWidget = ( { placeholder, className } ) => {
 };
 
 registerComponent( 'SearchWidget', SearchWidget, {
+	title: 'Search Field',
 	description: 'A search field.',
 	editableProps: {
 		placeholder: {

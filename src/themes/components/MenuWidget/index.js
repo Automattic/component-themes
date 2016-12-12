@@ -33,6 +33,7 @@ ul {
 `;
 
 registerComponent( 'MenuWidget', Styled, {
+	title: 'Menu',
 	description: 'A menu (list of links).',
 	editableProps: {
 		title: {

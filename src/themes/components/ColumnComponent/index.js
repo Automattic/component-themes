@@ -15,6 +15,7 @@ const ColumnComponent = ( props ) => {
 
 
 registerComponent( 'ColumnComponent', ColumnComponent, {
+	title: 'Column',
 	description: 'A generic layout component for rendering children with no styling included.',
 	hasChildren: true,
 } );

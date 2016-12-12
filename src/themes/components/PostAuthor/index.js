@@ -11,6 +11,7 @@ const PostAuthor = ( { author, className } ) => {
 };
 
 registerComponent( 'PostAuthor', PostAuthor, {
+	title: 'Post Author',
 	description: 'The author block for a post. Use inside a PostBody.',
 	editableProps: {
 		author: {

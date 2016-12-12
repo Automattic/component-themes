@@ -11,6 +11,7 @@ const PostTitle = ( { link, title, className } ) => {
 };
 
 registerComponent( 'PostTitle', PostTitle, {
+	title: 'Post Title',
 	description: 'The title block for a post. Use inside a PostBody.',
 	editableProps: {
 		title: {

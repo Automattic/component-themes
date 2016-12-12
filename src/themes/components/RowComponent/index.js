@@ -19,6 +19,7 @@ const Styled = styled( RowComponent )`
 `;
 
 registerComponent( 'RowComponent', Styled, {
+	title: 'Row',
 	description: 'A wrapper for a row of components. Always use this as the parent component for content components.',
 	hasChildren: true,
 } );

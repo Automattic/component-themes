@@ -30,6 +30,7 @@ const mapApiToProps = ( getApiEndpoint ) => {
 };
 
 registerComponent( 'PostList', apiDataWrapper( mapApiToProps )( PostList ), {
+	title: 'Post List',
 	description: 'A list of posts.',
 	editableProps: {
 		posts: {

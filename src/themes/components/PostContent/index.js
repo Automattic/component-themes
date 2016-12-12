@@ -18,6 +18,7 @@ const PostContent = ( { content, className } ) => {
 };
 
 registerComponent( 'PostContent', PostContent, {
+	title: 'Post Content',
 	description: 'The content of a post, rendered as html. Use inside a PostBody.',
 	editableProps: {
 		content: {

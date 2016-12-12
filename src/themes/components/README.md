@@ -27,6 +27,7 @@ const TextWidget = ( { text, className } ) => {
 };
 
 registerComponent( 'TextWidget', TextWidget, {
+	title: 'Text Widget',
 	description: 'A block of text or html.',
 	editableProps: {
 		text: {

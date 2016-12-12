@@ -21,6 +21,7 @@ const mapApiToProps = ( getApiEndpoint ) => {
 };
 
 registerComponent( 'HeaderText', apiDataWrapper( mapApiToProps )( HeaderText ), {
+	title: 'Header',
 	description: 'Header containing site title and tagline.',
 	editableProps: {
 		siteTitle: {

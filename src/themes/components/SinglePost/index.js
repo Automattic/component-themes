@@ -33,6 +33,7 @@ const mapApiToProps = ( getApiEndpoint, state ) => {
 };
 
 registerComponent( 'SinglePost', apiDataWrapper( mapApiToProps )( SinglePost ), {
+	title: 'Single Post',
 	description: 'A full single post. Not to be used in a list; for that, use PostList instead.',
 	editableProps: {
 		postData: {
