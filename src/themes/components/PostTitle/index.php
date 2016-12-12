@@ -1,12 +1,11 @@
 <?php
-class Component_Themes_PostTitle extends Component_Themes_Component {
-	public function render() {
-		$link = $this->get_prop_from_parent( 'link' );
-		$link_text = $this->get_prop_from_parent( 'title', 'No title' );
-		return "<h1 class='" . $this->get_prop( 'className' ) . "'>
-			<a class='PostTitle_link' href='$link'>$link_text</a>
+$post_title = function( $props ) {
+	$link = ct_get_value( $props, 'link' );
+	$link_text = ct_get_value( $props, 'title', 'No title' );
+	$class_name = ct_get_value( $props, 'className', '' );
+	return "<h1 class='$class_name'>
+		<a class='PostTitle_link' href='$link'>$link_text</a>
 		</h1>";
-	}
-}
+};
 
-Component_Themes::register_component( 'PostTitle', 'Component_Themes_PostTitle' );
+Component_Themes::register_component( 'PostTitle', $post_title );

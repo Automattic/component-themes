@@ -175,5 +175,18 @@ describe( 'React', function() {
 			expect( $result->props['foo'] )->toEqual( 'bar' );
 		} );
 	} );
+
+	describe( '::mapChildren()', function() {
+		it( 'returns the result of the mapping function for each component passed', function() {
+			$child1 = React::createElement( 'em' );
+			$child2 = React::createElement( 'b' );
+			$child3 = React::createElement( 'a' );
+			$childen = [ $child1, $child2, $child3 ];
+			$result = React::mapChildren( $childen, function( $child ) {
+				return $child->tag;
+			} );
+			expect( $result )->toEqual( [ 'em', 'b', 'a' ] );
+		} );
+	} );
 } );
 

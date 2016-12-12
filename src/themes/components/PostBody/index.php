@@ -1,8 +1,14 @@
 <?php
-class Component_Themes_PostBody extends Component_Themes_Component {
-	public function render() {
-		return "<div class='" . $this->get_prop( 'className' ) . "'>" . $this->render_children() . '</div>';
-	}
-}
+$post_body = function( $props, $children ) {
+	$class_name = ct_get_value( $props, 'className', '' );
+	$new_props = $props;
+	unset( $new_props['className'] );
+	unset( $new_props['children'] );
+	$new_children = React::mapChildren( $children, function( $child ) use ( &$new_props ) {
+		return React::cloneElement( $child, $new_props );
+	} );
+	return React::createElement( 'div', [ 'className' => $class_name ], $new_children );
+};
 
-Component_Themes::register_component( 'PostBody', 'Component_Themes_PostBody' );
+
+Component_Themes::register_component( 'PostBody', $post_body );

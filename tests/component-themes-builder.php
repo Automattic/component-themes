@@ -1,7 +1,7 @@
 <?php
 use function Corretto\describe, Corretto\it, Corretto\expect, Corretto\beforeEach;
 
-require( './server/class-component-themes.php' );
+require_once( './server/class-component-themes.php' );
 
 // @codingStandardsIgnoreStart
 function component_Themes_Text_Widget( $props ) {

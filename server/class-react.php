@@ -14,6 +14,9 @@ class React {
 		if ( is_string( $component ) ) {
 			return React::render( new Component_Themes_Text_Component( $component ) );
 		}
+		if ( is_array( $component ) ) {
+			throw new Exception( 'Cannot call render on an array: ' . print_r( $component, true ) );
+		}
 		$out = $component->render();
 		if ( is_string( $out ) ) {
 			return $out;
