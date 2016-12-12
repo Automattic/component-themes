@@ -10,13 +10,14 @@ const PostDate = ( { date, className } ) => {
 	);
 };
 
-PostDate.description = 'The date for a post. Use inside a PostBody.';
-PostDate.editableProps = {
-	date: {
-		type: 'string',
-		label: 'The date string for the post'
+registerComponent( 'PostDate', PostDate, {
+	title: 'Post Date',
+	description: 'The date for a post. Use inside a PostBody.',
+	editableProps: {
+		date: {
+			type: 'string',
+			label: 'The date string for the post'
+		},
 	},
-};
-
-registerComponent( 'PostDate', PostDate );
+} );
 

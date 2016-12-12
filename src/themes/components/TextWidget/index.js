@@ -10,12 +10,13 @@ const TextWidget = ( { text, className } ) => {
 	);
 };
 
-TextWidget.description = 'A block of text or html.';
-TextWidget.editableProps = {
-	text: {
-		type: 'string',
-		label: 'The text to display.'
-	}
-};
-
-registerComponent( 'TextWidget', TextWidget );
+registerComponent( 'TextWidget', TextWidget, {
+	title: 'Text Widget',
+	description: 'A block of text or html.',
+	editableProps: {
+		text: {
+			type: 'string',
+			label: 'The text to display.'
+		}
+	},
+} );

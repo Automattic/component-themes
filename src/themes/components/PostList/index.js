@@ -14,18 +14,6 @@ const PostList = ( { posts, children, className } ) => {
 	);
 };
 
-PostList.description = 'A list of posts.';
-PostList.editableProps = {
-	posts: {
-		type: 'array',
-		label: 'The post data objects. Usually provided by content rather than props.'
-	},
-	post: {
-		type: 'object',
-		label: 'The component to use for rendering each post. Use PostBody and PostTitle, PostContent, etc. Defaults to a standard blog post format.'
-	}
-};
-
 const mapApiToProps = ( getApiEndpoint ) => {
 	const postsData = getApiEndpoint( '/wp/v2/posts' ) || [];
 	const posts = postsData.map( post => {
@@ -41,4 +29,17 @@ const mapApiToProps = ( getApiEndpoint ) => {
 	return { posts };
 };
 
-registerComponent( 'PostList', apiDataWrapper( mapApiToProps )( PostList ) );
+registerComponent( 'PostList', apiDataWrapper( mapApiToProps )( PostList ), {
+	title: 'Post List',
+	description: 'A list of posts.',
+	editableProps: {
+		posts: {
+			type: 'array',
+			label: 'The post data objects. Usually provided by content rather than props.'
+		},
+		post: {
+			type: 'object',
+			label: 'The component to use for rendering each post. Use PostBody and PostTitle, PostContent, etc. Defaults to a standard blog post format.'
+		}
+	},
+} );

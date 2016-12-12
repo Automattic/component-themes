@@ -10,12 +10,13 @@ const PostAuthor = ( { author, className } ) => {
 	);
 };
 
-PostAuthor.description = 'The author block for a post. Use inside a PostBody.';
-PostAuthor.editableProps = {
-	author: {
-		type: 'string',
-		label: 'The author string for the post'
+registerComponent( 'PostAuthor', PostAuthor, {
+	title: 'Post Author',
+	description: 'The author block for a post. Use inside a PostBody.',
+	editableProps: {
+		author: {
+			type: 'string',
+			label: 'The author string for the post'
+		},
 	},
-};
-
-registerComponent( 'PostAuthor', PostAuthor );
+} );

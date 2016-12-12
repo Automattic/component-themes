@@ -6,9 +6,9 @@ Each theme component is a React Component which will be available to be used in 
 
 1. It should be as simple as possible. These components will need to be tranformed into PHP code so their logic has to be very basic. A stateless functional component is recommended.
 2. It should render its top-level element with `className` set to the prop `className`.
-3. It should include a description. You can export a `description` property on the Component object (eg: `TextWidget.description = 'This is a box for text';`).
+3. It should include a title, description, if it can have children, and optionally information about its props. This data is passed as a third argument to `registerComponent()`.
 4. All its data should come from props. There ideally should be no calls to outside libraries, unless it's just for processing data.
-5. It should include meta-data about its editable props. Rather than, or in addition to, using React's `propTypes`, you can export an `editableProps` property on the Component object which contains meta-data about each prop. The meta-data should be an object that has two properties of its own: `type` (a string describing the property type, like `'boolean'` or `'string'` or `'array'`), and `label` (a string description for that property).
+5. It should include meta-data about its editable props. Rather than, or in addition to, using React's `propTypes`, you can pass an `editableProps` property when calling `registerComponent()` which contains meta-data about each prop. Each prop's meta-data should be an object that has two properties of its own: `type` (a string describing the property type, like `'boolean'` or `'string'` or `'array'`), and `label` (a string description for that property).
 6. It must be registered in JS by calling `ComponentThemes.registerComponent()` before the theme is rendered.
 7. It must be registered in PHP by including the component file before the theme is rendered and calling `Component_Themes::register_component()`.
 
@@ -26,15 +26,16 @@ const TextWidget = ( { text, className } ) => {
 	);
 };
 
-TextWidget.description = 'A block of text or html.';
-TextWidget.editableProps = {
-	text: {
-		type: 'string',
-		label: 'The text to display.'
-	}
-};
-
-registerComponent( 'TextWidget', TextWidget );
+registerComponent( 'TextWidget', TextWidget, {
+	title: 'Text Widget',
+	description: 'A block of text or html.',
+	editableProps: {
+		text: {
+			type: 'string',
+			label: 'The text to display.'
+		}
+	},
+} );
 ```
 
 The PHP version of the component can be slightly simpler because it does not require the description and editableProps properties, but it can use `React::createElement()` which is what the JSX in the React component will be transpiled into.

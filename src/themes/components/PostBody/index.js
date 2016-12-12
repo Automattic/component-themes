@@ -11,7 +11,8 @@ const PostBody = ( { content, date, link, author, title, children, className } )
 	);
 };
 
-PostBody.description = 'A wrapper for a post. Use PostContent, PostTitle, PostDate, and PostAuthor for the inside.';
-PostBody.hasChildren = true;
-
-registerComponent( 'PostBody', PostBody );
+registerComponent( 'PostBody', PostBody, {
+	title: 'Post',
+	description: 'A wrapper for a post. Use PostContent, PostTitle, PostDate, and PostAuthor for the inside.',
+	hasChildren: true,
+} );
