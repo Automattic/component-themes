@@ -5,6 +5,7 @@
   "description": "Component-based themes for WordPress",
   "main": "build/index.js",
   "scripts": {
+    "start": "npm run build && npm run watch",
     "test:js": "NODE_ENV=development mocha --compilers js:babel-register test",
     "test:php": "vendor/bin/corretto",
     "test": "npm run test:js && npm run test:php",
