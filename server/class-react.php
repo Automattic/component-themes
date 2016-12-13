@@ -8,6 +8,9 @@ class React {
 	}
 
 	public static function render( $component ) {
+		if ( ! $component ) {
+			return null;
+		}
 		if ( is_callable( $component ) ) {
 			return React::render( React::createElement( $component ) );
 		}
@@ -26,6 +29,9 @@ class React {
 		// @codingStandardsIgnoreEnd
 		$rendered_children = React::mapChildren( $children, function( $child ) {
 			return React::render( $child );
+		} );
+		$rendered_children = array_filter( $rendered_children, function( $child ) {
+			return ( $child );
 		} );
 		return implode( ' ', $rendered_children );
 	}

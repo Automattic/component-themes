@@ -59,6 +59,12 @@ describe( 'React', function() {
 			expect( React::render( $result ) )->toEqual( '<a class="great-link"><b class="bold">hello</b> there, <em class="emphasis">world</em></a>' );
 		} );
 
+		it( 'renders html with a null child included as empty space', function() {
+			$child2 = React::createElement( 'em', [ 'className' => 'emphasis' ], 'world' );
+			$result = React::createElement( 'a', [ 'className' => 'great-link' ], [ null, 'there,', $child2 ] );
+			expect( React::render( $result ) )->toEqual( '<a class="great-link">there, <em class="emphasis">world</em></a>' );
+		} );
+
 		it( 'renders html for a simple function component that returns a string', function() {
 			$component = function() {
 				return '<b>hello</b>';
