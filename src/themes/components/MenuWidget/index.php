@@ -1,20 +1,25 @@
 <?php
 class Component_Themes_MenuWidget extends Component_Themes_Component {
 	public function render() {
-		$title = $this->get_prop( 'title' );
+		$title = $this->get_prop( 'title', '' );
 		$title_area = isset( $title ) ? "<h2 class='MenuWidget__title'>$title</h2>" : '';
-		$links = $this->get_prop( 'links', [] );
-		$links_area = implode( '', array_map( function( $link ) {
-			$url = $link['url'];
-			$text = $link['text'];
-			return "<li class='MenuWidget__link'><a href=$url>$text</a></li>";
-		}, $links ) );
+
+		$links = $this->get_prop( 'links', array() );
+		$links_area = implode( '', array_map( array( $this, 'render_menu_link' ), $links ) );
+
 		return "<div class='" . $this->get_prop( 'className' ) . "'>
 		$title_area
 		<ul>
 			$links_area
 		</ul>
 		</div>";
+	}
+
+	public function render_menu_link( $link ) {
+		$url = $link['url'];
+		$text = $link['text'];
+
+		return "<li class='MenuWidget__link'><a href={$url}>{$text}</a></li>";
 	}
 }
 

@@ -1,7 +1,9 @@
 <?php
 class React {
+	protected static $props_for_cloning = null;
+
 	// @codingStandardsIgnoreStart
-	public static function createElement( $component, $props = [], $children = [] ) {
+	public static function createElement( $component, $props = array(), $children = array() ) {
 		// @codingStandardsIgnoreEnd
 		$builder = Component_Themes_Builder::get_builder();
 		return $builder->create_element( $component, $props, $children );
@@ -27,12 +29,7 @@ class React {
 	// @codingStandardsIgnoreStart
 	public static function renderChildren( $children ) {
 		// @codingStandardsIgnoreEnd
-		$rendered_children = React::mapChildren( $children, function( $child ) {
-			return React::render( $child );
-		} );
-		$rendered_children = array_filter( $rendered_children, function( $child ) {
-			return ( $child );
-		} );
+		$rendered_children = React::mapChildren( $children, 'React::render' );
 		return implode( ' ', $rendered_children );
 	}
 
@@ -40,10 +37,10 @@ class React {
 	public static function mapChildren( $children, $mapper ) {
 		// @codingStandardsIgnoreEnd
 		if ( ! $children ) {
-			return [];
+			return array();
 		}
 		if ( ! is_array( $children ) ) {
-			return [ call_user_func( $mapper, $children ) ];
+			return array( call_user_func( $mapper, $children ) );
 		}
 		return array_map( $mapper, $children );
 	}
@@ -65,5 +62,18 @@ class React {
 		}
 		return React::createElement( $component_type, $props, $children );
 	}
-}
 
+	// @codingStandardsIgnoreStart
+	public static function cloneChildren( $children, $props = array() ) {
+		// @codingStandardsIgnoreEnd
+		self::$props_for_cloning = $props;
+		$new_children = React::mapChildren( $children, 'React::cloneChild' );
+		self::$props_for_cloning = null;
+
+		return $new_children;
+	}
+
+	protected static function cloneChild( $child ) {
+		return React::cloneElement( $child, self::$props_for_cloning );
+	}
+}
