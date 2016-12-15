@@ -30,6 +30,7 @@ class React {
 	public static function renderChildren( $children ) {
 		// @codingStandardsIgnoreEnd
 		$rendered_children = React::mapChildren( $children, 'React::render' );
+		$rendered_children = array_filter( $rendered_children, 'ct_not_empty' );
 		return implode( ' ', $rendered_children );
 	}
 
@@ -73,7 +74,9 @@ class React {
 		return $new_children;
 	}
 
+	// @codingStandardsIgnoreStart
 	protected static function cloneChild( $child ) {
+		// @codingStandardsIgnoreEnd
 		return React::cloneElement( $child, self::$props_for_cloning );
 	}
 }

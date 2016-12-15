@@ -30,3 +30,7 @@ function ct_omit( $ary, $keys ) {
 	}
 	return $result;
 }
+
+function ct_not_empty( $value ) {
+	return ! empty( $value );
+}
