@@ -15,7 +15,7 @@ function Component_Themes_ErrorComponent( $props ) {
 class Component_Themes_Text_Component extends Component_Themes_Component {
 	public $text;
 
-	public function __construct( $text = '', $props = [], $children = [] ) {
+	public function __construct( $text = '', $props = array(), $children = array() ) {
 		parent::__construct( $props, $children );
 		$this->text = $text;
 	}
@@ -28,7 +28,7 @@ class Component_Themes_Text_Component extends Component_Themes_Component {
 class Component_Themes_Html_Component extends Component_Themes_Component {
 	public $tag;
 
-	public function __construct( $tag = 'div', $props = [], $children = [] ) {
+	public function __construct( $tag = 'div', $props = array(), $children = array() ) {
 		parent::__construct( $props, $children );
 		$this->tag = $tag;
 	}
@@ -55,7 +55,7 @@ class Component_Themes_Html_Component extends Component_Themes_Component {
 class Component_Themes_Stateless_Component extends Component_Themes_Component {
 	public $render_function;
 
-	public function __construct( $render_function, $props = [], $children = [] ) {
+	public function __construct( $render_function, $props = array(), $children = array() ) {
 		parent::__construct( $props, $children );
 		$this->render_function = $render_function;
 	}
@@ -66,8 +66,8 @@ class Component_Themes_Stateless_Component extends Component_Themes_Component {
 }
 
 class Component_Themes_Builder {
-	private static $registered_components = [];
-	private static $registered_partials = [];
+	private static $registered_components = array();
+	private static $registered_partials = array();
 
 	public function __construct() {
 	}
@@ -76,17 +76,21 @@ class Component_Themes_Builder {
 		return new Component_Themes_Builder();
 	}
 
-	public function create_element( $component, $props = [], $children = [] ) {
-		$context = ct_get_value( $props, 'context', [] );
+	public function create_element( $component, $props = array(), $children = array() ) {
+		$context = ct_get_value( $props, 'context', array() );
 		$props = array_merge( $props, [ 'context' => $context ] );
+
+		if ( $component instanceof Component_Themes_Component ) {
+			return $component;
+		}
+		if ( $component instanceof Component_Themes_Api_Wrapper ) {
+			return $component->create( $props, $children );
+		}
 		if ( is_callable( $component ) ) {
 			return new Component_Themes_Stateless_Component( $component, $props, $children );
 		}
 		if ( is_string( $component ) && ! ctype_upper( $component[0] ) ) {
 			return new Component_Themes_Html_Component( $component, $props, $children );
-		}
-		if ( function_exists( $component ) ) {
-			return new Component_Themes_Stateless_Component( $component, $props, $children );
 		}
 		if ( 'Component_Themes_Text_Component' === $component ) {
 			// This would be an error state, but to prevent errors, we will make an empty text node
@@ -111,9 +115,8 @@ class Component_Themes_Builder {
 		if ( isset( self::$registered_components[ $type ] ) ) {
 			return self::$registered_components[ $type ];
 		}
-		return function() use ( &$type ) {
-			return "Could not find component '" . $type . "'";
-		};
+
+		return new Component_Themes_Not_Found_Component( array( 'componentType' => $type ) );
 	}
 
 	private function get_partial_by_type( $type ) {
@@ -139,7 +142,7 @@ class Component_Themes_Builder {
 		}
 		if ( ! isset( $component_config['componentType'] ) ) {
 			$name = ct_get_value( $component_config, 'id', json_encode( $component_config ) );
-			return $this->create_element( 'Component_Themes_Not_Found_Component', [ 'componentType' => $name ] );
+			return $this->create_element( 'Component_Themes_Not_Found_Component', array( 'componentType' => $name ) );
 		}
 		$found_component = $this->get_component_by_type( $component_config['componentType'] );
 		$child_components = isset( $component_config['children'] ) ? array_map( function( $child ) {
@@ -234,7 +237,7 @@ class Component_Themes_Builder {
 	}
 
 	public function merge_themes( $theme1, $theme2 ) {
-		$theme = [];
+		$theme = array();
 		$properties = array_unique( array_keys( array_merge( $theme1, $theme2 ) ) );
 		foreach ( $properties as $property ) {
 			$theme[ $property ] = $this->merge_theme_property( $property, $theme1, $theme2 );
