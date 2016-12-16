@@ -1,30 +1,33 @@
 <?php
-$single_post = function( $props, $children ) {
-	$post_data = ct_get_value( $props, 'postData', [] );
+function Component_Themes_Single_Post ( $props, $children ) {
+	$post_data = ct_get_value( $props, 'postData', array() );
 	$class_name = ct_get_value( $props, 'className', '' );
-	$new_children = React::mapChildren( $children, function( $child ) use ( &$post_data ) {
-		return React::cloneElement( $child, $post_data );
-	} );
-	return React::createElement( 'div', [ 'className' => $class_name ], $new_children );
+	$new_children = React::cloneChileren( $children, $post_data );
+	return React::createElement( 'div', array( 'className' => $class_name ), $new_children );
 };
 
-$wrapped = Component_Themes::api_data_wrapper( $single_post, function( $get_api_endpoint, $state ) {
-	$info = ct_get_value( $state, 'pageInfo', [] );
+function Component_Themes_Single_Post_Api_Mapper( $get_api_endpoint, $state ) {
+	$info = ct_get_value( $state, 'pageInfo', array() );
 	$post_id = ct_get_value( $info, 'postId' );
+
 	if ( ! $post_id ) {
-		return [];
+		return array();
 	}
+
 	$post = call_user_func( $get_api_endpoint, '/wp/v2/posts/' . $post_id );
 	$author = call_user_func( $get_api_endpoint, '/wp/v2/users/' . $post['author'] );
-	return [
-		'postData' => [
+
+	return array(
+		'postData' => array(
 			'title' => $post['title']['rendered'],
 			'date' => $post['date'],
 			'content' => $post['content']['rendered'],
 			'link' => $post['link'],
 			'author' => $author['name'],
-		],
-	];
-} );
-Component_Themes::register_component( 'SinglePost', $wrapped );
+		),
+	);
+}
 
+$wrapped = Component_Themes::api_data_wrapper( 'Component_Themes_Single_Post', 'Component_Themes_Single_Post_Api_Mapper' );
+
+Component_Themes::register_component( 'SinglePost', $wrapped );
