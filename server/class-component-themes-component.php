@@ -1,5 +1,7 @@
 <?php
 class Component_Themes_Component {
+	protected static $styles;
+
 	public $props;
 	public $children;
 
@@ -18,5 +20,9 @@ class Component_Themes_Component {
 
 	public function render() {
 		return '';
+	}
+
+	public static function get_styles() {
+		return ct_or( self::$styles, null );
 	}
 }

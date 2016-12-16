@@ -1,13 +1,13 @@
 <?php
 
-class Component_Themes_Api_Wrapper {
+class Component_Themes_Api_Wrapper extends Component_Themes_Component_Wrapper {
 
-	protected $component = null;
 	protected $map_api_to_props = null;
 	protected $global_state = null;
 
 	public function __construct( &$component, &$map_api_to_props, &$global_state ) {
-		$this->component = $component;
+		parent::__construct( $component );
+
 		$this->map_api_to_props = $map_api_to_props;
 		$this->global_state = $state;
 	}

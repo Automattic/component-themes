@@ -2,20 +2,9 @@
 require( dirname( __DIR__ ) . '/server_requirements/CSS-Parser/parser.php' );
 
 class Component_Themes_Styles {
+
 	public static function get_styler() {
 		return new Component_Themes_Styles();
-	}
-
-	public static function style_component( $component, $styles ) {
-		$styler = Component_Themes_Styles::get_styler();
-		$styler->add_styles_to_header( $styles );
-		return function( $props, $children ) use ( &$component ) {
-			return React::createElement( $component, $props, $children );
-		};
-	}
-
-	public function add_styles_to_header( $styles ) {
-		echo '<style type="text/css" class="component-themes-styles">' . $styles . '</style>';
 	}
 
 	public function build_styles_from_theme( $theme_config ) {

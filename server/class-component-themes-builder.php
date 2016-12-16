@@ -83,7 +83,7 @@ class Component_Themes_Builder {
 		if ( $component instanceof Component_Themes_Component ) {
 			return $component;
 		}
-		if ( $component instanceof Component_Themes_Api_Wrapper ) {
+		if ( $component instanceof Component_Themes_Component_Wrapper ) {
 			return $component->create( $props, $children );
 		}
 		if ( is_callable( $component ) ) {
@@ -117,6 +117,27 @@ class Component_Themes_Builder {
 		}
 
 		return new Component_Themes_Not_Found_Component( array( 'componentType' => $type ) );
+	}
+
+	public function get_component_styles() {
+		$styles = array();
+
+		foreach ( self::$registered_components as $component ) {
+			$style = null;
+			if ( $component instanceof Component_Themes_Component_Wrapper ) {
+				$style = $component->get_styles();
+			} elseif ( is_string( $component ) && is_subclass_of( $component, 'Component_Themes_Component' ) ) {
+				$style = call_user_func( array( $component, 'get_styles' ) );
+			}
+
+			if ( ! empty( $style ) ) {
+				$styles[] = $style;
+			}
+		}
+
+		$styles = implode( '', $styles );
+
+		return $styles;
 	}
 
 	private function get_partial_by_type( $type ) {
