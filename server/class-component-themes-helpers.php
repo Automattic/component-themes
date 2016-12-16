@@ -10,7 +10,7 @@ function ct_or( $val, $default ) {
 }
 
 function ct_array_flatten( $ary ) {
-	$result = [];
+	$result = array();
 	foreach ( $ary as $val ) {
 		if ( is_array( $val ) ) {
 			$result = array_merge( $result, $val );
@@ -22,7 +22,7 @@ function ct_array_flatten( $ary ) {
 }
 
 function ct_omit( $ary, $keys ) {
-	$result = [];
+	$result = array();
 	foreach ( $ary as $key => $val ) {
 		if ( ! in_array( $key, $keys ) ) {
 			$result[ $key ] = $val;
