@@ -1,7 +1,7 @@
 <?php
 class Component_Themes_Api {
 	private static $server;
-	private static $state = [ 'api' => [] ];
+	private static $state = array( 'api' => array() );
 
 	public static function get_api() {
 		return self::$state;
