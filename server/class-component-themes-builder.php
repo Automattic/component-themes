@@ -34,15 +34,19 @@ class Component_Themes_Html_Component extends Component_Themes_Component {
 	}
 
 	protected function render_props_as_html() {
-		return trim( implode( ' ', array_map( function( $key, $prop ) {
-			if ( ! is_string( $prop ) ) {
-				return '';
+		$attrs = array();
+		foreach( $this->props as $name=>$value ) {
+			if ( ! is_string( $value ) ) {
+				continue;
 			}
-			if ( 'className' === $key ) {
-				$key = 'class';
+			if ( 'className' === $name ) {
+				$name = 'class';
 			}
-			return $key . '="' . addslashes( $prop ) . '"';
-		}, array_keys( $this->props ), $this->props ) ) );
+
+			$attrs[] = $name . '="' . htmlspecialchars( $value ) . '"';
+		}
+
+		return trim( implode( ' ', $attrs ) );
 	}
 
 	public function render() {
@@ -78,7 +82,7 @@ class Component_Themes_Builder {
 
 	public function create_element( $component, $props = array(), $children = array() ) {
 		$context = ct_get_value( $props, 'context', array() );
-		$props = array_merge( $props, [ 'context' => $context ] );
+		$props = array_merge( $props, array( 'context' => $context ) );
 
 		if ( $component instanceof Component_Themes_Component ) {
 			return $component;
@@ -102,7 +106,8 @@ class Component_Themes_Builder {
 		}
 		if ( 'Component_Themes_Stateless_Component' === $component ) {
 			// This would be an error state, but to prevent errors, we will make a noop
-			return new Component_Themes_Stateless_Component( function() {}, $props, $children );
+			$noop = create_function( '', '' );
+			return new Component_Themes_Stateless_Component( $noop, $props, $children );
 		}
 		return new $component( $props, $children );
 	}
@@ -144,7 +149,10 @@ class Component_Themes_Builder {
 		if ( isset( self::$registered_partials[ $type ] ) ) {
 			return self::$registered_partials[ $type ];
 		}
-		return [ 'componentType' => 'ErrorComponent', 'props' => [ 'message' => "I could not find the partial '$type'" ] ];
+		return array(
+			'componentType' => 'ErrorComponent',
+			'props' => array( 'message' => "I could not find the partial '$type'" )
+		);
 	}
 
 	public static function register_partial( $type, $component_config ) {
@@ -166,12 +174,10 @@ class Component_Themes_Builder {
 			return $this->create_element( 'Component_Themes_Not_Found_Component', array( 'componentType' => $name ) );
 		}
 		$found_component = $this->get_component_by_type( $component_config['componentType'] );
-		$child_components = isset( $component_config['children'] ) ? array_map( function( $child ) {
-			return $this->build_component_from_config( $child );
-		}, $component_config['children'] ) : [];
-		$props = ct_get_value( $component_config, 'props', [] );
+		$child_components = isset( $component_config['children'] ) ? array_map( array( $this, 'build_component_from_config' ), $component_config['children'] ) : array();
+		$props = ct_get_value( $component_config, 'props', array() );
 		$component_config['id'] = ct_get_value( $component_config, 'id', $this->generate_id( $component_config ) );
-		$component_props = array_merge( $props, [ 'componentId' => $component_config['id'], 'className' => $this->build_classname_for_component( $component_config ) ] );
+		$component_props = array_merge( $props, array( 'componentId' => $component_config['id'], 'className' => $this->build_classname_for_component( $component_config ) ) );
 		return $this->create_element( $found_component, $component_props, $child_components );
 	}
 
@@ -182,7 +188,7 @@ class Component_Themes_Builder {
 	private function build_classname_for_component( $component_config ) {
 		$type = empty( $component_config['componentType'] ) ? '' : $component_config['componentType'];
 		$id = empty( $component_config['id'] ) ? '' : $component_config['id'];
-		return implode( ' ', [ $type, $id ] );
+		return implode( ' ', array( $type, $id ) );
 	}
 
 	private function expand_config_partials( $component_config, $partials ) {
@@ -194,11 +200,11 @@ class Component_Themes_Builder {
 			throw new Exception( 'No partial found matching ' . $partial_key );
 		}
 		if ( isset( $component_config['children'] ) ) {
-			$expander = function( $child ) use ( &$partials ) {
-				return $this->expand_config_partials( $child, $partials );
-			};
-			$children = array_map( $expander, $component_config['children'] );
-			$new_config = array_merge( $component_config, [ 'children' => $children ] );
+			$chilren = array();
+			foreach( $component_config['children'] as $key=>$child ) {
+				$children[ $key ] = $this->expand_config_partials( $child, $partials );
+			}
+			$new_config = array_merge( $component_config, array( 'children' => $children ) );
 			return $new_config;
 		}
 		return $component_config;
@@ -234,40 +240,31 @@ class Component_Themes_Builder {
 		return $template;
 	}
 
-	private function merge_theme_property( $property, $theme1, $theme2 ) {
-		$has_string_keys = function( array $ary ) {
-			return count( array_filter( array_keys( $ary ), 'is_string' ) ) > 0;
-		};
-		$prop1 = ct_get_value( $theme1, $property );
-		$prop2 = ct_get_value( $theme2, $property );
-		if ( ! isset( $prop1 ) && isset( $prop2 ) ) {
-			return $prop2;
+	private function array_has_string_key( $array ) {
+		if ( ! is_array( $array ) ) {
+			return false;
 		}
-		if ( ! isset( $prop2 ) && isset( $prop1 ) ) {
-			return $prop1;
-		}
-		$prop1 = ct_get_value( $theme1, $property, [] );
-		$prop2 = ct_get_value( $theme2, $property, [] );
-		if ( ! is_array( $prop1 ) || ! is_array( $prop2 ) ) {
-			return $prop2;
-		}
-		if ( ! call_user_func( $has_string_keys, $prop1 ) || ! call_user_func( $has_string_keys, $prop2 ) ) {
-			return $prop2;
-		}
-		return array_merge( $prop1, $prop2 );
+
+		$string_keys = array_filter( array_keys( $array ), 'is_string' );
+		return ! empty( $string_keys );
 	}
 
 	public function merge_themes( $theme1, $theme2 ) {
-		$theme = array();
-		$properties = array_unique( array_keys( array_merge( $theme1, $theme2 ) ) );
-		foreach ( $properties as $property ) {
-			$theme[ $property ] = $this->merge_theme_property( $property, $theme1, $theme2 );
+		$array_in_theme1 = array_filter( $theme1, array( $this, 'array_has_string_key' ) );
+		$array_in_theme2 = array_filter( $theme2, array( $this, 'array_has_string_key' ) );
+
+		foreach ( $array_in_theme2 as $key => $value )  {
+			$source = isset( $array_in_theme1[ $key ] ) ? $array_in_theme1[ $key ] : array();
+			$array_in_theme1[ $key ] = array_merge( $source, $array_in_theme2[ $key ] );
 		}
+
+		$theme = array_merge( $theme1, $theme2, $array_in_theme1 );
+
 		return $theme;
 	}
 
 	private function build_components_from_theme( $theme_config, $page_config ) {
-		$this->register_partials( ct_get_value( $theme_config, 'partials', [] ) );
+		$this->register_partials( ct_get_value( $theme_config, 'partials', array() ) );
 		return $this->build_component_from_config( $this->expand_config_templates( $page_config, $theme_config ) );
 	}
 
