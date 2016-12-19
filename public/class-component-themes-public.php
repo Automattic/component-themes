@@ -46,6 +46,8 @@ class Component_Themes_Public {
 	public function render_page() {
 		global $wp_query;
 		// TODO: include wp_head except for stylesheets
+
+		$plugin_dir_url = plugin_dir_url( dirname( __FILE__ ) );
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -76,8 +78,8 @@ $renderer = new Component_Themes();
 $rendered_output = $renderer->render_page( $theme_config, $page_info, $page_config );
 echo $rendered_output;
 ?>
-		<script src="/wp-content/plugins/component-themes/build/app.js"></script>
-		<script src="/wp-content/plugins/component-themes/build/core-components.js"></script>
+		<script src="<?php echo $plugin_dir_url; ?>build/app.js"></script>
+		<script src="<?php echo $plugin_dir_url; ?>build/core-components.js"></script>
 		<script type="text/javascript">
 const themeConfig = <?php echo json_encode( $theme_config ); ?>;
 const pageConfig = <?php echo json_encode( $page_config ); ?>;
