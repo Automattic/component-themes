@@ -9,7 +9,7 @@ require( __DIR__ . '/class-component-themes-styles.php' );
 require( __DIR__ . '/class-react.php' );
 
 class Component_Themes {
-	public function render_page( $theme, $info, $page = [], $content = [] ) {
+	public function render_page( $theme, $info, $page = array(), $content = array() ) {
 		$builder = Component_Themes_Builder::get_builder();
 		$theme = $builder->merge_themes( $this->get_default_theme(), $theme );
 		$slug = ( 'post' === $info['type'] ) ? 'post' : $info['slug'];
@@ -28,7 +28,7 @@ class Component_Themes {
 		$output .= '</div>';
 
 		// api data
-		$state = array_merge( Component_Themes_Api::get_api(), [ 'pageInfo' => $info ] );
+		$state = array_merge( Component_Themes_Api::get_api(), array( 'pageInfo' => $info ) );
 		Component_Themes_Api::set_api( $state );
 		$output .= '<script id="component-themes-api-data">window.ComponentThemesApiData=' . json_encode( Component_Themes_Api::get_api() ) . '</script>';
 

@@ -47,7 +47,7 @@ class React {
 	}
 
 	// @codingStandardsIgnoreStart
-	public static function cloneElement( $component, $additional_props = [] ) {
+	public static function cloneElement( $component, $additional_props = array() ) {
 		// @codingStandardsIgnoreEnd
 		$props = $component->props;
 		$children = $component->children;
