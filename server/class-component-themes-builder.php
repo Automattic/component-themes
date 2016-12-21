@@ -35,7 +35,7 @@ class Component_Themes_Html_Component extends Component_Themes_Component {
 
 	protected function render_props_as_html() {
 		$attrs = array();
-		foreach( $this->props as $name=>$value ) {
+		foreach( $this->props as $name => $value ) {
 			if ( ! is_string( $value ) ) {
 				continue;
 			}
@@ -200,8 +200,8 @@ class Component_Themes_Builder {
 			throw new Exception( 'No partial found matching ' . $partial_key );
 		}
 		if ( isset( $component_config['children'] ) ) {
-			$chilren = array();
-			foreach( $component_config['children'] as $key=>$child ) {
+			$children = array();
+			foreach( $component_config['children'] as $key => $child ) {
 				$children[ $key ] = $this->expand_config_partials( $child, $partials );
 			}
 			$new_config = array_merge( $component_config, array( 'children' => $children ) );

@@ -2,7 +2,7 @@
 function Component_Themes_Single_Post ( $props, $children ) {
 	$post_data = ct_get_value( $props, 'postData', array() );
 	$class_name = ct_get_value( $props, 'className', '' );
-	$new_children = React::cloneChileren( $children, $post_data );
+	$new_children = React::cloneChildren( $children, $post_data );
 	return React::createElement( 'div', array( 'className' => $class_name ), $new_children );
 };
 

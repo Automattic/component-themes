@@ -20,7 +20,7 @@ class Component_Themes_Menu_Widget extends Component_Themes_Component {
 	";
 
 	public function render() {
-		$title = $this->get_prop( 'title', '' );
+		$title = $this->get_prop( 'title' );
 		$title_area = isset( $title ) ? "<h2 class='MenuWidget__title'>$title</h2>" : '';
 
 		$links = $this->get_prop( 'links', array() );
@@ -38,7 +38,7 @@ class Component_Themes_Menu_Widget extends Component_Themes_Component {
 		$url = $link['url'];
 		$text = $link['text'];
 
-		return "<li class='MenuWidget__link'><a href={$url}>{$text}</a></li>";
+		return "<li class='MenuWidget__link'><a href='{$url}'>{$text}</a></li>";
 	}
 }
 

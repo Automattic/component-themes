@@ -9,7 +9,7 @@ class Component_Themes_Api_Wrapper extends Component_Themes_Component_Wrapper {
 		parent::__construct( $component );
 
 		$this->map_api_to_props = $map_api_to_props;
-		$this->global_state = $state;
+		$this->global_state = $global_state;
 	}
 
 	public function create( $props, $children ) {
@@ -17,7 +17,7 @@ class Component_Themes_Api_Wrapper extends Component_Themes_Component_Wrapper {
 		$api_props = ct_get_value( $context, 'apiProps', array() );
 
 		// merge api_props to the context
-		foreach ( $api_props as $name=>$prop ) {
+		foreach ( $api_props as $name => $prop ) {
 			$this->global_state[ $name ] = $prop;
 		}
 

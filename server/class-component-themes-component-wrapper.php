@@ -12,7 +12,7 @@ class Component_Themes_Component_Wrapper {
 			return $component->get_styles();
 		}
 
-		if ( is_string( $component) && is_subclass_of( $component, 'Component_Themes_Component' ) ) {
+		if ( is_string( $component ) && is_subclass_of( $component, 'Component_Themes_Component' ) ) {
 			return call_user_func( array( $component, 'get_styles' ) );
 		}
 
