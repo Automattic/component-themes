@@ -78,12 +78,18 @@ echo $rendered_output;
 ?>
 		<script src="/wp-content/plugins/component-themes/build/app.js"></script>
 		<script src="/wp-content/plugins/component-themes/build/core-components.js"></script>
+<?php
+if ( ! isset( $_GET['ssr'] ) ) {
+?>
 		<script type="text/javascript">
 const themeConfig = <?php echo json_encode( $theme_config ); ?>;
 const pageConfig = <?php echo json_encode( $page_config ); ?>;
 const pageInfo = <?php echo json_encode( $page_info ); ?>;
 ComponentThemes.renderPage( themeConfig, pageInfo, pageConfig, window.document.getElementById( 'root' ) );
 		</script>
+<?php
+}
+?>
 	</body>
 </html>
 <?php
