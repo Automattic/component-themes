@@ -81,8 +81,7 @@ class Component_Themes_Builder {
 	}
 
 	public function create_element( $component, $props = array(), $children = array() ) {
-		$context = ct_get_value( $props, 'context', array() );
-		$props = array_merge( $props, array( 'context' => $context ) );
+		$props = array_merge( array( 'context' => array() ), $props ? $props : array() );
 
 		if ( $component instanceof Component_Themes_Component ) {
 			return $component;
@@ -132,7 +131,7 @@ class Component_Themes_Builder {
 			if ( $component instanceof Component_Themes_Component_Wrapper ) {
 				$style = $component->get_styles();
 			} elseif ( is_string( $component ) && is_subclass_of( $component, 'Component_Themes_Component' ) ) {
-				$style = call_user_func( array( $component, 'get_styles' ) );
+				$style = Component_Themes_Component::get_styles( $component );
 			}
 
 			if ( ! empty( $style ) ) {

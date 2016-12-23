@@ -1,7 +1,7 @@
 <?php
 
 class Component_Themes_Row_Component extends Component_Themes_Component {
-	protected static $styles = "
+	public static $styles = "
 		.RowComponent {
 			display: flex;
 			justify-content: space-between;

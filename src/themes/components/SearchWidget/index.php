@@ -19,7 +19,7 @@ function Component_Themes_Search_Widget ( $props ) {
 				'form',
 				array( 'className' => 'SearchWidget__form', 'action' => $root_url, 'method' => 'get', 'role' => 'search' ),
 				array(
-					React::createElement( 'label', null, array( $label_element, $input_element ) ),
+					React::createElement( 'label', array(), array( $label_element, $input_element ) ),
 					$button_element
 				)
 			)

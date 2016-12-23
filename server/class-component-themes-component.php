@@ -1,6 +1,6 @@
 <?php
 class Component_Themes_Component {
-	protected static $styles;
+	public static $styles;
 
 	public $props;
 	public $children;
@@ -22,7 +22,8 @@ class Component_Themes_Component {
 		return '';
 	}
 
-	public static function get_styles() {
-		return ct_or( self::$styles, null );
+	public static function get_styles( $component ) {
+		$properties = get_class_vars( $component );
+		return $properties[ 'styles' ];
 	}
 }

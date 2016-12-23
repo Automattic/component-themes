@@ -1,6 +1,6 @@
 <?php
 class Component_Themes_Menu_Widget extends Component_Themes_Component {
-	protected static $styles = "
+	public static $styles = "
 		.MenuWidget .MenuWidget__title {
 		  font-size: 0.8em;
 		  margin: 5px 0 0;

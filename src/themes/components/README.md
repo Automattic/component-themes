@@ -159,12 +159,12 @@ const Styled = styled( RowComponent )`
 registerComponent( 'RowComponent', Styled );
 ```
 
-In PHP we use `styles` static property. Note that in the PHP version, we **must** specify classNames explicity. Bare style rules will not be automatically wrapped in a selector as they are in JavaScript.
+In PHP we use `styles` public static property. Note that in the PHP version, we **must** specify classNames explicity. Bare style rules will not be automatically wrapped in a selector as they are in JavaScript.
 
 ```php
 <?php
 class Row_Component extends Component_Themes_Component {
-	protected static $styles = "
+	public static $styles = "
 		.RowComponent {
 			display: flex;
 			justify-content: space-between;

@@ -19,8 +19,8 @@ class Component_Themes {
 		$css = $style->build_styles_from_theme( $theme );
 
 		// css from the theme
-		$output = '<script id="component-themes-component-styles">' . $builder->get_component_styles() . '</style>';
-		$output = '<style id="component-themes-theme-styles">' . $css . '</style>';
+		$output = '<style id="component-themes-component-styles">' . $builder->get_component_styles() . '</style>';
+		$output .= '<style id="component-themes-theme-styles">' . $css . '</style>';
 
 		// rendered html string
 		$output .= '<div class="ComponentThemes">';
