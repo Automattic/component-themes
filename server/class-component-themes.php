@@ -15,6 +15,10 @@ class Component_Themes {
 		$slug = ( 'post' === $info['type'] ) ? 'post' : $info['slug'];
 		$page = ( ! empty( $page ) ) ? $page : $builder->get_template_for_slug( $theme, $slug );
 
+		// api data - add page info
+		$state = array_merge( Component_Themes_Api::get_api(), array( 'pageInfo' => $info ) );
+		Component_Themes_Api::set_api( $state );
+
 		$style = new Component_Themes_Styles();
 		$css = $style->build_styles_from_theme( $theme );
 
@@ -22,15 +26,13 @@ class Component_Themes {
 		$output = '<style id="component-themes-component-styles">' . $builder->get_component_styles() . '</style>';
 		$output .= '<style id="component-themes-theme-styles">' . $css . '</style>';
 
-		// api data
-		$state = array_merge( Component_Themes_Api::get_api(), array( 'pageInfo' => $info ) );
-		Component_Themes_Api::set_api( $state );
-		$output .= '<script id="component-themes-api-data">window.ComponentThemesApiData=' . json_encode( Component_Themes_Api::get_api() ) . '</script>';
-
 		// rendered html string
 		$output .= '<div class="ComponentThemes">';
 		$output .= $builder->render( $theme, $page, $content );
 		$output .= '</div>';
+
+		// api data - print json data
+		$output .= '<script id="component-themes-api-data">window.ComponentThemesApiData=' . json_encode( Component_Themes_Api::get_api() ) . '</script>';
 
 		return $output;
 	}
