@@ -16,7 +16,7 @@ class Component_Themes_Api {
 			// TODO: log error
 		}
 
-		return new Component_Themes_Api_Wrapper( $component, $map_api_to_props, self::$state );
+		return new Component_Themes_Api_Wrapper( $component, $map_api_to_props );
 	}
 
 	public static function get_api_endpoint( $endpoint ) {
