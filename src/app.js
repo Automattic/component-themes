@@ -14,6 +14,7 @@ import omit from 'lodash/omit';
 import { ComponentThemePage } from '~/src/';
 import { apiDataWrapper } from '~/src/lib/api';
 import { registerComponent, registerPartial } from '~/src/lib/components';
+import date from '~/src/lib/date';
 import defaultTheme from '~/src/themes/default.json';
 
 const ComponentThemes = {
@@ -28,6 +29,7 @@ const ComponentThemes = {
 	registerPartial,
 	apiDataWrapper,
 	omit,
+	date,
 };
 
 if ( typeof window !== 'undefined' ) {
