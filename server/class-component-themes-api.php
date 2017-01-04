@@ -1,7 +1,7 @@
 <?php
 class Component_Themes_Api {
 	private static $server;
-	private static $state = [ 'api' => [] ];
+	private static $state = array( 'api' => array() );
 
 	public static function get_api() {
 		return self::$state;
@@ -12,13 +12,11 @@ class Component_Themes_Api {
 	}
 
 	public static function api_data_wrapper( $component, $map_api_to_props ) {
-		return function( $props, $children ) use ( &$component, &$map_api_to_props ) {
-			$context = ct_get_value( $props, 'context', [] );
-			self::$state = array_merge( self::$state, ct_get_value( $context, 'apiProps', [] ) );
-			$new_props = call_user_func( $map_api_to_props, [ 'Component_Themes_Api', 'get_api_endpoint' ], self::$state, $props );
-			$props = array_merge( $props, $new_props );
-			return React::createElement( $component, $props, $children );
-		};
+		if ( ! is_callable( $map_api_to_props ) && WP_DEBUG ) {
+			// TODO: log error
+		}
+
+		return new Component_Themes_Api_Wrapper( $component, $map_api_to_props );
 	}
 
 	public static function get_api_endpoint( $endpoint ) {

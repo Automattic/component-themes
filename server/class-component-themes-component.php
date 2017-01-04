@@ -1,9 +1,11 @@
 <?php
 class Component_Themes_Component {
+	public static $styles;
+
 	public $props;
 	public $children;
 
-	public function __construct( $props = [], $children = [] ) {
+	public function __construct( $props = array(), $children = array() ) {
 		$this->props = $props;
 		$this->children = $children;
 	}
@@ -18,5 +20,10 @@ class Component_Themes_Component {
 
 	public function render() {
 		return '';
+	}
+
+	public static function get_styles( $component ) {
+		$properties = get_class_vars( $component );
+		return $properties[ 'styles' ];
 	}
 }

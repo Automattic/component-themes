@@ -1,13 +1,10 @@
 <?php
-$post_body = function( $props, $children ) {
+function Component_Themes_Post_Body( $props, $children ) {
 	$class_name = ct_get_value( $props, 'className', '' );
 	$new_props = $props;
-	$new_props = ct_omit( $props, [ 'className', 'children' ] );
-	$new_children = React::mapChildren( $children, function( $child ) use ( &$new_props ) {
-		return React::cloneElement( $child, $new_props );
-	} );
-	return React::createElement( 'div', [ 'className' => $class_name ], $new_children );
+	$new_props = ct_omit( $props, array( 'className', 'children' ) );
+	$new_children = React::cloneChildren( $children, $new_props );
+	return React::createElement( 'div', array( 'className' => $class_name ), $new_children );
 };
 
-
-Component_Themes::register_component( 'PostBody', $post_body );
+Component_Themes::register_component( 'PostBody', 'Component_Themes_Post_Body' );

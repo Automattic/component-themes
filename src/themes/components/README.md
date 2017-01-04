@@ -159,22 +159,25 @@ const Styled = styled( RowComponent )`
 registerComponent( 'RowComponent', Styled );
 ```
 
-In PHP we use `Component_Themes::style_component()`. Note that in the PHP version, we **must** specify classNames explicity. Bare style rules will not be automatically wrapped in a selector as they are in JavaScript.
+In PHP we use `styles` public static property. Note that in the PHP version, we **must** specify classNames explicity. Bare style rules will not be automatically wrapped in a selector as they are in JavaScript.
 
 ```php
 <?php
-$row_component = function( $props, $children ) {
-	$class_name = ct_get_value( $props, 'className', '' );
-	return React::createElement( 'div', [ 'className' => $class_name ], $children );
-};
+class Row_Component extends Component_Themes_Component {
+	public static $styles = "
+		.RowComponent {
+			display: flex;
+			justify-content: space-between;
+		}
+	";
 
-$styled = Component_Themes::style_component( $row_component, '
-.RowComponent {
-	display: flex;
-	justify-content: space-between;
-}' );
+	public function render() {
+		$class_name = $this->get_prop( 'className', '' );
+		return React::createElement( 'div', array( 'className' => $class_name ), $this->children );
+	}
+}
 
-Component_Themes::register_component( 'RowComponent', $styled );
+Component_Themes::register_component( 'RowComponent', 'Row_Component' );
 ```
 
 For more information about how Theme Components are used see the [Theme documentation](../themes/README.md).

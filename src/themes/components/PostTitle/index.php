@@ -1,5 +1,5 @@
 <?php
-$post_title = function( $props ) {
+function Component_Themes_Post_Title ( $props ) {
 	$link = ct_get_value( $props, 'link' );
 	$link_text = ct_get_value( $props, 'title', 'No title' );
 	$class_name = ct_get_value( $props, 'className', '' );
@@ -8,4 +8,4 @@ $post_title = function( $props ) {
 		</h1>";
 };
 
-Component_Themes::register_component( 'PostTitle', $post_title );
+Component_Themes::register_component( 'PostTitle', 'Component_Themes_Post_Title' );

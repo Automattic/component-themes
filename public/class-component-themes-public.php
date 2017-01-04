@@ -68,24 +68,30 @@ $page_config = null;
 $page_slug = ( is_home() || is_front_page() ) ? 'home' : get_post_field( 'post_name', get_post() );
 $page_type = ( is_home() || is_front_page() ) ? 'home' : ( is_single() ? 'post' : ( is_archive() ? 'archive' : 'page' ) );
 $page_id = ( 'post' === $page_type || 'page' === $page_type ) ? $wp_query->post->ID : '';
-$page_info = [
+$page_info = array(
 	'slug' => $page_slug,
 	'type' => $page_type,
 	'postId' => $page_id,
-];
+);
 
 $renderer = new Component_Themes();
 $rendered_output = $renderer->render_page( $theme_config, $page_info, $page_config );
 echo $rendered_output;
 ?>
+<?php
+if ( ! isset( $_GET['ssr'] ) ):
+?>
 		<script src="<?php echo $plugin_dir_url; ?>build/app.js"></script>
 		<script src="<?php echo $plugin_dir_url; ?>build/core-components.js"></script>
 		<script type="text/javascript">
-const themeConfig = <?php echo json_encode( $theme_config ); ?>;
-const pageConfig = <?php echo json_encode( $page_config ); ?>;
-const pageInfo = <?php echo json_encode( $page_info ); ?>;
-ComponentThemes.renderPage( themeConfig, pageInfo, pageConfig, window.document.getElementById( 'root' ) );
+		const themeConfig = <?php echo json_encode( $theme_config ); ?>;
+		const pageConfig = <?php echo json_encode( $page_config ); ?>;
+		const pageInfo = <?php echo json_encode( $page_info ); ?>;
+		ComponentThemes.renderPage( themeConfig, pageInfo, pageConfig, window.document.getElementById( 'root' ) );
 		</script>
+<?php
+endif;
+?>
 	</body>
 </html>
 <?php
