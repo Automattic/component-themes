@@ -40,6 +40,55 @@ describe( 'TextWidget', function() {
 	} );
 } );
 
+describe( 'PostTitle', function() {
+	describe( '#render', function() {
+		beforeEach( function( $c ) {
+			$c->props = [ 'title' => 'Post Title', 'link' => 'http://te.st/1234', 'className' => 'PostTitle' ];
+		} );
+
+		it ( 'should render properly', function( $c ) {
+			$component = Component_Themes_Post_Title( $c->props );
+			$output = React::render( $component );
+			expect( $output )->toEqual( '<h1 class="PostTitle"><a class="PostTitle_link" href="http://te.st/1234">Post Title</a></h1>' );
+		} );
+
+		it ( 'should contain detault title when title prop is empty', function( $c ) {
+			unset( $c->props['title'] );
+			$component = Component_Themes_Post_Title( $c->props );
+			$output = React::render( $component );
+			expect( $output )->toEqual( '<h1 class="PostTitle"><a class="PostTitle_link" href="http://te.st/1234">No title</a></h1>' );
+		} );
+
+		it ( 'should contain passed title prop as text node', function( $c ) {
+			$c->props['title'] = 'Post Title #2';
+			$component = Component_Themes_Post_Title( $c->props );
+			$output = React::render( $component );
+			expect( $output )->toEqual( '<h1 class="PostTitle"><a class="PostTitle_link" href="http://te.st/1234">Post Title #2</a></h1>' );
+		} );
+
+		it ( 'should contain passed link prop in href attribute of an anchor element', function( $c ) {
+			$c->props['link'] = 'http://te.st/567';
+			$component = Component_Themes_Post_Title( $c->props );
+			$output = React::render( $component );
+			expect( $output )->toEqual( '<h1 class="PostTitle"><a class="PostTitle_link" href="http://te.st/567">Post Title</a></h1>' );
+		} );
+
+		it ( 'should not contain class attribute when className prop is empty', function( $c ) {
+			unset( $c->props['className'] );
+			$component = Component_Themes_Post_Title( $c->props );
+			$output = React::render( $component );
+			expect( $output )->toEqual( '<h1><a class="PostTitle_link" href="http://te.st/1234">Post Title</a></h1>' );
+		} );
+
+		it ( 'should contain passed className in class attribute', function( $c ) {
+			$c->props['className'] = 'post-title';
+			$component = Component_Themes_Post_Title( $c->props );
+			$output = React::render( $component );
+			expect( $output )->toEqual( '<h1 class="post-title"><a class="PostTitle_link" href="http://te.st/1234">Post Title</a></h1>' );
+		} );
+	} );
+} );
+
 describe( 'MenuWidget', function() {
 	beforeEach( function( $c ) {
 		$c->title = 'Title for test';
