@@ -41,6 +41,9 @@ class Component_Themes_Html_Component extends Component_Themes_Component {
 			}
 			if ( 'className' === $name ) {
 				$name = 'class';
+				if ( empty( $value ) ) {
+					continue;
+				}
 			}
 
 			$attrs[] = $name . '="' . htmlspecialchars( $value ) . '"';
