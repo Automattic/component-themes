@@ -6,35 +6,37 @@ require_once( './server/class-component-themes.php' );
 require_once( './server/core-components.php' );
 
 describe( 'TextWidget', function() {
-	it ( 'should contain passed text prop as text node', function( $c ) {
-		$component1 = Component_Themes_TextWidget( [ 'text' => 'Hello world' ] );
-		$output1 = React::render( $component1 );
+	describe( '#render', function() {
+		it ( 'should contain passed text prop as text node', function( $c ) {
+			$component1 = Component_Themes_TextWidget( [ 'text' => 'Hello world' ] );
+			$output1 = React::render( $component1 );
 
-		expect( $output1 )->toEqual( "<div>Hello world</div>" );
+			expect( $output1 )->toEqual( "<div>Hello world</div>" );
 
-		$component2 = Component_Themes_TextWidget( [ 'text' => 'Great to see you!' ] );
-		$output2 = React::render( $component2 );
+			$component2 = Component_Themes_TextWidget( [ 'text' => 'Great to see you!' ] );
+			$output2 = React::render( $component2 );
 
-		expect( $output2 )->toEqual( "<div>Great to see you!</div>" );
-	} );
+			expect( $output2 )->toEqual( "<div>Great to see you!</div>" );
+		} );
 
-	it ( 'should contain default text when passed text is empty', function( $c ) {
-		$component1 = Component_Themes_TextWidget( [] );
-		$output1 = React::render( $component1 );
+		it ( 'should contain default text when passed text is empty', function( $c ) {
+			$component1 = Component_Themes_TextWidget( [] );
+			$output1 = React::render( $component1 );
 
-		expect( $output1 )->toEqual( "<div>This is a text widget with no data!</div>" );
+			expect( $output1 )->toEqual( "<div>This is a text widget with no data!</div>" );
 
-		$component2 = Component_Themes_TextWidget( [ 'text' => '' ] );
-		$output2 = React::render( $component2 );
+			$component2 = Component_Themes_TextWidget( [ 'text' => '' ] );
+			$output2 = React::render( $component2 );
 
-		expect( $output2 )->toEqual( "<div>This is a text widget with no data!</div>" );
-	} );
+			expect( $output2 )->toEqual( "<div>This is a text widget with no data!</div>" );
+		} );
 
-	it ( 'should contain passed className in class attribute', function( $c ) {
-		$component = Component_Themes_TextWidget( [ 'text' => 'Lorem ipsum', 'className' => 'test-class' ], [] );
-		$output = React::render( $component );
+		it ( 'should contain passed className in class attribute', function( $c ) {
+			$component = Component_Themes_TextWidget( [ 'text' => 'Lorem ipsum', 'className' => 'test-class' ], [] );
+			$output = React::render( $component );
 
-		expect( $output )->toEqual( '<div class="test-class">Lorem ipsum</div>' );
+			expect( $output )->toEqual( '<div class="test-class">Lorem ipsum</div>' );
+		} );
 	} );
 } );
 
