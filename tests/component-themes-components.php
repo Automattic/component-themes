@@ -72,6 +72,74 @@ describe( 'FooterText', function() {
 	} );
 } );
 
+describe( 'HeaderText', function() {
+	beforeEach( function ( $c ) {
+		$c->props = [
+			'siteTitle' => 'The blog',
+			'siteTagline' => 'This is a tagline',
+			'className' => 'HeaderText',
+			'link' => 'https://te.st',
+		];
+	} );
+	describe( '#render', function() {
+		it( 'should contain passed siteTitle, siteTagline, className and link', function( $c ) {
+			$component = new Component_Themes_HeaderText( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="HeaderText"><a href="https://te.st"><h1 class="HeaderText__title">The blog</h1> <div class="HeaderText__tagline">This is a tagline</div></a></div>' );
+		} );
+		it( 'should contain passed siteTitle prop as text node', function( $c ) {
+			$c->props['siteTitle'] = 'Hello world';
+			$component = new Component_Themes_HeaderText( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="HeaderText"><a href="https://te.st"><h1 class="HeaderText__title">Hello world</h1> <div class="HeaderText__tagline">This is a tagline</div></a></div>' );
+		} );
+		it( 'should contain passed siteTagline prop as text node', function( $c ) {
+			$c->props['siteTagline'] = 'A tagline for my blog';
+			$component = new Component_Themes_HeaderText( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="HeaderText"><a href="https://te.st"><h1 class="HeaderText__title">The blog</h1> <div class="HeaderText__tagline">A tagline for my blog</div></a></div>' );
+		} );
+		it( 'should contain passed link prop in the anchor element', function( $c ) {
+			$c->props['link'] = 'http://wordpress.com';
+			$component = new Component_Themes_HeaderText( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="HeaderText"><a href="http://wordpress.com"><h1 class="HeaderText__title">The blog</h1> <div class="HeaderText__tagline">This is a tagline</div></a></div>' );
+		} );
+		it( 'should contain passed className in class attribute', function( $c ) {
+			$c->props['className'] = 'test-class';
+			$component = new Component_Themes_HeaderText( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="test-class"><a href="https://te.st"><h1 class="HeaderText__title">The blog</h1> <div class="HeaderText__tagline">This is a tagline</div></a></div>' );
+		} );
+		it( 'should contain default site title when siteTitle prop is empty', function( $c ) {
+			unset( $c->props['siteTitle'] );
+			$component = new Component_Themes_HeaderText( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="HeaderText"><a href="https://te.st"><h1 class="HeaderText__title">My Website</h1> <div class="HeaderText__tagline">This is a tagline</div></a></div>' );
+		} );
+		it( 'should contain default tagline when siteTagline prop is empty', function( $c ) {
+			unset( $c->props['siteTagline'] );
+			$component = new Component_Themes_HeaderText( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="HeaderText"><a href="https://te.st"><h1 class="HeaderText__title">The blog</h1> <div class="HeaderText__tagline">My home on the web</div></a></div>' );
+		} );
+		it( 'should not contain class attribute when passed className is empty', function( $c ) {
+			unset( $c->props['className'] );
+			$component = new Component_Themes_HeaderText( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div><a href="https://te.st"><h1 class="HeaderText__title">The blog</h1> <div class="HeaderText__tagline">This is a tagline</div></a></div>' );
+		} );
+	} );
+} );
+
 describe( 'TextWidget', function() {
 	describe( '#render', function() {
 		it( 'should contain passed text prop as text node', function( $c ) {
@@ -86,7 +154,7 @@ describe( 'TextWidget', function() {
 			expect( $output2 )->toEqual( "<div>Great to see you!</div>" );
 		} );
 
-		it( 'should contain default text when passed text is empty', function( $c ) {
+		it( 'should contain default text when text prop is empty', function( $c ) {
 			$component1 = Component_Themes_TextWidget( [] );
 			$output1 = React::render( $component1 );
 
