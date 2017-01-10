@@ -30,6 +30,48 @@ describe( 'ColumnComponent', function() {
 	} );
 } );
 
+describe( 'FooterText', function() {
+	beforeEach( function ( $c ) {
+		$c->props = [ 'className' => 'FooterText', 'text' => 'The footer text' ];
+	} );
+	describe( '#render', function() {
+		it( 'should contain passed className and text', function( $c ) {
+			$component = new Component_Themes_FooterText( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="FooterText">The footer text</div>' );
+		} );
+		it( 'should contain passed text prop as text node', function( $c ) {
+			$c->props['text'] = 'Hello world';
+			$component = new Component_Themes_FooterText( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="FooterText">Hello world</div>' );
+		} );
+		it( 'should contain passed className in class attribute', function( $c ) {
+			$c->props['className'] = 'test-class';
+			$component = new Component_Themes_FooterText( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="test-class">The footer text</div>' );
+		} );
+		it( 'should contain default text when passed text is empty', function( $c ) {
+			unset( $c->props['text'] );
+			$component = new Component_Themes_FooterText( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="FooterText"><a href="/">Create a free website or blog at WordPress.com.</a></div>' );
+		} );
+		it( 'should not contain class attribute when passed className is empty', function( $c ) {
+			unset( $c->props['className'] );
+			$component = new Component_Themes_FooterText( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div>The footer text</div>' );
+		} );
+	} );
+} );
+
 describe( 'TextWidget', function() {
 	describe( '#render', function() {
 		it( 'should contain passed text prop as text node', function( $c ) {
@@ -51,7 +93,7 @@ describe( 'TextWidget', function() {
 			expect( $output1 )->toEqual( "<div>This is a text widget with no data!</div>" );
 
 			$component2 = Component_Themes_TextWidget( [ 'text' => '' ] );
-			$output2 = React::render( $component2 );
+			$output2 = React::render( $component2 , [ 'text' => 'The footer text' ] );;
 
 			expect( $output2 )->toEqual( "<div>This is a text widget with no data!</div>" );
 		} );
