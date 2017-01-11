@@ -265,6 +265,85 @@ describe( 'PostAuthor', function() {
 	} );
 } );
 
+describe( 'PostBody', function() {
+	beforeEach( function( $c ) {
+		$c->props = [ 'className' => 'PostBody', 'author' => 'Automattic', 'content' => 'Blah Blah' ];
+		$c->children = [
+			new Component_Themes_Stateless_Component( 'Component_Themes_PostAuthor' ),
+			new Component_Themes_PostContent(),
+		];
+	} );
+	describe( '#render', function() {
+		it( 'should render passed children', function( $c ) {
+			$component = Component_Themes_Post_Body( $c->props, $c->children );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="PostBody"><span class="PostAuthor">by Automattic</span> <div class="PostContent">Blah Blah</div></div>' );
+		} );
+		it( 'should contain passed className in class attribute', function( $c ) {
+			$component = Component_Themes_Post_Body( [ 'className' => 'test-class' ], [] );
+			$output = React::render( $component );
+
+			expect( $output )->toContain( '<div class="test-class">' );
+		} );
+		it( 'should not contain class attribute when className prop is empty', function( $c ) {
+			unset( $c->props['className'] );
+			$component = Component_Themes_Post_Body( $c->props, $c->children );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div><span class="PostAuthor">by Automattic</span> <div class="PostContent">Blah Blah</div></div>' );
+		} );
+		it( 'should send passed props to the children', function( $c ) {
+			$component = Component_Themes_Post_Body( $c->props, [ new Mock_JSON_Component() ] );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="PostBody"><span>{"author":"Automattic","content":"Blah Blah"}</span></div>' );
+		} );
+	} );
+} );
+
+describe( 'PostContent', function() {
+	describe( '#render', function() {
+		it( 'should show content in text node', function( $c ) {
+			$component1 = new Component_Themes_PostContent( [ 'content' => 'The first content.' ] );
+			$output1 = React::render( $component1 );
+
+			expect( $output1 )->toEqual( '<div class="PostContent">The first content.</div>' );
+
+			$component2 = new Component_Themes_PostContent( [ 'content' => 'Another content.' ] );
+			$output2 = React::render( $component2 );
+
+			expect( $output2 )->toEqual( '<div class="PostContent">Another content.</div>' );
+		} );
+
+		it( 'should insert <br /> immediately before new line', function( $c ) {
+			$component = new Component_Themes_PostContent( [ 'content' => "Content that\nincludes a new line" ] );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( "<div class=\"PostContent\">Content that<br />\nincludes a new line</div>" );
+		} );
+
+		it( 'should not change with any props but content', function( $c ) {
+			$component = new Component_Themes_PostContent( [ 'content' => 'The first content.', 'author' => 'The author' ] );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="PostContent">The first content.</div>' );
+		} );
+
+		it( 'should contain default content when content prop is empty', function( $c ) {
+			$component1 = new Component_Themes_PostContent( [] );
+			$output1 = React::render( $component1 );
+
+			expect( $output1 )->toEqual( '<div class="PostContent">No content</div>' );
+
+			$component2 = new Component_Themes_PostContent( [ 'content' => '' ] );
+			$output2 = React::render( $component2 );;
+
+			expect( $output2 )->toEqual( '<div class="PostContent">No content</div>' );
+		} );
+	} );
+} );
+
 describe( 'PostTitle', function() {
 	describe( '#render', function() {
 		beforeEach( function( $c ) {
