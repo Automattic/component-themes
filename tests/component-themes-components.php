@@ -237,37 +237,30 @@ describe( 'PageLayout', function() {
 	} );
 } );
 
-describe( 'TextWidget', function() {
+describe( 'PostAuthor', function() {
 	describe( '#render', function() {
-		it( 'should contain passed text prop as text node', function( $c ) {
-			$component1 = Component_Themes_TextWidget( [ 'text' => 'Hello world' ] );
+		it( 'should show author name in text node', function( $c ) {
+			$component1 = Component_Themes_PostAuthor( [ 'author' => 'E. Hemingway' ] );
 			$output1 = React::render( $component1 );
 
-			expect( $output1 )->toEqual( "<div>Hello world</div>" );
+			expect( $output1 )->toEqual( '<span class="PostAuthor">by E. Hemingway</span>' );
 
-			$component2 = Component_Themes_TextWidget( [ 'text' => 'Great to see you!' ] );
+			$component2 = Component_Themes_PostAuthor( [ 'author' => 'Anonymous' ] );
 			$output2 = React::render( $component2 );
 
-			expect( $output2 )->toEqual( "<div>Great to see you!</div>" );
+			expect( $output2 )->toEqual( '<span class="PostAuthor">by Anonymous</span>' );
 		} );
 
-		it( 'should contain default text when text prop is empty', function( $c ) {
-			$component1 = Component_Themes_TextWidget( [] );
+		it( 'should contain default text when author prop is empty', function( $c ) {
+			$component1 = Component_Themes_PostAuthor( [] );
 			$output1 = React::render( $component1 );
 
-			expect( $output1 )->toEqual( "<div>This is a text widget with no data!</div>" );
+			expect( $output1 )->toEqual( '<span class="PostAuthor">by No author</span>' );
 
-			$component2 = Component_Themes_TextWidget( [ 'text' => '' ] );
-			$output2 = React::render( $component2 , [ 'text' => 'The footer text' ] );;
+			$component2 = Component_Themes_PostAuthor( [ 'author' => '' ] );
+			$output2 = React::render( $component2 );;
 
-			expect( $output2 )->toEqual( "<div>This is a text widget with no data!</div>" );
-		} );
-
-		it( 'should contain passed className in class attribute', function( $c ) {
-			$component = Component_Themes_TextWidget( [ 'text' => 'Lorem ipsum', 'className' => 'test-class' ], [] );
-			$output = React::render( $component );
-
-			expect( $output )->toEqual( '<div class="test-class">Lorem ipsum</div>' );
+			expect( $output2 )->toEqual( '<span class="PostAuthor">by No author</span>' );
 		} );
 	} );
 } );
@@ -317,6 +310,41 @@ describe( 'PostTitle', function() {
 			$component = Component_Themes_Post_Title( $c->props );
 			$output = React::render( $component );
 			expect( $output )->toEqual( '<h1 class="post-title"><a class="PostTitle_link" href="http://te.st/1234">Post Title</a></h1>' );
+		} );
+	} );
+} );
+
+describe( 'TextWidget', function() {
+	describe( '#render', function() {
+		it( 'should contain passed text prop as text node', function( $c ) {
+			$component1 = Component_Themes_TextWidget( [ 'text' => 'Hello world' ] );
+			$output1 = React::render( $component1 );
+
+			expect( $output1 )->toEqual( "<div>Hello world</div>" );
+
+			$component2 = Component_Themes_TextWidget( [ 'text' => 'Great to see you!' ] );
+			$output2 = React::render( $component2 );
+
+			expect( $output2 )->toEqual( "<div>Great to see you!</div>" );
+		} );
+
+		it( 'should contain default text when text prop is empty', function( $c ) {
+			$component1 = Component_Themes_TextWidget( [] );
+			$output1 = React::render( $component1 );
+
+			expect( $output1 )->toEqual( "<div>This is a text widget with no data!</div>" );
+
+			$component2 = Component_Themes_TextWidget( [ 'text' => '' ] );
+			$output2 = React::render( $component2 , [ 'text' => 'The footer text' ] );;
+
+			expect( $output2 )->toEqual( "<div>This is a text widget with no data!</div>" );
+		} );
+
+		it( 'should contain passed className in class attribute', function( $c ) {
+			$component = Component_Themes_TextWidget( [ 'text' => 'Lorem ipsum', 'className' => 'test-class' ], [] );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="test-class">Lorem ipsum</div>' );
 		} );
 	} );
 } );
