@@ -6,6 +6,14 @@ require_once( './server/class-react.php' );
 require_once( './server/class-component-themes.php' );
 require_once( './server/core-components.php' );
 
+class Mock_JSON_Component extends Component_Themes_Component {
+	public function render() {
+		$props = ct_omit( $this->props, [ 'context', 'children' ] );
+		$json_text = json_encode( $props );
+		return React::createElement( 'span', [], [ $json_text ] );
+	}
+}
+
 describe( 'ColumnComponent', function() {
 	beforeEach( function( $c ) {
 		$c->props = [ 'className' => 'ColumnComponent' ];
@@ -26,6 +34,14 @@ describe( 'ColumnComponent', function() {
 			$output = React::render( $component );
 
 			expect( $output )->toContain( '<div class="test-class">' );
+		} );
+		it( 'should send passed props to the children', function( $c ) {
+			$c->props[ 'childProp' ] = 'child-value';
+			$c->props[ 'testProp' ] = 'test-value';
+			$component = Component_Themes_Column_Component( $c->props, [ new Mock_JSON_Component() ] );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="ColumnComponent"><span>{"childProp":"child-value","testProp":"test-value"}</span></div>' );
 		} );
 	} );
 } );
@@ -62,7 +78,7 @@ describe( 'FooterText', function() {
 
 			expect( $output )->toEqual( '<div class="FooterText"><a href="/">Create a free website or blog at WordPress.com.</a></div>' );
 		} );
-		it( 'should not contain class attribute when passed className is empty', function( $c ) {
+		it( 'should not contain class attribute when className prop is empty', function( $c ) {
 			unset( $c->props['className'] );
 			$component = new Component_Themes_FooterText( $c->props );
 			$output = React::render( $component );
@@ -130,12 +146,93 @@ describe( 'HeaderText', function() {
 
 			expect( $output )->toEqual( '<div class="HeaderText"><a href="https://te.st"><h1 class="HeaderText__title">The blog</h1> <div class="HeaderText__tagline">My home on the web</div></a></div>' );
 		} );
-		it( 'should not contain class attribute when passed className is empty', function( $c ) {
+		it( 'should not contain class attribute when className prop is empty', function( $c ) {
 			unset( $c->props['className'] );
 			$component = new Component_Themes_HeaderText( $c->props );
 			$output = React::render( $component );
 
 			expect( $output )->toEqual( '<div><a href="https://te.st"><h1 class="HeaderText__title">The blog</h1> <div class="HeaderText__tagline">This is a tagline</div></a></div>' );
+		} );
+	} );
+} );
+
+describe( 'MenuWidget', function() {
+	beforeEach( function( $c ) {
+		$c->title = 'Title for test';
+		$c->links = [
+			[ 'text' => 'Link #1', 'url' => 'http://te.st/link1' ],
+			[ 'text' => 'Link #2', 'url' => 'http://te.st/link2' ],
+		];
+	} );
+
+	describe( '#render', function() {
+		it( 'should contain <h2> and <li> in the output', function( $c ) {
+			$component = new Component_Themes_Menu_Widget( [ 'title' => $c->title, 'links' => $c->links ] );
+			$output = React::render( $component );
+
+			expect( $output )->toContain( "<h2 class='MenuWidget__title'>{$c->title}</h2>" );
+			expect( $output )->toContain( "<li class='MenuWidget__link'><a href='{$c->links[0]["url"]}'>{$c->links[0]["text"]}</a></li>" );
+			expect( $output )->toContain( "<li class='MenuWidget__link'><a href='{$c->links[1]["url"]}'>{$c->links[1]["text"]}</a></li>" );
+		} );
+
+		it( 'should contain passed className in class attribute', function( $c ) {
+			$component = new Component_Themes_Menu_Widget( [ 'className' => 'test-class' ] );
+			$output = React::render( $component );
+
+			expect( $output )->toContain( "<div class='test-class'>" );
+		} );
+
+		it( 'should not contain a <h2> if no title prop is given', function( $c ) {
+			$component = new Component_Themes_Menu_Widget( [ 'links' => $c->links ] );
+			$output = React::render( $component );
+
+			expect( $output )->toNotContain( "<h2 class='MenuWidget__title'>" );
+		} );
+
+		it( 'should not contain any <li>s if no link prop is given', function( $c ) {
+			$component = new Component_Themes_Menu_Widget();
+			$output = React::render( $component );
+
+			expect( $output )->toNotContain( '<li' );
+		} );
+	} );
+} );
+
+describe( 'PageLayout', function() {
+	beforeEach( function( $c ) {
+		$c->props = [ 'className' => 'PageLayout' ];
+		$c->children = [
+			Component_Themes_TextWidget( [ 'text' => 'Hello world' ] ),
+			Component_Themes_TextWidget( [ 'text' => 'Foo bar' ] ),
+		];
+	} );
+	describe( '#render', function() {
+		it( 'should render passed children', function( $c ) {
+			$component = new Component_Themes_PageLayout( $c->props, $c->children );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="PageLayout"><div class="PageLayout__content"><div>Hello world</div> <div>Foo bar</div></div></div>' );
+		} );
+		it( 'should contain passed className in class attribute', function( $c ) {
+			$component = new Component_Themes_PageLayout( [ 'className' => 'test-class' ], [] );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="test-class"><div class="PageLayout__content"></div></div>' );
+		} );
+		it( 'should not contain class attribute when className prop is empty', function( $c ) {
+			unset( $c->props['className'] );
+			$component = new Component_Themes_PageLayout( $c->props, [] );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div><div class="PageLayout__content"></div></div>' );
+		} );
+		it( 'should send passed props to the children', function( $c ) {
+			$c->props[ 'childProp' ] = 'child-value';
+			$c->props[ 'testProp' ] = 'test-value';
+			$component = new Component_Themes_PageLayout( $c->props, [ new Mock_JSON_Component() ] );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<div class="PageLayout"><div class="PageLayout__content"><span>{"childProp":"child-value","testProp":"test-value"}</span></div></div>' );
 		} );
 	} );
 } );
@@ -220,48 +317,6 @@ describe( 'PostTitle', function() {
 			$component = Component_Themes_Post_Title( $c->props );
 			$output = React::render( $component );
 			expect( $output )->toEqual( '<h1 class="post-title"><a class="PostTitle_link" href="http://te.st/1234">Post Title</a></h1>' );
-		} );
-	} );
-} );
-
-describe( 'MenuWidget', function() {
-	beforeEach( function( $c ) {
-		$c->title = 'Title for test';
-		$c->links = [
-			[ 'text' => 'Link #1', 'url' => 'http://te.st/link1' ],
-			[ 'text' => 'Link #2', 'url' => 'http://te.st/link2' ],
-		];
-	} );
-
-	describe( '#render', function() {
-		it( 'should contain <h2> and <li> in the output', function( $c ) {
-			$component = new Component_Themes_Menu_Widget( [ 'title' => $c->title, 'links' => $c->links ] );
-			$output = React::render( $component );
-
-			expect( $output )->toContain( "<h2 class='MenuWidget__title'>{$c->title}</h2>" );
-			expect( $output )->toContain( "<li class='MenuWidget__link'><a href='{$c->links[0]["url"]}'>{$c->links[0]["text"]}</a></li>" );
-			expect( $output )->toContain( "<li class='MenuWidget__link'><a href='{$c->links[1]["url"]}'>{$c->links[1]["text"]}</a></li>" );
-		} );
-
-		it( 'should contain passed className in class attribute', function( $c ) {
-			$component = new Component_Themes_Menu_Widget( [ 'className' => 'test-class' ] );
-			$output = React::render( $component );
-
-			expect( $output )->toContain( "<div class='test-class'>" );
-		} );
-
-		it( 'should not contain a <h2> if no title prop is given', function( $c ) {
-			$component = new Component_Themes_Menu_Widget( [ 'links' => $c->links ] );
-			$output = React::render( $component );
-
-			expect( $output )->toNotContain( "<h2 class='MenuWidget__title'>" );
-		} );
-
-		it( 'should not contain any <li>s if no link prop is given', function( $c ) {
-			$component = new Component_Themes_Menu_Widget();
-			$output = React::render( $component );
-
-			expect( $output )->toNotContain( '<li' );
 		} );
 	} );
 } );
