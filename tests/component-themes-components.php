@@ -344,6 +344,37 @@ describe( 'PostContent', function() {
 	} );
 } );
 
+describe( 'PostDate', function() {
+	beforeEach( function( $c ) {
+		$c->props = [
+			'date_format' => 'Y-m-d',
+			'date' => mktime( 13, 15, 20, 12, 25, 2017 )
+		];
+	} );
+	describe( '#render', function() {
+		it( 'should render date prop that is formatted in date_format', function( $c ) {
+			$component = Component_Themes_PostDate( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<span class="PostDate">2017-12-25</span>' );
+		} );
+		it( 'should use default date format when date_format prop is empty', function( $c ) {
+			unset( $c->props['date_format'] );
+			$component = Component_Themes_PostDate( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<span class="PostDate">December 25, 2017</span>' );
+		} );
+		it( 'should render default text when date prop is empty', function( $c ) {
+			unset( $c->props['date'] );
+			$component = Component_Themes_PostDate( $c->props );
+			$output = React::render( $component );
+
+			expect( $output )->toEqual( '<span class="PostDate">No date</span>' );
+		} );
+	} );
+} );
+
 describe( 'PostTitle', function() {
 	describe( '#render', function() {
 		beforeEach( function( $c ) {

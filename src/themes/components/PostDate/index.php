@@ -1,14 +1,17 @@
 <?php
-function Component_Themes_PostDate( $props, $children, $component ) {
-	$date_format = ct_get_value( $props, 'date_format' );
-	$date = $component->get_prop( 'date', 'No date' );
+function Component_Themes_PostDate( $props ) {
+	$date_format = ct_get_value( $props, 'date_format', 'F j, Y' );
+	$date = ct_get_value( $props, 'date', '' );
+	$date_str = 'No date';
 
-	if ( ! is_int( $date ) ) {
-		$date = strtotime( $date );
+	if ( ! empty( $date ) ) {
+		if ( ! is_int( $date ) ) {
+			$date = strtotime( $date );
+		}
+		$date_str = date( $date_format, $date );
 	}
-	$date_str = date( $date_format, $date );
 
-	return "<span class='PostDate'>$date_str</span>";
+	return React::createElement( 'span', array( 'className' => 'PostDate' ), array( $date_str ) );
 }
 
 function Component_Themes_PostDate_Api_Mapper( $get_api_endpoint ) {

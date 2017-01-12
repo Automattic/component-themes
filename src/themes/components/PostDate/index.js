@@ -6,7 +6,7 @@ const PostDate = ( { date, date_format, className } ) => {
 	var dateStr = '';
 
 	if ( date ) {
-		dateStr = ComponentThemes.date.format( date_format, new Date( date ) );
+		dateStr = ComponentThemes.date.format( date_format || 'F j, Y', new Date( date ) );
 	}
 
 	return (
