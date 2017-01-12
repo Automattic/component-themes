@@ -7,7 +7,7 @@ function Component_Themes_Search_Widget ( $props ) {
 	$label = ct_get_value( $props, 'label' );
 	$label_element = empty( $label ) ? null : React::createElement( 'span', array( 'className' => 'screen-reader-text' ), $label );
 	$button_label = ct_get_value( $props, 'buttonLabel' );
-	$button_element = empty( $button_label ) ? null : React::createElement( 'submit', array( 'className' => 'SearchWidget__button' ), $button_label );
+	$button_element = empty( $button_label ) ? null : React::createElement( 'button', array( 'type' => 'submit', 'className' => 'SearchWidget__button' ), $button_label );
 
 	$input_element = React::createElement( 'input', array( 'className' => 'SearchWidget__input', 'placeholder' => $placeholder, 'name' => 's' ) );
 
