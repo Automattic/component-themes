@@ -2,7 +2,7 @@
 class Component_Themes_PostContent extends Component_Themes_Component {
 	public function render() {
 		$content = $this->get_prop( 'content', 'No content' );
-		return "<div class='PostContent'>" . nl2br( $content ) . '</div>';
+		return React::createElement( 'div', array( 'className' => 'PostContent' ), array( nl2br( $content ) ) );
 	}
 }
 

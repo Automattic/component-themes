@@ -18,6 +18,10 @@ class Component_Themes_Component {
 		return React::renderChildren( $this->children );
 	}
 
+	public function clone_children( $props = array() ) {
+		return React::cloneChildren( $this->children, $props );
+	}
+
 	public function render() {
 		return '';
 	}

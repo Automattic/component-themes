@@ -1,7 +1,9 @@
 <?php
 class Component_Themes_PageLayout extends Component_Themes_Component {
 	public function render() {
-		return "<div class='" . $this->get_prop( 'className' ) . "'><div class='PageLayout__content'>" . $this->render_children() . '</div></div>';
+		$new_props = ct_omit( $this->props, array( 'className', 'children' ) );
+		$content = React::createElement( 'div', array( 'className' => 'PageLayout__content' ), $this->clone_children( $new_props ) );
+		return React::createElement( 'div', array( 'className' => $this->get_prop( 'className' ) ), array( $content ) );
 	}
 }
 

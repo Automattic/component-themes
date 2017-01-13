@@ -5,10 +5,12 @@ class Component_Themes_HeaderText extends Component_Themes_Component {
 		$site_tagline = $this->get_prop( 'siteTagline', 'My home on the web' );
 		$class_name = $this->get_prop( 'className', '' );
 		$link = $this->get_prop( 'link', '' );
-		return "<div class='$class_name'><a href='{$link}'>
-      <h1 class='HeaderText__title'>{$site_title}</h1>
-      <div class='HeaderText__tagline'>{$site_tagline}</div>
-</a></div>";
+
+		$title_elem = React::createElement( 'h1', array( 'className' => 'HeaderText__title' ), array( $site_title ) );
+		$tagline_elem = React::createElement( 'div', array( 'className' => 'HeaderText__tagline' ), array( $site_tagline ) );
+		$link_elem = React::createElement( 'a', array( 'href' => $link ), array( $title_elem, $tagline_elem ) );
+
+		return React::createElement( 'div', array( 'className' => $class_name ), array( $link_elem ) );
 	}
 
 	public static function api_mapper( $get_api_endpoint ) {
