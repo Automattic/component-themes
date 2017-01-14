@@ -36,15 +36,13 @@ class Component_Themes_Api {
 			return null;
 		}
 		$data = $response->get_data();
-		$data = self::sanitize( $endpoint, $data );
 
-		return $data;
+		return self::sanitize( $endpoint, $data );
 	}
 
 	protected static function sanitize( $endpoint, $data ) {
 		if ( '/' === $endpoint ) {
-			unset( $data['authentication'] );
-			unset( $data['routes'] );
+			$data = ct_omit( $data, array( 'authentication', 'routes' ) );
 		}
 
 		return $data;
