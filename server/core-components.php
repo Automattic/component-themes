@@ -12,5 +12,6 @@ require( __DIR__ . '/../src/themes/components/PostContent/index.php' );
 require( __DIR__ . '/../src/themes/components/ColumnComponent/index.php' );
 require( __DIR__ . '/../src/themes/components/FooterText/index.php' );
 require( __DIR__ . '/../src/themes/components/HeaderText/index.php' );
+require( __DIR__ . '/../src/themes/components/Link/index.php' );
 require( __DIR__ . '/../src/themes/components/PageLayout/index.php' );
 require( __DIR__ . '/../src/themes/components/SinglePost/index.php' );
