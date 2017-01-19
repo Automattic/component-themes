@@ -84,10 +84,14 @@ if ( ! isset( $_GET['ssr'] ) ):
 		<script src="<?php echo $plugin_dir_url; ?>build/app.js"></script>
 		<script src="<?php echo $plugin_dir_url; ?>build/core-components.js"></script>
 		<script type="text/javascript">
-		const themeConfig = <?php echo json_encode( $theme_config ); ?>;
-		const pageConfig = <?php echo json_encode( $page_config ); ?>;
-		const pageInfo = <?php echo json_encode( $page_info ); ?>;
-		ComponentThemes.renderPage( themeConfig, pageInfo, pageConfig, window.document.getElementById( 'root' ) );
+		ComponentThemes.storage.update({
+			apiData: window.ComponentThemesApiData || {},
+			themeConfig: <?php echo json_encode( $theme_config ); ?>,
+			pageConfig: <?php echo json_encode( $page_config ); ?>,
+			pageInfo: <?php echo json_encode( $page_info ); ?>,
+		});
+		ComponentThemes.rootElement = document.getElementById( 'root' );
+		ComponentThemes.renderPage( ComponentThemes.rootElement );
 		</script>
 <?php
 endif;
