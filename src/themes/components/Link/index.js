@@ -20,5 +20,24 @@ function Link( props ) {
 
 registerComponent( 'Link', Link, {
 	title: 'Link',
-	description: 'An anchor element that routes an application on client-side.',
+	description: 'An anchor element that supports client-side routing.',
+	hasChildren: true,
+	editableProps: {
+		url: {
+			type: 'string',
+			label: 'URL to move to'
+		},
+		postId: {
+			type: 'number',
+			label: 'Post ID'
+		},
+		postType: {
+			type: 'string',
+			label: 'Post type'
+		},
+		slug: {
+			type: 'string',
+			label: 'Post slug'
+		}
+	}
 } );
