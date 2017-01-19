@@ -17,7 +17,7 @@ const PostDate = ( { date, date_format, className } ) => {
 };
 
 const mapApiToProps = ( getApiEndpoint ) => {
-	const settings = getApiEndpoint( '/wp/v2/settings' ) || {};
+	const settings = getApiEndpoint( '/component-themes/v1/settings' ) || {};
 	return { date_format: settings.date_format };
 };
 

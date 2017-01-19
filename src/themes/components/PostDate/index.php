@@ -15,7 +15,7 @@ function Component_Themes_PostDate( $props ) {
 }
 
 function Component_Themes_PostDate_Api_Mapper( $get_api_endpoint ) {
-	$settings = call_user_func( $get_api_endpoint, '/wp/v2/settings' );
+	$settings = call_user_func( $get_api_endpoint, '/component-themes/v1/settings' );
 
 	return array(
 		'date_format' => $settings['date_format'],
