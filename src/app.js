@@ -13,24 +13,33 @@ import omit from 'lodash/omit';
  */
 import { ComponentThemePage } from '~/src/';
 import { apiDataWrapper } from '~/src/lib/api';
-import { registerComponent, registerPartial } from '~/src/lib/components';
+import { registerComponent, registerPartial, getComponentByType } from '~/src/lib/components';
 import date from '~/src/lib/date';
+import route from '~/src/lib/route';
+import storage from '~/src/lib/storage';
 import defaultTheme from '~/src/themes/default.json';
 
 const ComponentThemes = {
-	renderPage: function( theme, info, page, target ) {
-		const App = <ComponentThemePage theme={ theme } defaultTheme={ defaultTheme } page={ page } info={ info } />;
-		ReactDOM.render( App, target );
+	renderPage( target ) {
+		var { themeConfig, pageInfo, pageConfig } = storage.get();
+		const App = <ComponentThemePage theme={ themeConfig } defaultTheme={ defaultTheme } page={ pageConfig } info={ pageInfo } />;
+		if ( target || this.rootElement ) {
+			ReactDOM.render( App, target || this.rootElement );
+		}
 	},
-
 	React,
 	styled,
 	registerComponent,
 	registerPartial,
+	getComponentByType,
 	apiDataWrapper,
 	omit,
 	date,
+	storage,
+	route,
 };
+
+storage.on( 'update', () => ComponentThemes.renderPage() );
 
 if ( typeof window !== 'undefined' ) {
 	window.ComponentThemes = ComponentThemes;
