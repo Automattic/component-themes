@@ -17,12 +17,33 @@ class Route {
 		};
 	}
 
+	getHomeURL() {
+		try {
+			return storage.get().apiData.api['/component-themes/v1/settings'].wpurl;
+		} catch(e) {
+			return location.protocol + '//' + location.host;
+		}
+	}
+
 	isInternalLink( url ) {
-		// TODO:
-		return true;
+		return ( url[0] === '/' ||  url.indexOf( this.getHomeURL() ) === 0 );
 	}
 
 	/**
+	 * get
+	 */
+	getRelativeURL( url ) {
+		if ( this.isInternalLink( url ) && url[0] !== '/' ) {
+			url = url.substr( this.getHomeURL().length );
+			return ( ( url[0] === '/' ) ? '' : '/' ) + url;
+		}
+
+		return url;
+	}
+
+	/**
+	 * Move to the URL 
+	 *
 	 * @param {String} url A relative URL to the wordpress root.
 	 * @param {Object} [postInfo] An object that contains information of a single post.
 	 *
@@ -37,6 +58,8 @@ class Route {
 			location.url = url;
 			return;
 		}
+
+		url = this.getRelativeURL( url );
 
 		if ( ! initialStateSaved ) {
 			history.replaceState( this.getPageInfo(), document.title, location.href );
