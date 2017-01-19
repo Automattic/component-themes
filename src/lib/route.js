@@ -10,6 +10,8 @@ class Route {
 	}
 
 	initHistory() {
+		if ( typeof window === 'undefined' ) return;
+
 		window.onpopstate = ( { state } ) => {
 			this.updatePageInfo( state );
 		};
