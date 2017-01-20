@@ -59,6 +59,7 @@ class Component_Themes_Plugin {
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_public_hooks();
+		$this->add_rest_api();
 
 	}
 
@@ -90,7 +91,10 @@ class Component_Themes_Plugin {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-component-themes-public.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-component-themes-rest-api.php';
+
 		$this->loader = new Component_Themes_Loader();
+		$this->rest_api = new Component_Themes_Rest_API();
 
 	}
 
@@ -173,4 +177,7 @@ class Component_Themes_Plugin {
 		return $this->version;
 	}
 
+	public function add_rest_api() {
+		add_action( 'rest_api_init', array( $this->rest_api, 'init' ) );
+	}
 }

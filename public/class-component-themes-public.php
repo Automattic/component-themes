@@ -62,7 +62,12 @@ class Component_Themes_Public {
 			<div id="root">
 <?php
 require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'server/class-component-themes.php' );
+require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'server/class-component-themes-api.php' );
 require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'server/core-components.php' );
+
+// always fetch general settings
+Component_Themes_Api::get_api_endpoint( '/component-themes/v1/settings' );
+
 $theme_config = json_decode( file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'themes/kubrick/theme.json' ), true );
 $page_config = null;
 $page_slug = ( is_home() || is_front_page() ) ? 'home' : get_post_field( 'post_name', get_post() );
@@ -84,10 +89,14 @@ if ( ! isset( $_GET['ssr'] ) ):
 		<script src="<?php echo $plugin_dir_url; ?>build/app.js"></script>
 		<script src="<?php echo $plugin_dir_url; ?>build/core-components.js"></script>
 		<script type="text/javascript">
-		const themeConfig = <?php echo json_encode( $theme_config ); ?>;
-		const pageConfig = <?php echo json_encode( $page_config ); ?>;
-		const pageInfo = <?php echo json_encode( $page_info ); ?>;
-		ComponentThemes.renderPage( themeConfig, pageInfo, pageConfig, window.document.getElementById( 'root' ) );
+		ComponentThemes.storage.update({
+			apiData: window.ComponentThemesApiData || {},
+			themeConfig: <?php echo json_encode( $theme_config ); ?>,
+			pageConfig: <?php echo json_encode( $page_config ); ?>,
+			pageInfo: <?php echo json_encode( $page_info ); ?>,
+		});
+		ComponentThemes.rootElement = document.getElementById( 'root' );
+		ComponentThemes.renderPage( ComponentThemes.rootElement );
 		</script>
 <?php
 endif;

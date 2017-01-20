@@ -3,8 +3,11 @@ const ComponentThemes = window.ComponentThemes;
 const { React, registerComponent, apiDataWrapper } = ComponentThemes;
 
 const PostList = ( { posts, children, className } ) => {
-	const newChildren = ( posts || [] ).map( ( { title, link, content, author, date } ) => {
-		return React.Children.map( children, child => React.cloneElement( child, { title, link, content, author, date } ) );
+	const newChildren = ( posts || [] ).map( ( postInfo ) => {
+		return React.Children.map(
+			children,
+			child => React.cloneElement( child, postInfo )
+		);
 	} );
 	return (
 		<div className={ className }>
@@ -19,6 +22,9 @@ const mapApiToProps = ( getApiEndpoint ) => {
 	const posts = postsData.map( post => {
 		const author = getApiEndpoint( '/wp/v2/users/' + post.author ) || {};
 		return {
+			postId: post.id,
+			postType: post.type,
+			slug: post.slug,
 			title: post.title.rendered,
 			content: post.content.rendered,
 			author: author.name,

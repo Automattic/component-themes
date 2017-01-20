@@ -1,11 +1,17 @@
 /* globals window */
 const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent } = ComponentThemes;
+const { React, registerComponent, getComponentByType } = ComponentThemes;
 
-const PostTitle = ( { link, title, className } ) => {
+const PostTitle = ( { link, title, className, slug, postId, postType } ) => {
+	const Link = getComponentByType('Link');
 	return (
 		<h1 className={ className }>
-			<a className="PostTitle_link" href={ link }>{ title || 'No title' }</a>
+			<Link
+				url={ link }
+				slug={ slug }
+				postId={ postId }
+				postType={ postType }
+				className="PostTitle_link">{ title || 'No title' }</Link>
 		</h1>
 	);
 };

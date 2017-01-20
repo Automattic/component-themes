@@ -5,7 +5,11 @@ function Component_Themes_Post_Title ( $props ) {
 	$class_name = ct_get_value( $props, 'className', '' );
 	return React::createElement(
 		'h1', array( 'className' => $class_name ), array(
-			React::createElement( 'a', array( 'className' => 'PostTitle_link', 'href' => $link ), array( $link_text ) )
+			React::createElement(
+				'Link',
+				array( 'className' => 'PostTitle_link', 'url' => $link ),
+				array( $link_text )
+			)
 		)
 	);
 };

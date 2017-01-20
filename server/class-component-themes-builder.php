@@ -86,6 +86,13 @@ class Component_Themes_Builder {
 	public function create_element( $component, $props = array(), $children = array() ) {
 		$props = array_merge( array( 'context' => array() ), $props ? $props : array() );
 
+		if ( is_string( $component ) ) {
+			if ( ctype_lower( $component[0] ) ) {
+				return new Component_Themes_Html_Component( $component, $props, $children );
+			} elseif ( isset( self::$registered_components[ $component ] ) ) {
+				$component = self::$registered_components[ $component ];
+			}
+		}
 		if ( $component instanceof Component_Themes_Component ) {
 			return $component;
 		}
@@ -94,9 +101,6 @@ class Component_Themes_Builder {
 		}
 		if ( is_callable( $component ) ) {
 			return new Component_Themes_Stateless_Component( $component, $props, $children );
-		}
-		if ( is_string( $component ) && ! ctype_upper( $component[0] ) ) {
-			return new Component_Themes_Html_Component( $component, $props, $children );
 		}
 		if ( 'Component_Themes_Text_Component' === $component ) {
 			// This would be an error state, but to prevent errors, we will make an empty text node

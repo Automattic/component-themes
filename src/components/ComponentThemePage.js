@@ -12,9 +12,6 @@ import { buildComponentsFromTheme, getTemplateForSlug, mergeThemes } from '~/src
 import { apiDataProvider } from '~/src/lib/api';
 
 class ComponentThemePage extends Component {
-	componentWillMount() {
-		this.props.setPageInfo( this.props.info );
-	}
 
 	render() {
 		const theme = mergeThemes( this.props.defaultTheme || {}, this.props.theme );

@@ -1,11 +1,12 @@
 /* globals window */
 const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent } = ComponentThemes;
+const { React, registerComponent, omit } = ComponentThemes;
 
-const PostBody = ( { content, date, link, author, title, children, className } ) => {
-	const newChildren = React.Children.map( children, child => React.cloneElement( child, { title, content, link, date, author } ) );
+const PostBody = ( props ) => {
+	const childProps = omit( props, [ 'className', 'children' ] );
+	const newChildren = React.Children.map( props.children, child => React.cloneElement( child, childProps ) );
 	return (
-		<div className={ className }>
+		<div className={ props.className }>
 			{ newChildren }
 		</div>
 	);

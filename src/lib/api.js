@@ -7,6 +7,8 @@ import React from 'react';
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 
+import storage from './storage';
+
 function checkStatus( response ) {
 	if ( response.status >= 200 && response.status < 300 ) {
 		return response;
@@ -22,18 +24,11 @@ function parseJson( response ) {
 
 function fetchRequiredApiEndpoint( endpoint ) {
 	return new Promise( resolve => {
-		fetch( '/wp-json' + endpoint )
+		fetch( '/?rest_route=' + endpoint )
 		.then( checkStatus )
 		.then( parseJson )
 		.then( json => resolve( { [ endpoint ]: json } ) );
 	} );
-}
-
-export function getBootstrappedRequiredApiData() {
-	if ( window.ComponentThemesApiData ) {
-		return window.ComponentThemesApiData;
-	}
-	return { api: {}, pageInfo: {} };
 }
 
 export function apiDataWrapper( mapApiToProps ) {
@@ -64,26 +59,30 @@ export function apiDataProvider() {
 				this.setPageInfo = this.setPageInfo.bind( this );
 				this.getApiEndpoint = this.getApiEndpoint.bind( this );
 				this.fetchApiData = this.fetchApiData.bind( this );
-				const apiProps = getBootstrappedRequiredApiData();
-				this.state = { apiProps };
+			}
+
+			getApiProps() {
+				const data = storage.get();
+				return { api: data.apiData.api || {}, pageInfo: data.pageInfo || {} };
 			}
 
 			getChildContext() {
-				return { apiProps: this.state.apiProps, fetchApiData: this.fetchApiData, getApiEndpoint: this.getApiEndpoint };
+				return { apiProps: this.getApiProps(), fetchApiData: this.fetchApiData, getApiEndpoint: this.getApiEndpoint };
 			}
 
 			setPageInfo( info ) {
-				const pageInfo = Object.assign( {}, this.state.apiProps.pageInfo, info );
-				const apiProps = Object.assign( {}, this.state.apiProps, { pageInfo } );
-				this.setState( { apiProps } );
+				const data = storage.get();
+				data.pageInfo = Object.assign( {}, data.pageInfo, info );
+				storage.update( data );
 			}
 
 			getApiEndpoint( endpoint ) {
-				const endpointData = this.state.apiProps.api[ endpoint ];
+				const endpointData = this.getApiProps().api[ endpoint ];
 				if ( ! endpointData ) {
 					this.fetchApiData( endpoint );
+					return null;
 				}
-				return this.state.apiProps.api[ endpoint ];
+				return endpointData;
 			}
 
 			fetchApiData( endpoint ) {
@@ -92,9 +91,9 @@ export function apiDataProvider() {
 				}
 				fetchRequiredApiEndpoint( endpoint )
 					.then( result => {
-						const api = Object.assign( {}, this.state.apiProps.api, result );
-						const apiProps = Object.assign( {}, this.state.apiProps, { api } );
-						this.setState( { apiProps } );
+						const data = storage.get();
+						data.apiData.api = Object.assign( {}, data.apiData.api, result );
+						storage.update( data );
 					} );
 			}
 
