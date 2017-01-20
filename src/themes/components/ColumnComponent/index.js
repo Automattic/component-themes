@@ -1,6 +1,6 @@
-/* globals window */
-const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent, omit } = ComponentThemes;
+import React from 'react';
+import omit from 'lodash/omit';
+import { registerComponent } from 'ComponentThemes/lib';
 
 const ColumnComponent = ( props ) => {
 	const { children, className } = props;

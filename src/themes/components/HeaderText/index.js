@@ -1,6 +1,6 @@
-/* globals window */
-const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent, apiDataWrapper } = ComponentThemes;
+import React from 'react';
+import omit from 'lodash/omit';
+import { registerComponent, apiDataWrapper } from 'ComponentThemes/lib';
 
 const HeaderText = ( { link, siteTitle, siteTagline, className } ) => {
 	return (

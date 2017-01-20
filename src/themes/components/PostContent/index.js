@@ -1,6 +1,5 @@
-/* globals window */
-const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent } = ComponentThemes;
+import React from 'react';
+import { registerComponent } from 'ComponentThemes/lib';
 
 function convertNewlines( content ) {
 	return content.replace( /\n/g, '<br />' );

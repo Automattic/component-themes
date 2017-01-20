@@ -12,28 +12,14 @@ import omit from 'lodash/omit';
  * Internal dependencies
  */
 import { ComponentThemePage } from '~/src/';
-import { apiDataWrapper } from '~/src/lib/api';
-import { registerComponent, registerPartial } from '~/src/lib/components';
-import date from '~/src/lib/date';
 import defaultTheme from '~/src/themes/default.json';
+import '~/src/lib';
 
 const ComponentThemes = {
-	renderPage: function( theme, info, page, target ) {
+	renderPage( theme, info, page, target ) {
 		const App = <ComponentThemePage theme={ theme } defaultTheme={ defaultTheme } page={ page } info={ info } />;
 		ReactDOM.render( App, target );
 	},
-
-	React,
-	styled,
-	registerComponent,
-	registerPartial,
-	apiDataWrapper,
-	omit,
-	date,
 };
-
-if ( typeof window !== 'undefined' ) {
-	window.ComponentThemes = ComponentThemes;
-}
 
 export default ComponentThemes;

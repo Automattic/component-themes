@@ -30,6 +30,7 @@
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.8",
+    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-lodash": "^3.2.10",
     "babel-preset-react-app": "^1.0.0",
     "babel-register": "^6.18.0",
@@ -43,6 +44,7 @@
     "eslint": "^3.10.2",
     "eslint-config-wpcalypso": "^0.6.0",
     "eslint-plugin-wpcalypso": "^3.0.2",
+    "expose-loader": "^0.7.1",
     "json-loader": "^0.5.4",
     "lodash": "^4.17.2",
     "mocha": "^3.2.0",
@@ -52,6 +54,7 @@
     "react-dom": "^15.4.1",
     "shortid": "^2.2.6",
     "styled-components": "^1.1.2",
+    "tiny-emitter": "^1.1.0",
     "traverse": "^0.6.6",
     "webpack": "^1.13.3",
     "whatwg-fetch": "^2.0.1"

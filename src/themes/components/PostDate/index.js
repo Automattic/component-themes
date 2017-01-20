@@ -1,12 +1,11 @@
-/* globals window */
-const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent, apiDataWrapper } = ComponentThemes;
+import React from 'react';
+import { date as ctDate, registerComponent, apiDataWrapper } from 'ComponentThemes/lib';
 
 const PostDate = ( { date, date_format, className } ) => {
-	var dateStr = '';
+	let dateStr = '';
 
 	if ( date ) {
-		dateStr = ComponentThemes.date.format( date_format || 'F j, Y', new Date( date ) );
+		dateStr = ctDate.format( date_format || 'F j, Y', new Date( date ) );
 	}
 
 	return (

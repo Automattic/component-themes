@@ -1,6 +1,5 @@
-/* globals window */
-const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent } = ComponentThemes;
+import React from 'react';
+import { registerComponent } from 'ComponentThemes/lib';
 
 const SearchWidget = ( { placeholder, label, buttonLabel, className } ) => {
 	// TODO: import the rootUrl from the state

@@ -1,6 +1,5 @@
-/* globals window */
-const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent, apiDataWrapper } = ComponentThemes;
+import React from 'react';
+import { registerComponent, apiDataWrapper } from 'ComponentThemes/lib';
 
 const PostList = ( { posts, children, className } ) => {
 	const newChildren = ( posts || [] ).map( ( { title, link, content, author, date } ) => {

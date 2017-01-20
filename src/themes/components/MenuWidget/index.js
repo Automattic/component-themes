@@ -1,6 +1,6 @@
-/* globals window */
-const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent, styled } = ComponentThemes;
+import React from 'react';
+import { registerComponent, apiDataWrapper, styled } from 'ComponentThemes/lib';
+
 const MenuLink = ( { text, url } ) => <li className="MenuWidget__link"><a href={ url }>{ text }</a></li>;
 
 const MenuWidget = ( { title, links, className } ) =>
