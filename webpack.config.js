@@ -48,10 +48,10 @@ const settings = {
 if ( process.env.NODE_ENV === 'development' ) {
 	settings.devtool = 'source-map';
 } else if ( process.env.NODE_ENV === 'production' ) {
-	settings.plugins.push( [
+	settings.plugins.push(
 		new webpack.optimize.DedupePlugin(),
-		new webpack.optimize.UglifyJsPlugin({ sourceMap: false }),
-	] );
+		new webpack.optimize.UglifyJsPlugin({ sourceMap: false })
+	);
 }
 
 module.exports = settings;
