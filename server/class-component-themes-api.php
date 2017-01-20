@@ -35,6 +35,16 @@ class Component_Themes_Api {
 		if ( 200 !== $response->get_status() ) {
 			return null;
 		}
-		return $response->get_data();
+		$data = $response->get_data();
+
+		return self::sanitize( $endpoint, $data );
+	}
+
+	protected static function sanitize( $endpoint, $data ) {
+		if ( '/' === $endpoint ) {
+			$data = ct_omit( $data, array( 'authentication', 'routes' ) );
+		}
+
+		return $data;
 	}
 }
