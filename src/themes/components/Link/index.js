@@ -9,11 +9,16 @@ function Link( props ) {
 		slug: props.slug
 	};
 
+	const clickHandler = ( event ) => {
+		route.moveTo( props.url, postInfo );
+		event.preventDefault();
+	};
+
 	return (
 		<a
 			href={ props.url }
 			className={ props.className }
-			onClick={ (e) => { route.moveTo( props.url, postInfo ); e.preventDefault(); } }
+			onClick={ clickHandler }
 		>{props.children}</a>
 	);
 }

@@ -31,11 +31,6 @@ function fetchRequiredApiEndpoint( endpoint ) {
 	} );
 }
 
-export function getBootstrappedRequiredApiData() {
-	const data = storage.get();
-	return { api: data.apiData.api || {}, pageInfo: data.pageInfo || {} };
-}
-
 export function apiDataWrapper( mapApiToProps ) {
 	return ( Target ) => {
 		const ApiDataWrapper = ( props, context ) => {
@@ -78,7 +73,6 @@ export function apiDataProvider() {
 			setPageInfo( info ) {
 				const data = storage.get();
 				data.pageInfo = Object.assign( {}, data.pageInfo, info );
-				console.log(info);
 				storage.update( data );
 			}
 

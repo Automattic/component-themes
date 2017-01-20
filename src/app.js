@@ -21,7 +21,7 @@ import defaultTheme from '~/src/themes/default.json';
 
 const ComponentThemes = {
 	renderPage( target ) {
-		var { themeConfig, pageInfo, pageConfig } = storage.get();
+		const { themeConfig, pageInfo, pageConfig } = storage.get();
 		const App = <ComponentThemePage theme={ themeConfig } defaultTheme={ defaultTheme } page={ pageConfig } info={ pageInfo } />;
 		if ( target || this.rootElement ) {
 			ReactDOM.render( App, target || this.rootElement );

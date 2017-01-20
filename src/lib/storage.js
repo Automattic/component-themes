@@ -1,8 +1,7 @@
 import Emitter from 'tiny-emitter';
 import assign from 'lodash/assign';
 
-var globalStorage = {};
-var listeners = {};
+let globalStorage = {};
 
 class Storage extends Emitter {
 	get() {
@@ -14,5 +13,6 @@ class Storage extends Emitter {
 	}
 }
 
-var storage = new Storage();
+const storage = new Storage();
+
 export default storage;
