@@ -1,5 +1,4 @@
 import Emitter from 'tiny-emitter';
-import assign from 'lodash/assign';
 
 let globalStorage = {};
 
@@ -8,7 +7,7 @@ class Storage extends Emitter {
 		return globalStorage;
 	}
 	update( newState ) {
-		globalStorage = assign( {}, globalStorage, newState );
+		globalStorage = Object.assign( {}, globalStorage, newState );
 		this.emit( 'update' );
 	}
 }

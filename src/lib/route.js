@@ -19,7 +19,7 @@ function getHomeURL() {
  * @return {Boolean}
  */
 function isInternalLink( url ) {
-	return ( ! /^https?:/i.test( url ) ||  url.indexOf( this.getHomeURL() ) === 0 );
+	return ( ! /^https?:/i.test( url ) ||  url.toLowerCase().indexOf( getHomeURL().toLowerCase() ) === 0 );
 }
 
 /**
@@ -30,7 +30,7 @@ function isInternalLink( url ) {
  */
 function getRelativeURL( url ) {
 	if ( isInternalLink( url ) && url[0] !== '/' ) {
-		url = url.substr( this.getHomeURL().length );
+		url = url.substr( getHomeURL().length );
 		return ( ( url[0] === '/' ) ? '' : '/' ) + url;
 	}
 
