@@ -1,6 +1,6 @@
-/* globals window */
-const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent, styled, omit } = ComponentThemes;
+import React from 'react';
+import omit from 'lodash/omit';
+import { registerComponent, styled } from 'ComponentThemes/lib';
 
 const RowComponent = ( props ) => {
 	const { children, className } = props;

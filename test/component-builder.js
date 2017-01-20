@@ -4,10 +4,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 
+import { registerComponent, registerPartial } from '~/src/lib/components';
 import { buildComponentsFromTheme, mergeThemes } from '~/src/lib/component-builder';
-
-import ComponentThemes from '~/src/app';
-const { registerComponent, registerPartial } = ComponentThemes;
 
 const TextWidget = ( { text, color, className } ) => {
 	return (

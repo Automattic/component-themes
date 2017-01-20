@@ -1,6 +1,5 @@
-/* globals window */
-const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent } = ComponentThemes;
+import React from 'react';
+import { registerComponent } from 'ComponentThemes/lib';
 
 const PostTitle = ( { link, title, className } ) => {
 	return (

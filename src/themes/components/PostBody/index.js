@@ -1,6 +1,5 @@
-/* globals window */
-const ComponentThemes = window.ComponentThemes;
-const { React, registerComponent } = ComponentThemes;
+import React from 'react';
+import { registerComponent } from 'ComponentThemes/lib';
 
 const PostBody = ( { content, date, link, author, title, children, className } ) => {
 	const newChildren = React.Children.map( children, child => React.cloneElement( child, { title, content, link, date, author } ) );
